@@ -353,16 +353,22 @@ class BotUltraADB:
                 self.stats['historico_xp'].append((time.time(), xp))
                 print(f"✓ XP inicial: {xp:.2f}%")
     
-    def mover_joystick(self, angulo, duracao_ms=None, intensidade=1.0):
+    def mover_joystick(self, angulo, duracao_ms=None, intensidade=1.0, continuo=False):
         """Move usando o joystick via press-and-drag (como no celular)
         
         Args:
             angulo: Direção do movimento em radianos
             duracao_ms: Duração do movimento em milissegundos
             intensidade: Intensidade do movimento (0.0 a 1.0) - distância do centro
+            continuo: Se True, mantém movimento contínuo (para ir até área com inimigos)
         """
         if duracao_ms is None:
             duracao_ms = self.config.velocidade_movimento
+        
+        # Se movimento contínuo, aumenta a duração
+        if continuo:
+            duracao_ms = int(duracao_ms * 3)  # 3x mais longo para chegar ao destino
+            intensidade = 1.0  # Força máxima
         
         # Adiciona variação aleatória para movimento mais natural
         variacao_angulo = np.random.uniform(-0.15, 0.15)  # ±8 graus
@@ -384,8 +390,9 @@ class BotUltraADB:
         inicio_x = int(centro_x + np.random.uniform(-3, 3))
         inicio_y = int(centro_y + np.random.uniform(-3, 3))
         
-        print(f"  🕹️  Joystick: início({inicio_x},{inicio_y}) → destino({dest_x},{dest_y})")
-        print(f"  📐 Ângulo: {np.degrees(angulo_ajustado):.1f}° | Intensidade: {intensidade_variada:.1%}")
+        movimento_tipo = "CONTÍNUO" if continuo else "normal"
+        print(f"  🕹️  Joystick [{movimento_tipo}]: início({inicio_x},{inicio_y}) → destino({dest_x},{dest_y})")
+        print(f"  📐 Ângulo: {np.degrees(angulo_ajustado):.1f}° | Intensidade: {intensidade_variada:.1%} | Duração: {duracao_ms}ms")
         
         # Pressiona, arrasta e segura com variação na duração
         duracao_variada = int(duracao_ms * np.random.uniform(0.9, 1.1))
@@ -397,8 +404,9 @@ class BotUltraADB:
             print(f"  ❌ Movimento falhou!")
         
         # Atualiza posição virtual
-        self.pos_x = np.clip(self.pos_x + 3 * np.cos(angulo), 0, 100)
-        self.pos_y = np.clip(self.pos_y + 3 * np.sin(angulo), 0, 100)
+        movimento_distancia = 3 if not continuo else 10
+        self.pos_x = np.clip(self.pos_x + movimento_distancia * np.cos(angulo), 0, 100)
+        self.pos_y = np.clip(self.pos_y + movimento_distancia * np.sin(angulo), 0, 100)
     
     def usar_skill(self, index):
         """Usa skill via tap ADB"""
@@ -852,9 +860,6 @@ class BotUltraADB:
         # Potion
         self.usar_potion()
         
-        # Reset câmera
-        self.resetar_camera()
-        
         # Anti-AFK
         self.anti_afk()
         
@@ -863,14 +868,17 @@ class BotUltraADB:
         
         # Decide direção: PRIORIDADE 1 - Minimapa
         intensidade_movimento = 1.0  # Padrão: movimento completo
+        movimento_continuo = False  # Se deve mover até chegar ao destino
         
         if self.config.usar_minimapa:
             info_minimapa = self.analisar_minimapa()
             if info_minimapa:
                 melhor_angulo = info_minimapa['angulo']
-                # Intensidade baseada na quantidade de inimigos (mais inimigos = movimento mais rápido)
-                intensidade_movimento = np.clip(info_minimapa['inimigos'] / 50.0, 0.5, 1.0)
+                # Se detectou inimigos, movimento contínuo até chegar lá
+                movimento_continuo = True
+                intensidade_movimento = 1.0  # Força total
                 print(f"\n🗺️  Minimapa: {info_minimapa['direcao']} ({info_minimapa['inimigos']} inimigos)")
+                print(f"  🎯 Indo DIRETO para área com inimigos!")
             else:
                 # Fallback para ML ou exploração
                 if self.modelo_treinado and len(self.X_train) >= 15:
@@ -894,8 +902,13 @@ class BotUltraADB:
                 intensidade_movimento = 0.6
                 print(f"\n🔍 Explorando: {np.degrees(melhor_angulo):.0f}°")
         
-        # Move com intensidade variável
-        self.mover_joystick(melhor_angulo, intensidade=intensidade_movimento)
+        # IMPORTANTE: Reset câmera ANTES de mover
+        print("  📷 Resetando câmera antes do movimento...")
+        self.resetar_camera()
+        time.sleep(0.3)  # Aguarda câmera ajustar
+        
+        # Move com intensidade variável (contínuo se minimapa detectou inimigos)
+        self.mover_joystick(melhor_angulo, intensidade=intensidade_movimento, continuo=movimento_continuo)
         time.sleep(self.config.intervalo_entre_acoes / 1000.0)
         
         # Skills
