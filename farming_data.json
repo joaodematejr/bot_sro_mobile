@@ -1,0 +1,28 @@
+[
+  {
+    "timestamp": "2025-12-11T09:12:48.185609",
+    "duracao_minutos": 3.7312418778737384,
+    "stats": {
+      "tempo_inicio": 1765454944.3111181,
+      "combates": 2,
+      "areas_vazias": 9,
+      "movimentos": 12,
+      "predicoes_corretas": 8,
+      "predicoes_incorretas": 3
+    },
+    "total_amostras": 11
+  },
+  {
+    "timestamp": "2025-12-11T10:11:34.445112",
+    "duracao_minutos": 58.707387534777325,
+    "stats": {
+      "tempo_inicio": 1765455172.001875,
+      "combates": 20,
+      "areas_vazias": 180,
+      "movimentos": 200,
+      "predicoes_corretas": 141,
+      "predicoes_incorretas": 59
+    },
+    "total_amostras": 211
+  }
+]
