@@ -112,5 +112,10 @@
     "altura": 200
   },
   "exp_necessario_level": 1000000,
-  "exp_atual_level": 0
+  "exp_atual_level": 0,
+  "usar_ml_avancado": true,
+  "treinar_modelos_intervalo": 300,
+  "usar_rotas_otimizadas": true,
+  "usar_skills_otimizadas": true,
+  "raio_busca_area": 200
 }

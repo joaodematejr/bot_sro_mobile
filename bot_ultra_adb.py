@@ -14,6 +14,7 @@ from PIL import Image
 import io
 import pickle
 from detector_exp import DetectorEXP
+from ml_avancado import MLAvancado
 
 # Configurações
 ARQUIVO_DADOS = "farming_data.json"
@@ -117,6 +118,13 @@ class ConfiguracaoADB:
             'regiao_exp': {'x': 672, 'y': 397, 'largura': 576, 'altura': 198},  # Região CENTRALIZADA (30% x 20%)
             'exp_necessario_level': 1000000,  # EXP total necessário para próximo level (ajustar)
             'exp_atual_level': 0,  # EXP acumulado no level atual
+            
+            # ML Avançado
+            'usar_ml_avancado': True,  # Sistema ML de otimização
+            'treinar_modelos_intervalo': 300,  # Treina modelos a cada 5 min
+            'usar_rotas_otimizadas': True,  # Usa rotas recomendadas por ML
+            'usar_skills_otimizadas': True,  # Usa rotação de skills otimizada
+            'raio_busca_area': 200,  # Raio para buscar próxima melhor área
         }
         
         loaded_config = {}
@@ -350,6 +358,17 @@ class BotUltraADB:
                 self.config.regiao_exp['altura']
             )
         
+        # ML Avançado
+        self.ml_avancado = None
+        if self.config.usar_ml_avancado:
+            self.ml_avancado = MLAvancado()
+            print("✓ ML Avançado inicializado")
+        
+        self.ultimo_treino_ml = time.time()
+        self.tempo_inicio_area = time.time()
+        self.exp_ganho_area = 0
+        self.skills_ultima_rotacao = []
+        
         # Stats
         self.stats = {
             'tempo_inicio': time.time(),
@@ -454,7 +473,7 @@ class BotUltraADB:
             time.sleep(delay)
     
     def usar_skills_rotacao(self):
-        """Usa skills em rotação (paralelo se habilitado)"""
+        """Usa skills em rotação (paralelo se habilitado, otimizado por ML)"""
         if not self.config.usar_skills_automaticas:
             return
         
@@ -465,17 +484,44 @@ class BotUltraADB:
             intervalo *= 0.7  # 30% mais rápido
         
         if tempo_atual - self.ultimo_skill >= intervalo:
-            if self.config.skills_paralelas:
-                # Usa todas as skills rapidamente sem esperar
-                import threading
-                for i in range(len(self.config.posicoes_skills)):
-                    pos = self.config.posicoes_skills[i]
-                    threading.Thread(target=self.adb.tap, args=(pos['x'], pos['y'])).start()
-                    self.stats['skills_usadas'] += 1
-                print(f"  💥⚡ {len(self.config.posicoes_skills)} Skills (PARALELO)")
+            # Tenta obter rotação otimizada por ML
+            rotacao_ml = self.obter_rotacao_skills_ml()
+            
+            if rotacao_ml and len(rotacao_ml) > 0:
+                # Usa rotação recomendada pelo ML
+                if self.config.skills_paralelas:
+                    import threading
+                    for skill_id in rotacao_ml:
+                        if skill_id < len(self.config.posicoes_skills):
+                            pos = self.config.posicoes_skills[skill_id]
+                            threading.Thread(target=self.adb.tap, args=(pos['x'], pos['y'])).start()
+                            self.registrar_skill_ml(skill_id, sucesso=True)
+                            self.stats['skills_usadas'] += 1
+                    print(f"  🤖💥 {len(rotacao_ml)} Skills ML (PARALELO)")
+                else:
+                    for skill_id in rotacao_ml:
+                        if skill_id < len(self.config.posicoes_skills):
+                            self.usar_skill(skill_id)
+                            self.registrar_skill_ml(skill_id, sucesso=True)
+                    print(f"  🤖💥 Skills ML: {rotacao_ml}")
+                
+                self.skills_ultima_rotacao = rotacao_ml
             else:
-                for i in range(len(self.config.posicoes_skills)):
-                    self.usar_skill(i)
+                # Fallback: rotação padrão
+                if self.config.skills_paralelas:
+                    # Usa todas as skills rapidamente sem esperar
+                    import threading
+                    for i in range(len(self.config.posicoes_skills)):
+                        pos = self.config.posicoes_skills[i]
+                        threading.Thread(target=self.adb.tap, args=(pos['x'], pos['y'])).start()
+                        self.registrar_skill_ml(i, sucesso=True)
+                        self.stats['skills_usadas'] += 1
+                    print(f"  💥⚡ {len(self.config.posicoes_skills)} Skills (PARALELO)")
+                else:
+                    for i in range(len(self.config.posicoes_skills)):
+                        self.usar_skill(i)
+                        self.registrar_skill_ml(i, sucesso=True)
+            
             self.ultimo_skill = tempo_atual
     
     def coletar_loot(self):
@@ -774,6 +820,108 @@ class BotUltraADB:
             'porcentagem_level': (self.stats['exp_atual_level'] / self.config.exp_necessario_level) * 100
         }
     
+    def registrar_dados_ml(self, exp_ganho, tempo_gasto):
+        """Registra dados no sistema ML avançado"""
+        if not self.ml_avancado:
+            return
+        
+        # Registra rota/posição
+        self.ml_avancado.registrar_rota(
+            self.pos_x, 
+            self.pos_y, 
+            exp_ganho, 
+            tempo_gasto, 
+            self.area_atual
+        )
+        
+        self.exp_ganho_area += exp_ganho
+    
+    def registrar_skill_ml(self, skill_id, sucesso=True):
+        """Registra uso de skill no ML"""
+        if not self.ml_avancado:
+            return
+        
+        # Estimativa de damage baseado na skill (ajustar conforme necessário)
+        damage_map = {
+            1: 150,  # Skill 1
+            2: 200,  # Skill 2
+            3: 180,  # Skill 3
+            4: 250,  # Skill 4
+        }
+        
+        # Cooldowns aproximados (segundos)
+        cooldown_map = {
+            1: 5,
+            2: 8,
+            3: 6,
+            4: 12,
+        }
+        
+        damage = damage_map.get(skill_id, 100)
+        cooldown = cooldown_map.get(skill_id, 5)
+        
+        self.ml_avancado.registrar_skill(skill_id, damage, cooldown, sucesso)
+    
+    def obter_proxima_area_ml(self):
+        """Obtém próxima melhor área usando ML avançado"""
+        if not self.ml_avancado or not self.config.usar_rotas_otimizadas:
+            return None
+        
+        recomendacao = self.ml_avancado.recomendar_proxima_posicao(
+            self.pos_x, 
+            self.pos_y, 
+            self.config.raio_busca_area
+        )
+        
+        if recomendacao:
+            x, y, densidade = recomendacao
+            print(f"  🎯 ML recomenda: ({x}, {y}) - Densidade: {densidade:.1f} exp/min")
+            return (x, y, densidade)
+        
+        return None
+    
+    def obter_rotacao_skills_ml(self):
+        """Obtém rotação de skills otimizada por ML"""
+        if not self.ml_avancado or not self.config.usar_skills_otimizadas:
+            return None
+        
+        rotacao = self.ml_avancado.recomendar_rotacao_skills(max_skills=4)
+        
+        if rotacao:
+            return rotacao
+        
+        return None
+    
+    def treinar_modelos_ml(self):
+        """Treina modelos ML periodicamente"""
+        if not self.ml_avancado:
+            return
+        
+        tempo_desde_ultimo = time.time() - self.ultimo_treino_ml
+        
+        if tempo_desde_ultimo >= self.config.treinar_modelos_intervalo:
+            print("\n🤖 Treinando modelos ML...")
+            self.ml_avancado.treinar_modelos()
+            self.ml_avancado.salvar_dados()
+            self.ultimo_treino_ml = time.time()
+            
+            # Mostra estatísticas
+            stats_ml = self.ml_avancado.obter_estatisticas()
+            print(f"  📊 Dados coletados:")
+            print(f"    • {stats_ml['total_rotas']} rotas")
+            print(f"    • {stats_ml['total_areas']} áreas mapeadas")
+            print(f"    • {stats_ml['total_skills_treinadas']} skills analisadas")
+            
+            if stats_ml.get('top_3_areas'):
+                print(f"  🏆 Top 3 áreas:")
+                for i, area in enumerate(stats_ml['top_3_areas'], 1):
+                    print(f"    {i}. ({area['x']}, {area['y']}) - {area['densidade']:.1f} exp/min")
+            
+            if stats_ml.get('melhor_horario'):
+                hora = stats_ml['melhor_horario']['hora']
+                exp_min = stats_ml['melhor_horario']['exp_min']
+                print(f"  ⏰ Melhor horário: {hora}:00 ({exp_min:.1f} exp/min)")
+    
     def exportar_metricas(self):
         """Exporta métricas atuais para arquivo JSON"""
         try:
@@ -1070,6 +1218,9 @@ class BotUltraADB:
             self.exportar_metricas()
             self.ultimo_salvamento_metricas = tempo_atual
         
+        # Treina modelos ML periodicamente
+        self.treinar_modelos_ml()
+        
         # Verifica morte
         if self.verificar_morte():
             return
@@ -1083,11 +1234,26 @@ class BotUltraADB:
         # Rotação
         self.rotacionar_area()
         
-        # Decide direção: PRIORIDADE 1 - Minimapa
+        # Decide direção: PRIORIDADE 1 - ML Avançado, 2 - Minimapa, 3 - ML Básico
         intensidade_movimento = 1.0  # Padrão: movimento completo
         movimento_continuo = False  # Se deve mover até chegar ao destino
         
-        if self.config.usar_minimapa:
+        # PRIORIDADE 1: ML Avançado (se disponível e treinado)
+        area_recomendada = None
+        if self.ml_avancado and self.ml_avancado.modelos_treinados:
+            area_recomendada = self.obter_proxima_area_ml()
+            if area_recomendada:
+                x_dest, y_dest, densidade = area_recomendada
+                # Calcula ângulo para a área recomendada
+                dx = x_dest - self.pos_x
+                dy = y_dest - self.pos_y
+                melhor_angulo = np.arctan2(dy, dx)
+                movimento_continuo = True
+                intensidade_movimento = 1.0
+                print(f"\n🤖 ML Avançado: Indo para ({x_dest}, {y_dest}) - {densidade:.1f} exp/min")
+        
+        # PRIORIDADE 2: Minimapa (se ML não deu recomendação)
+        if not area_recomendada and self.config.usar_minimapa:
             info_minimapa = self.analisar_minimapa()
             if info_minimapa:
                 melhor_angulo = info_minimapa['angulo']
@@ -1149,6 +1315,9 @@ class BotUltraADB:
             self.stats['combates'] += 1
             self.stats['xp_estimado'] += 100
             
+            # Marca início do combate para calcular tempo
+            tempo_inicio_combate = time.time()
+            
             # Salva screenshot de combate para treinamento
             if self.config.salvar_imagens_treino and self.ultima_screenshot:
                 self.salvar_imagem_treino(self.ultima_screenshot, 'combate', 1.5)
@@ -1181,13 +1350,27 @@ class BotUltraADB:
             # Combate otimizado
             delay_combate = 0.5 if self.config.modo_turbo else 1.0
             
+            # Registra skills usadas no combo para ML
+            skills_combo = []
+            
             for _ in range(3):
                 self.usar_skills_rotacao()
+                if self.skills_ultima_rotacao:
+                    skills_combo.extend(self.skills_ultima_rotacao)
                 time.sleep(delay_combate)
                 self.usar_potion()
             
             # Detecta EXP ganho
-            self.detectar_exp_ganho(debug=False)
+            exp_ganho = self.detectar_exp_ganho(debug=False)
+            
+            # Registra dados no ML Avançado
+            if exp_ganho and self.ml_avancado:
+                tempo_combate = time.time() - tempo_inicio_combate
+                self.registrar_dados_ml(exp_ganho, tempo_combate)
+                
+                # Registra combo se usou skills otimizadas
+                if skills_combo:
+                    self.ml_avancado.registrar_combo(skills_combo, tempo_combate, exp_ganho)
             
             self.coletar_loot()
             self.adicionar_observacao(self.pos_x, self.pos_y, 1.5)
