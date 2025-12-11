@@ -92,5 +92,8 @@
     "x": 50,
     "y": 150
   },
-  "intervalo_reset_camera": 1
+  "intervalo_reset_camera": 1,
+  "salvar_imagens_treino": true,
+  "pasta_imagens_treino": "treino_ml",
+  "max_imagens_treino": 100
 }

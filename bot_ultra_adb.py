@@ -93,6 +93,11 @@ class ConfiguracaoADB:
             'auto_reset_camera': True,
             'posicao_botao_camera': {'x': 192, 'y': 150},
             'intervalo_reset_camera': 10,  # segundos
+            
+            # Treinamento ML
+            'salvar_imagens_treino': True,
+            'pasta_imagens_treino': 'treino_ml',
+            'max_imagens_treino': 100,
         }
         
         loaded_config = {}
@@ -327,7 +332,15 @@ class BotUltraADB:
             'xp_atual': 0.0,  # Percentual lido via OCR
             'xp_inicial': 0.0,
             'historico_xp': [],  # [(timestamp, xp%)]
+            'imagens_salvas': 0,
         }
+        
+        # Cria pasta de treinamento se necessário
+        if self.config.salvar_imagens_treino:
+            pasta = self.config.pasta_imagens_treino
+            if not os.path.exists(pasta):
+                os.makedirs(pasta)
+                print(f"✓ Pasta de treinamento criada: {pasta}/")
         
         self.carregar_modelo()
         
@@ -340,24 +353,43 @@ class BotUltraADB:
                 self.stats['historico_xp'].append((time.time(), xp))
                 print(f"✓ XP inicial: {xp:.2f}%")
     
-    def mover_joystick(self, angulo, duracao_ms=None):
-        """Move usando o joystick via press-and-drag (como no celular)"""
+    def mover_joystick(self, angulo, duracao_ms=None, intensidade=1.0):
+        """Move usando o joystick via press-and-drag (como no celular)
+        
+        Args:
+            angulo: Direção do movimento em radianos
+            duracao_ms: Duração do movimento em milissegundos
+            intensidade: Intensidade do movimento (0.0 a 1.0) - distância do centro
+        """
         if duracao_ms is None:
             duracao_ms = self.config.velocidade_movimento
+        
+        # Adiciona variação aleatória para movimento mais natural
+        variacao_angulo = np.random.uniform(-0.15, 0.15)  # ±8 graus
+        angulo_ajustado = angulo + variacao_angulo
+        
+        # Adiciona variação na intensidade (70% a 100% do raio)
+        intensidade_variada = np.clip(intensidade * np.random.uniform(0.7, 1.0), 0.3, 1.0)
         
         centro_x = self.config.joystick_centro_x
         centro_y = self.config.joystick_centro_y
         raio = self.config.joystick_raio
         
-        # Ponto de destino
-        dest_x = int(centro_x + raio * np.cos(angulo))
-        dest_y = int(centro_y + raio * np.sin(angulo))
+        # Calcula ponto de destino com variação
+        raio_efetivo = raio * intensidade_variada
+        dest_x = int(centro_x + raio_efetivo * np.cos(angulo_ajustado))
+        dest_y = int(centro_y + raio_efetivo * np.sin(angulo_ajustado))
         
-        print(f"  🕹️  Joystick: centro({centro_x},{centro_y}) raio={raio}")
-        print(f"  📐 Ângulo: {np.degrees(angulo):.0f}° → destino({dest_x},{dest_y})")
+        # Adiciona pequena variação no ponto de partida (mais natural)
+        inicio_x = int(centro_x + np.random.uniform(-3, 3))
+        inicio_y = int(centro_y + np.random.uniform(-3, 3))
         
-        # Pressiona no centro, arrasta para direção e segura
-        sucesso = self.adb.press_and_drag(centro_x, centro_y, dest_x, dest_y, duracao_ms)
+        print(f"  🕹️  Joystick: início({inicio_x},{inicio_y}) → destino({dest_x},{dest_y})")
+        print(f"  📐 Ângulo: {np.degrees(angulo_ajustado):.1f}° | Intensidade: {intensidade_variada:.1%}")
+        
+        # Pressiona, arrasta e segura com variação na duração
+        duracao_variada = int(duracao_ms * np.random.uniform(0.9, 1.1))
+        sucesso = self.adb.press_and_drag(inicio_x, inicio_y, dest_x, dest_y, duracao_variada)
         
         if sucesso:
             print(f"  ✅ Movimento executado!")
@@ -551,6 +583,10 @@ class BotUltraADB:
             melhor_setor = max(setores.items(), key=lambda x: x[1]['count'])
             
             if melhor_setor[1]['count'] > 10:  # Threshold mínimo
+                # Salva imagem de treinamento se habilitado
+                if self.config.salvar_imagens_treino:
+                    self.salvar_imagem_treino(minimapa, 'minimapa', melhor_setor[1]['count'])
+                
                 return {
                     'direcao': melhor_setor[0],
                     'angulo': melhor_setor[1]['angulo'],
@@ -561,6 +597,31 @@ class BotUltraADB:
             
         except Exception as e:
             return None
+    
+    def salvar_imagem_treino(self, imagem, tipo, densidade):
+        """Salva imagem para treinamento futuro"""
+        try:
+            if self.stats['imagens_salvas'] >= self.config.max_imagens_treino:
+                return
+            
+            pasta = self.config.pasta_imagens_treino
+            timestamp = int(time.time())
+            nome = f"{tipo}_{timestamp}_d{int(densidade)}.png"
+            caminho = os.path.join(pasta, nome)
+            
+            if isinstance(imagem, np.ndarray):
+                # Converte numpy array para PIL Image
+                Image.fromarray(imagem).save(caminho)
+            else:
+                # Já é PIL Image
+                imagem.save(caminho)
+            
+            self.stats['imagens_salvas'] += 1
+            
+            if self.stats['imagens_salvas'] % 10 == 0:
+                print(f"  💾 {self.stats['imagens_salvas']} imagens de treino salvas")
+        except Exception as e:
+            pass
     
     def atualizar_xp(self):
         """Atualiza tracking de XP e adiciona ao histórico"""
@@ -654,15 +715,16 @@ class BotUltraADB:
             self.ultimo_reset_camera = tempo_atual
     
     def anti_afk(self):
-        """Anti-AFK"""
+        """Anti-AFK com movimento variável"""
         if not self.config.anti_afk:
             return
         
         tempo_atual = time.time()
         if tempo_atual - self.ultimo_anti_afk >= self.config.intervalo_anti_afk:
-            # Movimento aleatório pequeno
+            # Movimento aleatório pequeno com intensidade reduzida
             angulo = np.random.uniform(0, 2 * np.pi)
-            self.mover_joystick(angulo, duracao_ms=300)
+            intensidade = np.random.uniform(0.3, 0.6)  # Movimento curto
+            self.mover_joystick(angulo, duracao_ms=300, intensidade=intensidade)
             self.ultimo_anti_afk = tempo_atual
     
     def rotacionar_area(self):
@@ -800,30 +862,40 @@ class BotUltraADB:
         self.rotacionar_area()
         
         # Decide direção: PRIORIDADE 1 - Minimapa
+        intensidade_movimento = 1.0  # Padrão: movimento completo
+        
         if self.config.usar_minimapa:
             info_minimapa = self.analisar_minimapa()
             if info_minimapa:
                 melhor_angulo = info_minimapa['angulo']
+                # Intensidade baseada na quantidade de inimigos (mais inimigos = movimento mais rápido)
+                intensidade_movimento = np.clip(info_minimapa['inimigos'] / 50.0, 0.5, 1.0)
                 print(f"\n🗺️  Minimapa: {info_minimapa['direcao']} ({info_minimapa['inimigos']} inimigos)")
             else:
                 # Fallback para ML ou exploração
                 if self.modelo_treinado and len(self.X_train) >= 15:
                     melhor_angulo, densidade = self.prever_melhor_direcao()
+                    # Intensidade baseada na densidade prevista
+                    intensidade_movimento = np.clip(densidade, 0.4, 1.0)
                     print(f"\n➡️  ML: {np.degrees(melhor_angulo):.0f}° (densidade: {densidade:.2%})")
                 else:
                     melhor_angulo = self.explorar_inteligente()
+                    # Exploração com intensidade reduzida (mais cauteloso)
+                    intensidade_movimento = 0.6
                     print(f"\n🔍 Explorando: {np.degrees(melhor_angulo):.0f}°")
         else:
             # Usa ML/exploração se minimapa desabilitado
             if self.modelo_treinado and len(self.X_train) >= 15:
                 melhor_angulo, densidade = self.prever_melhor_direcao()
+                intensidade_movimento = np.clip(densidade, 0.4, 1.0)
                 print(f"\n➡️  ML: {np.degrees(melhor_angulo):.0f}° (densidade: {densidade:.2%})")
             else:
                 melhor_angulo = self.explorar_inteligente()
+                intensidade_movimento = 0.6
                 print(f"\n🔍 Explorando: {np.degrees(melhor_angulo):.0f}°")
         
-        # Move
-        self.mover_joystick(melhor_angulo)
+        # Move com intensidade variável
+        self.mover_joystick(melhor_angulo, intensidade=intensidade_movimento)
         time.sleep(self.config.intervalo_entre_acoes / 1000.0)
         
         # Skills
@@ -838,6 +910,10 @@ class BotUltraADB:
             self.stats['combates'] += 1
             self.stats['xp_estimado'] += 100
             
+            # Salva screenshot de combate para treinamento
+            if self.config.salvar_imagens_treino and self.ultima_screenshot:
+                self.salvar_imagem_treino(self.ultima_screenshot, 'combate', 1.5)
+            
             for _ in range(3):
                 self.usar_skills_rotacao()
                 time.sleep(1)
@@ -848,6 +924,12 @@ class BotUltraADB:
             time.sleep(2)
         else:
             print("  👁️  Vazio")
+            
+            # Salva screenshot de área vazia para treinamento
+            if self.config.salvar_imagens_treino and self.ultima_screenshot:
+                if np.random.random() < 0.1:  # Salva 10% das áreas vazias
+                    self.salvar_imagem_treino(self.ultima_screenshot, 'vazio', 0.0)
+            
             self.adicionar_observacao(self.pos_x, self.pos_y, 0.0)
         
         time.sleep(self.config.intervalo_entre_acoes / 1000.0)
@@ -866,7 +948,13 @@ class BotUltraADB:
         print(f"  ✅ Reset Câmera")
         print(f"  ✅ Rotação de Áreas")
         print(f"  ✅ Anti-AFK")
-        print(f"  ✅ ML Guidance")
+        print(f"  ✅ ML Guidance (Scikit-learn)")
+        print(f"  ✅ Análise de Minimapa (OpenCV)")
+        
+        if self.config.salvar_imagens_treino:
+            print(f"\n💾 Treinamento:")
+            print(f"  📁 Salvando imagens em: {self.config.pasta_imagens_treino}/")
+            print(f"  🎯 Limite: {self.config.max_imagens_treino} imagens")
         
         print("\nIniciando em 3 segundos...")
         time.sleep(3)
@@ -947,6 +1035,10 @@ class BotUltraADB:
             if tempo > 0:
                 xp_hora = self.stats['xp_estimado'] / tempo * 60
                 print(f"  ⚡ XP/hora: {xp_hora:,.0f}")
+        
+        # Mostra estatísticas de treinamento
+        if self.config.salvar_imagens_treino:
+            print(f"\n  💾 Imagens de Treino: {self.stats['imagens_salvas']}/{self.config.max_imagens_treino}")
 
 def menu():
     """Menu principal"""

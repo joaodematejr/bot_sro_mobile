@@ -23,10 +23,25 @@ Bot automatizado para farming em Silkroad Origin Mobile usando controle ADB (And
 - **Rotação de Áreas**: Troca de área de farming automaticamente
 
 ### 🧠 Inteligência Artificial
-- **ML Guidance**: Machine Learning para prever melhores áreas de farming
-- **Análise de Minimapa**: Detecta clusters de inimigos e move personagem para áreas com maior densidade
-- **Detecção de Combate**: Identifica quando está em combate via análise de imagem
-- **Exploração Inteligente**: Algoritmo que aprende as melhores rotas
+
+#### Machine Learning (Scikit-learn)
+- **RandomForestRegressor**: Prevê densidade de inimigos baseado em posição e hora
+- **KMeans Clustering**: Identifica áreas de alta concentração de combates
+- **StandardScaler**: Normalização de features para melhor performance
+- **Aprendizado Contínuo**: Modelo treinado automaticamente durante farming
+
+#### Computer Vision (OpenCV)
+- **Análise de Minimapa**: Detecta inimigos via `cv2.inRange()` em pixels vermelhos
+- **Divisão em 8 Setores**: Divide minimapa em direções (N/NE/E/SE/S/SW/W/NW)
+- **Contagem de Densidade**: Calcula número de inimigos por setor
+- **Movimento Inteligente**: Move automaticamente para direção com mais inimigos
+- **Detecção de Combate**: Compara frames com `imagehash` para identificar ação
+- **OCR com Tesseract**: Lê XP% e outros textos via `pytesseract`
+
+#### Algoritmo de Decisão
+1. **Prioridade 1 - Minimapa**: Se detectar inimigos, move para setor com maior densidade
+2. **Prioridade 2 - ML**: Usa RandomForest para prever melhor direção baseado em histórico
+3. **Prioridade 3 - Exploração**: Algoritmo inteligente que retorna a áreas produtivas
 
 ### 📊 Analytics
 - **Tracking de XP**: Lê XP atual via OCR
