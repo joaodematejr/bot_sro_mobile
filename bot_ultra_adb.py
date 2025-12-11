@@ -13,6 +13,7 @@ import os
 from PIL import Image
 import io
 import pickle
+from detector_exp import DetectorEXP
 
 # Configurações
 ARQUIVO_DADOS = "farming_data.json"
@@ -98,6 +99,24 @@ class ConfiguracaoADB:
             'salvar_imagens_treino': True,
             'pasta_imagens_treino': 'treino_ml',
             'max_imagens_treino': 100,
+            
+            # Otimizações de velocidade
+            'modo_turbo': True,  # Reduz delays entre ações
+            'skip_areas_vazias': True,  # Pula áreas sem inimigos rapidamente
+            'priorizar_combate': True,  # Foca em combate ao invés de exploração
+            'loot_instantaneo': True,  # Coleta loot sem delay
+            'skills_paralelas': True,  # Usa múltiplas skills ao mesmo tempo
+            'threshold_inimigos_minimo': 15,  # Mínimo de inimigos para valer a pena
+            
+            # Métricas
+            'arquivo_metricas': 'metricas_bot.json',  # Arquivo JSON para exportar métricas
+            'intervalo_salvar_metricas': 5,  # Salva métricas a cada X segundos
+            
+            # Detector de EXP
+            'usar_detector_exp': True,  # Detecta EXP ganho via OCR
+            'regiao_exp': {'x': 672, 'y': 397, 'largura': 576, 'altura': 198},  # Região CENTRALIZADA (30% x 20%)
+            'exp_necessario_level': 1000000,  # EXP total necessário para próximo level (ajustar)
+            'exp_atual_level': 0,  # EXP acumulado no level atual
         }
         
         loaded_config = {}
@@ -317,7 +336,19 @@ class BotUltraADB:
         self.ultimo_skill = 0
         self.ultimo_anti_afk = time.time()
         self.ultimo_reset_camera = time.time()
+        self.ultimo_salvamento_metricas = time.time()
         self.ultima_screenshot = None
+        
+        # Detector de EXP
+        self.detector_exp = DetectorEXP()
+        if self.config.regiao_exp['largura'] > 0:
+            self.detector_exp.calibrar_regiao(
+                None,
+                self.config.regiao_exp['x'],
+                self.config.regiao_exp['y'],
+                self.config.regiao_exp['largura'],
+                self.config.regiao_exp['altura']
+            )
         
         # Stats
         self.stats = {
@@ -333,6 +364,9 @@ class BotUltraADB:
             'xp_inicial': 0.0,
             'historico_xp': [],  # [(timestamp, xp%)]
             'imagens_salvas': 0,
+            'exp_total_ganho': 0,  # EXP real detectado
+            'exp_por_combate': [],  # Histórico de EXP por combate
+            'exp_atual_level': self.config.exp_atual_level,  # EXP acumulado no level
         }
         
         # Cria pasta de treinamento se necessário
@@ -415,26 +449,51 @@ class BotUltraADB:
             self.adb.tap(pos['x'], pos['y'])
             self.stats['skills_usadas'] += 1
             print(f"  💥 Skill {index + 1}")
-            time.sleep(0.3)
+            # Delay reduzido em modo turbo
+            delay = 0.1 if self.config.modo_turbo else 0.3
+            time.sleep(delay)
     
     def usar_skills_rotacao(self):
-        """Usa skills em rotação"""
+        """Usa skills em rotação (paralelo se habilitado)"""
         if not self.config.usar_skills_automaticas:
             return
         
         tempo_atual = time.time()
-        if tempo_atual - self.ultimo_skill >= self.config.intervalo_skills / 1000.0:
-            for i in range(len(self.config.posicoes_skills)):
-                self.usar_skill(i)
+        # Reduz intervalo entre rotações de skills em modo turbo
+        intervalo = self.config.intervalo_skills / 1000.0
+        if self.config.modo_turbo:
+            intervalo *= 0.7  # 30% mais rápido
+        
+        if tempo_atual - self.ultimo_skill >= intervalo:
+            if self.config.skills_paralelas:
+                # Usa todas as skills rapidamente sem esperar
+                import threading
+                for i in range(len(self.config.posicoes_skills)):
+                    pos = self.config.posicoes_skills[i]
+                    threading.Thread(target=self.adb.tap, args=(pos['x'], pos['y'])).start()
+                    self.stats['skills_usadas'] += 1
+                print(f"  💥⚡ {len(self.config.posicoes_skills)} Skills (PARALELO)")
+            else:
+                for i in range(len(self.config.posicoes_skills)):
+                    self.usar_skill(i)
             self.ultimo_skill = tempo_atual
     
     def coletar_loot(self):
-        """Coleta loot"""
+        """Coleta loot (múltiplos cliques em modo turbo)"""
         if self.config.auto_loot:
             pos = self.config.posicao_botao_loot
-            self.adb.tap(pos['x'], pos['y'])
+            
+            if self.config.loot_instantaneo:
+                # Clica múltiplas vezes rapidamente para pegar todo loot
+                for _ in range(3):
+                    self.adb.tap(pos['x'], pos['y'])
+                    time.sleep(0.05)
+                print("  💰⚡ Loot x3 (RÁPIDO)")
+            else:
+                self.adb.tap(pos['x'], pos['y'])
+                print("  💰 Loot")
+            
             self.stats['loots_coletados'] += 1
-            print("  💰 Loot")
     
     def usar_potion(self):
         """Usa potion se HP baixo"""
@@ -589,8 +648,13 @@ class BotUltraADB:
             
             # Encontra setor com mais inimigos
             melhor_setor = max(setores.items(), key=lambda x: x[1]['count'])
+            total_inimigos = sum(s['count'] for s in setores.values())
             
-            if melhor_setor[1]['count'] > 10:  # Threshold mínimo
+            # Retorna info sobre distribuição de inimigos
+            # Threshold ajustável baseado em configuração
+            threshold_minimo = self.config.threshold_inimigos_minimo if hasattr(self.config, 'threshold_inimigos_minimo') else 10
+            
+            if melhor_setor[1]['count'] > threshold_minimo:
                 # Salva imagem de treinamento se habilitado
                 if self.config.salvar_imagens_treino:
                     self.salvar_imagem_treino(minimapa, 'minimapa', melhor_setor[1]['count'])
@@ -598,7 +662,9 @@ class BotUltraADB:
                 return {
                     'direcao': melhor_setor[0],
                     'angulo': melhor_setor[1]['angulo'],
-                    'inimigos': melhor_setor[1]['count']
+                    'inimigos': melhor_setor[1]['count'],
+                    'total_inimigos': total_inimigos,
+                    'setores': setores,  # Todos os setores para análise
                 }
             
             return None
@@ -630,6 +696,150 @@ class BotUltraADB:
                 print(f"  💾 {self.stats['imagens_salvas']} imagens de treino salvas")
         except Exception as e:
             pass
+    
+    def detectar_exp_ganho(self, debug=False):
+        """Detecta EXP ganho após combate"""
+        if not self.config.usar_detector_exp:
+            return None
+        
+        try:
+            # Tenta detectar EXP por 2 segundos (texto aparece brevemente)
+            exp = self.detector_exp.detectar_exp_com_timeout(
+                self, 
+                timeout=2.0, 
+                intervalo=0.3,
+                debug=debug
+            )
+            
+            if exp:
+                self.stats['exp_total_ganho'] += exp
+                self.stats['exp_por_combate'].append(exp)
+                self.stats['exp_atual_level'] += exp
+                
+                print(f"  💰 EXP Ganho: +{exp:,}")
+                print(f"  📊 Total: {self.stats['exp_total_ganho']:,}")
+                
+                return exp
+        except Exception as e:
+            if debug:
+                print(f"  ⚠️  Erro ao detectar EXP: {e}")
+        
+        return None
+    
+    def calcular_tempo_proximo_level(self):
+        """Calcula tempo estimado para próximo level baseado em EXP real"""
+        if len(self.stats['exp_por_combate']) < 3:
+            return None
+        
+        # Média de EXP por combate (últimos 20)
+        ultimos = self.stats['exp_por_combate'][-20:]
+        media_exp = sum(ultimos) / len(ultimos)
+        
+        # EXP restante para completar o level
+        exp_restante = self.config.exp_necessario_level - self.stats['exp_atual_level']
+        
+        if exp_restante <= 0:
+            return {'completo': True}
+        
+        # Combates necessários
+        combates_necessarios = exp_restante / media_exp
+        
+        # Tempo por combate (baseado no histórico)
+        tempo_decorrido = time.time() - self.stats['tempo_inicio']
+        if self.stats['combates'] > 0:
+            tempo_por_combate = tempo_decorrido / self.stats['combates']
+        else:
+            tempo_por_combate = 60  # Estimativa: 1 min por combate
+        
+        # Tempo restante em segundos
+        segundos_restantes = combates_necessarios * tempo_por_combate
+        
+        # Converte para formato legível
+        dias = int(segundos_restantes // 86400)
+        horas = int((segundos_restantes % 86400) // 3600)
+        minutos = int((segundos_restantes % 3600) // 60)
+        
+        # Data estimada
+        from datetime import timedelta
+        data_estimada = datetime.now() + timedelta(seconds=segundos_restantes)
+        
+        return {
+            'completo': False,
+            'exp_restante': int(exp_restante),
+            'media_exp_combate': int(media_exp),
+            'combates_necessarios': int(combates_necessarios),
+            'tempo_restante_segundos': int(segundos_restantes),
+            'tempo_restante_formatado': f"{dias}d {horas}h {minutos}min" if dias > 0 else f"{horas}h {minutos}min",
+            'data_estimada': data_estimada.strftime('%d/%m/%Y %H:%M'),
+            'porcentagem_level': (self.stats['exp_atual_level'] / self.config.exp_necessario_level) * 100
+        }
+    
+    def exportar_metricas(self):
+        """Exporta métricas atuais para arquivo JSON"""
+        try:
+            tempo_decorrido = time.time() - self.stats['tempo_inicio']
+            horas, resto = divmod(tempo_decorrido, 3600)
+            minutos, segundos = divmod(resto, 60)
+            
+            # Calcula XP/min e tempo estimado (método antigo OCR)
+            previsao = self.calcular_previsao_100()
+            xp_por_minuto = previsao['xp_por_min'] if previsao else 0.0
+            
+            if previsao and previsao['minutos_restantes'] > 0:
+                horas_rest = int(previsao['minutos_restantes'] // 60)
+                mins_rest = int(previsao['minutos_restantes'] % 60)
+                tempo_estimado = f"{horas_rest}h {mins_rest}min"
+            else:
+                tempo_estimado = "N/A"
+            
+            # Calcula tempo para próximo level (método novo com EXP real)
+            previsao_level = self.calcular_tempo_proximo_level()
+            if previsao_level and not previsao_level.get('completo'):
+                tempo_proximo_level = previsao_level['tempo_restante_formatado']
+                data_proximo_level = previsao_level['data_estimada']
+                porcentagem_level = previsao_level['porcentagem_level']
+                media_exp = previsao_level['media_exp_combate']
+            else:
+                tempo_proximo_level = "N/A"
+                data_proximo_level = "N/A"
+                porcentagem_level = 0.0
+                media_exp = 0
+            
+            metricas = {
+                'timestamp': datetime.now().isoformat(),
+                'tempo_decorrido': f"{int(horas):02d}:{int(minutos):02d}:{int(segundos):02d}",
+                'tempo_decorrido_segundos': int(tempo_decorrido),
+                'xp_porcentagem': self.stats.get('xp_atual', 0.0),
+                'xp_por_minuto': xp_por_minuto,
+                'tempo_estimado_lvl_100': tempo_estimado,
+                'combates_vencidos': self.stats['combates'],
+                'mortes': self.stats['mortes'],
+                'skills_usadas': self.stats['skills_usadas'],
+                'potions_usadas': self.stats['potions_usadas'],
+                'loots_coletados': self.stats['loots_coletados'],
+                'imagens_salvas': self.stats['imagens_salvas'],
+                'observacoes_ml': [
+                    {'x': self.X_train[i][0], 'y': self.X_train[i][1], 'densidade': self.y_train[i]}
+                    for i in range(max(0, len(self.X_train) - 50), len(self.X_train))  # Últimas 50 observações
+                ],
+                'modelo_ml_treinado': self.modelo_treinado,
+                'modo_turbo': self.config.modo_turbo if hasattr(self.config, 'modo_turbo') else False,
+                
+                # Métricas de EXP real
+                'exp_total_ganho': self.stats['exp_total_ganho'],
+                'exp_atual_level': self.stats['exp_atual_level'],
+                'exp_necessario_level': self.config.exp_necessario_level,
+                'media_exp_por_combate': media_exp,
+                'porcentagem_level_atual': porcentagem_level,
+                'tempo_proximo_level': tempo_proximo_level,
+                'data_proximo_level': data_proximo_level,
+            }
+            
+            with open(self.config.arquivo_metricas, 'w') as f:
+                json.dump(metricas, f, indent=2)
+        
+        except Exception as e:
+            print(f"  ⚠️  Erro ao exportar métricas: {e}")
     
     def atualizar_xp(self):
         """Atualiza tracking de XP e adiciona ao histórico"""
@@ -853,6 +1063,13 @@ class BotUltraADB:
     
     def ciclo_farming(self):
         """Ciclo completo de farming"""
+        
+        # Salva métricas periodicamente
+        tempo_atual = time.time()
+        if tempo_atual - self.ultimo_salvamento_metricas >= self.config.intervalo_salvar_metricas:
+            self.exportar_metricas()
+            self.ultimo_salvamento_metricas = tempo_atual
+        
         # Verifica morte
         if self.verificar_morte():
             return
@@ -909,14 +1126,23 @@ class BotUltraADB:
         
         # Move com intensidade variável (contínuo se minimapa detectou inimigos)
         self.mover_joystick(melhor_angulo, intensidade=intensidade_movimento, continuo=movimento_continuo)
-        time.sleep(self.config.intervalo_entre_acoes / 1000.0)
+        
+        # Reduz delay em modo turbo
+        delay_acao = self.config.intervalo_entre_acoes / 1000.0
+        if self.config.modo_turbo:
+            delay_acao *= 0.5  # 50% mais rápido
+        time.sleep(delay_acao)
         
         # Skills
         self.usar_skills_rotacao()
         
-        # Verifica combate
-        time.sleep(1)
-        em_combate = self.detectar_combate(threshold=0.12)
+        # Verifica combate (delay reduzido em modo turbo)
+        delay_deteccao = 0.5 if self.config.modo_turbo else 1.0
+        time.sleep(delay_deteccao)
+        
+        # Threshold mais sensível em modo de priorização de combate
+        threshold_combate = 0.08 if self.config.priorizar_combate else 0.12
+        em_combate = self.detectar_combate(threshold=threshold_combate)
         
         if em_combate:
             print("  ⚔️  COMBATE!")
@@ -927,23 +1153,62 @@ class BotUltraADB:
             if self.config.salvar_imagens_treino and self.ultima_screenshot:
                 self.salvar_imagem_treino(self.ultima_screenshot, 'combate', 1.5)
             
+            # VERIFICA SE ESTÁ ATACANDO POUCOS INIMIGOS
+            # Se sim, procura área melhor no minimapa
+            if self.config.usar_minimapa:
+                info_minimapa_combate = self.analisar_minimapa()
+                if info_minimapa_combate and info_minimapa_combate['total_inimigos'] > 20:
+                    # Calcula concentração de inimigos
+                    concentracao = info_minimapa_combate['inimigos'] / info_minimapa_combate['total_inimigos']
+                    
+                    # Se menos de 30% dos inimigos estão no setor atual = distribuídos
+                    if concentracao < 0.3:
+                        print(f"  ⚠️  Poucos inimigos aqui! ({info_minimapa_combate['inimigos']}/{info_minimapa_combate['total_inimigos']})")
+                        print(f"  🎯 Indo para área com MAIS inimigos...")
+                        
+                        # Reseta câmera e vai para área melhor
+                        self.resetar_camera()
+                        time.sleep(0.3)
+                        
+                        # Move para área com mais densidade
+                        self.mover_joystick(
+                            info_minimapa_combate['angulo'], 
+                            intensidade=1.0, 
+                            continuo=True
+                        )
+                        time.sleep(2)
+            
+            # Combate otimizado
+            delay_combate = 0.5 if self.config.modo_turbo else 1.0
+            
             for _ in range(3):
                 self.usar_skills_rotacao()
-                time.sleep(1)
+                time.sleep(delay_combate)
                 self.usar_potion()
+            
+            # Detecta EXP ganho
+            self.detectar_exp_ganho(debug=False)
             
             self.coletar_loot()
             self.adicionar_observacao(self.pos_x, self.pos_y, 1.5)
-            time.sleep(2)
+            
+            # Delay reduzido após combate
+            delay_pos_combate = 1.0 if self.config.modo_turbo else 2.0
+            time.sleep(delay_pos_combate)
         else:
             print("  👁️  Vazio")
             
-            # Salva screenshot de área vazia para treinamento
-            if self.config.salvar_imagens_treino and self.ultima_screenshot:
-                if np.random.random() < 0.1:  # Salva 10% das áreas vazias
-                    self.salvar_imagem_treino(self.ultima_screenshot, 'vazio', 0.0)
-            
-            self.adicionar_observacao(self.pos_x, self.pos_y, 0.0)
+            # Skip rápido de áreas vazias
+            if self.config.skip_areas_vazias:
+                print("  ⏩ Pulando área vazia...")
+                # Não adiciona observação negativa em modo skip
+            else:
+                # Salva screenshot de área vazia para treinamento
+                if self.config.salvar_imagens_treino and self.ultima_screenshot:
+                    if np.random.random() < 0.1:  # Salva 10% das áreas vazias
+                        self.salvar_imagem_treino(self.ultima_screenshot, 'vazio', 0.0)
+                
+                self.adicionar_observacao(self.pos_x, self.pos_y, 0.0)
         
         time.sleep(self.config.intervalo_entre_acoes / 1000.0)
     
@@ -1052,6 +1317,20 @@ class BotUltraADB:
         # Mostra estatísticas de treinamento
         if self.config.salvar_imagens_treino:
             print(f"\n  💾 Imagens de Treino: {self.stats['imagens_salvas']}/{self.config.max_imagens_treino}")
+        
+        # Mostra estatísticas de EXP real
+        if self.config.usar_detector_exp and self.stats['exp_total_ganho'] > 0:
+            print(f"\n  💰 EXP REAL GANHO:")
+            print(f"    Total: {self.stats['exp_total_ganho']:,} EXP")
+            print(f"    Level Atual: {self.stats['exp_atual_level']:,} / {self.config.exp_necessario_level:,}")
+            
+            previsao_level = self.calcular_tempo_proximo_level()
+            if previsao_level and not previsao_level.get('completo'):
+                print(f"    Progresso: {previsao_level['porcentagem_level']:.1f}%")
+                print(f"    Média/Combate: {previsao_level['media_exp_combate']:,} EXP")
+                print(f"    Faltam: {previsao_level['combates_necessarios']:,} combates")
+                print(f"    ⏱️  Tempo Estimado: {previsao_level['tempo_restante_formatado']}")
+                print(f"    📅 Data Prevista: {previsao_level['data_estimada']}")
 
 def menu():
     """Menu principal"""
