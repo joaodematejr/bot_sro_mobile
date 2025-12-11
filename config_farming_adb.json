@@ -117,5 +117,16 @@
   "treinar_modelos_intervalo": 300,
   "usar_rotas_otimizadas": true,
   "usar_skills_otimizadas": true,
-  "raio_busca_area": 200
+  "raio_busca_area": 200,
+  "monitorar_dificuldade": true,
+  "limite_perda_vida": 40,
+  "max_mortes_area": 2,
+  "min_combates_analise": 3,
+  "recuar_niveis": 5,
+  "regiao_vida_bar": {
+    "x": 50,
+    "y": 50,
+    "width": 200,
+    "height": 20
+  }
 }

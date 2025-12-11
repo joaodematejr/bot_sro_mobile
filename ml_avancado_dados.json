@@ -1,377 +1,750 @@
 {
-  "historico_rotas": [],
-  "densidade_mobs": {},
+  "historico_rotas": [
+    {
+      "x": 40.91538352294769,
+      "y": 46.30977376175693,
+      "exp": 60744,
+      "tempo": 11.57006573677063,
+      "hora": 15,
+      "area": 0,
+      "timestamp": 1765479219.2425106,
+      "exp_por_minuto": 315005.98898215685
+    },
+    {
+      "x": 50.57176692657639,
+      "y": 58.503060615175094,
+      "exp": 312722,
+      "tempo": 10.514101266860962,
+      "hora": 16,
+      "area": 2,
+      "timestamp": 1765480803.62767,
+      "exp_por_minuto": 1784586.1975040578
+    },
+    {
+      "x": 36.701369878938756,
+      "y": 41.879339240262375,
+      "exp": 20222,
+      "tempo": 10.90437364578247,
+      "hora": 16,
+      "area": 0,
+      "timestamp": 1765481953.1284153,
+      "exp_por_minuto": 111269.11452353622
+    }
+  ],
+  "densidade_mobs": {
+    "0,0": {
+      "combates": 2,
+      "exp_total": 80966,
+      "tempo_total": 22.4744393825531,
+      "ultima_visita": 1765481953.1284323
+    },
+    "50,50": {
+      "combates": 1,
+      "exp_total": 312722,
+      "tempo_total": 10.514101266860962,
+      "ultima_visita": 1765480803.6276836
+    }
+  },
   "historico_skills": {
     "0": [
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475335.6754937,
+        "timestamp": 1765475992.6225398,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475344.843592,
+        "timestamp": 1765475996.4348345,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475348.4510932,
+        "timestamp": 1765475998.7603507,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475350.7193015,
+        "timestamp": 1765476001.1955464,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475352.9470665,
+        "timestamp": 1765476015.1712701,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475365.8778164,
+        "timestamp": 1765476019.0011585,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475369.5604088,
+        "timestamp": 1765476021.2983158,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475371.8335872,
+        "timestamp": 1765476023.6315496,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475374.1195297,
+        "timestamp": 1765476038.3728812,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475389.2776835,
+        "timestamp": 1765476042.217144,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475393.0032687,
+        "timestamp": 1765476044.5940971,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475395.268349,
+        "timestamp": 1765476046.9873326,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475397.5492933,
+        "timestamp": 1765476061.5067244,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475411.0098438,
+        "timestamp": 1765476065.4561937,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475414.9596674,
+        "timestamp": 1765476067.857128,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475417.2752273,
+        "timestamp": 1765476070.2574515,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475419.5900557,
+        "timestamp": 1765476083.8894835,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475433.010086,
+        "timestamp": 1765476087.5486689,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475436.817391,
+        "timestamp": 1765476089.839833,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475439.101247,
+        "timestamp": 1765476092.082148,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475441.4448013,
+        "timestamp": 1765476106.6391308,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475455.8106906,
+        "timestamp": 1765476110.1830268,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475459.674846,
+        "timestamp": 1765476112.416287,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475462.012109,
+        "timestamp": 1765476127.9552965,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475464.3729641,
+        "timestamp": 1765476131.5664327,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475478.426509,
+        "timestamp": 1765476133.7947125,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475482.1812363,
+        "timestamp": 1765476136.053729,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475484.4282753,
+        "timestamp": 1765476149.8069668,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475486.67997,
+        "timestamp": 1765476153.0815804,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475500.0269344,
+        "timestamp": 1765476155.2162583,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475503.7082345,
+        "timestamp": 1765476157.399458,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475505.9856799,
+        "timestamp": 1765476171.4230318,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475508.2258859,
+        "timestamp": 1765476175.031789,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475523.0436125,
+        "timestamp": 1765476177.2908933,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475526.3916311,
+        "timestamp": 1765476179.5648098,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475528.7266593,
+        "timestamp": 1765476193.1565216,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475531.0391526,
+        "timestamp": 1765476196.866765,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475544.3585072,
+        "timestamp": 1765476199.1657166,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475547.9957426,
+        "timestamp": 1765476201.4913723,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475550.268771,
+        "timestamp": 1765476214.974976,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475552.5360916,
+        "timestamp": 1765476218.5562253,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475565.5418608,
+        "timestamp": 1765476220.8864582,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475568.9938798,
+        "timestamp": 1765476223.2183373,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475571.2099593,
+        "timestamp": 1765476238.239204,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475573.4498432,
+        "timestamp": 1765476242.1001468,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475588.4255803,
+        "timestamp": 1765476244.4838974,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475592.0802226,
+        "timestamp": 1765476246.8745284,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475594.3570561,
+        "timestamp": 1765476261.0385165,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475596.6273763,
+        "timestamp": 1765476264.7000701,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475609.8348658,
+        "timestamp": 1765476268.592999,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475613.523388,
+        "timestamp": 1765476270.8681538,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475615.8147714,
+        "timestamp": 1765476287.2610562,
         "eficiencia": 20.0
       },
       {
         "damage": 100,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475618.3207676,
+        "timestamp": 1765476290.8394446,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476293.0457377,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476295.3210797,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476309.1195586,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476312.8985002,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476315.263306,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476317.6340675,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476331.2707915,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476335.2346945,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476337.613575,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476339.99498,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476354.2199562,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476358.1196942,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476360.4826636,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476362.8557832,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476377.8030646,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476381.650762,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476384.0086446,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476386.360377,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476400.2198122,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476404.418814,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476406.8553472,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476409.261992,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476422.9526896,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476426.8463974,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476429.237021,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476431.5702384,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476446.918816,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476450.667291,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476452.9604917,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476455.2751443,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476469.202746,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476473.2657628,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476475.612961,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476477.917845,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476491.1173277,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476494.772024,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476497.0320976,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476499.2973442,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476513.7286386,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476522.8513842,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476526.6433518,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476528.9548616,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476531.2402909,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476544.9829245,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476548.5867915,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476550.8742652,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476553.1479259,
         "eficiencia": 20.0
       }
     ],
@@ -380,371 +753,700 @@
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475335.6763115,
+        "timestamp": 1765475992.6213486,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475344.8439515,
+        "timestamp": 1765475996.4337065,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475348.451259,
+        "timestamp": 1765475998.7600355,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475350.7169049,
+        "timestamp": 1765476001.1949844,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475352.945707,
+        "timestamp": 1765476015.1708815,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475365.8759875,
+        "timestamp": 1765476019.000039,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475369.5596423,
+        "timestamp": 1765476021.2979362,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475371.8327467,
+        "timestamp": 1765476023.631114,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475374.118678,
+        "timestamp": 1765476038.371619,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475389.2757826,
+        "timestamp": 1765476042.2164502,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475392.9846196,
+        "timestamp": 1765476044.5931208,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475395.266883,
+        "timestamp": 1765476046.9869454,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475397.5475686,
+        "timestamp": 1765476061.5052867,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475411.0087025,
+        "timestamp": 1765476065.454876,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475414.958596,
+        "timestamp": 1765476067.8560126,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475417.2747958,
+        "timestamp": 1765476070.2570004,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475419.5892456,
+        "timestamp": 1765476083.8882399,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475433.0088413,
+        "timestamp": 1765476087.5467374,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475436.8162282,
+        "timestamp": 1765476089.8389885,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475439.099944,
+        "timestamp": 1765476092.0810158,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475441.4430885,
+        "timestamp": 1765476106.63794,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475455.8096957,
+        "timestamp": 1765476110.1825333,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475459.673832,
+        "timestamp": 1765476112.4150374,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475462.011794,
+        "timestamp": 1765476127.9548829,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475464.3708985,
+        "timestamp": 1765476131.5650995,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475478.4247808,
+        "timestamp": 1765476133.7930455,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475482.1810172,
+        "timestamp": 1765476136.0521953,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475484.4278634,
+        "timestamp": 1765476149.805711,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475486.6778605,
+        "timestamp": 1765476153.0798974,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475500.0258186,
+        "timestamp": 1765476155.2158372,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475503.7073374,
+        "timestamp": 1765476157.3990052,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475505.9839945,
+        "timestamp": 1765476171.4214673,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475508.2256744,
+        "timestamp": 1765476175.0302784,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475523.0418594,
+        "timestamp": 1765476177.2898483,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475526.3911579,
+        "timestamp": 1765476179.5637012,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475528.7249267,
+        "timestamp": 1765476193.1551478,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475531.0387704,
+        "timestamp": 1765476196.8664668,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475544.3577027,
+        "timestamp": 1765476199.1649277,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475547.9943755,
+        "timestamp": 1765476201.4908254,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475550.2677207,
+        "timestamp": 1765476214.9730158,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475552.5345814,
+        "timestamp": 1765476218.555777,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475565.5406363,
+        "timestamp": 1765476220.8851347,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475568.99237,
+        "timestamp": 1765476223.217163,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475571.2088177,
+        "timestamp": 1765476238.2380881,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475573.4488578,
+        "timestamp": 1765476242.0997949,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475588.4239447,
+        "timestamp": 1765476244.4829733,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475592.0785944,
+        "timestamp": 1765476246.8731487,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475594.3553762,
+        "timestamp": 1765476261.0381427,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475596.6270125,
+        "timestamp": 1765476264.6991608,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475609.8337247,
+        "timestamp": 1765476268.592001,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475613.522056,
+        "timestamp": 1765476270.8622477,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475615.8136196,
+        "timestamp": 1765476287.2476094,
         "eficiencia": 30.0
       },
       {
         "damage": 150,
         "cooldown": 5,
         "sucesso": 1,
-        "timestamp": 1765475618.3196285,
+        "timestamp": 1765476290.8377757,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476293.0446951,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476295.3200972,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476309.1187403,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476312.8968635,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476315.2620654,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476317.6336958,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476331.269152,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476335.2325,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476337.6132886,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476339.9933453,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476354.218786,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476358.117756,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476360.4817617,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476362.8550148,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476377.801969,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476381.6504738,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476384.008312,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476386.3590462,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476400.2180097,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476404.4140587,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476406.8538787,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476409.2611485,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476422.9509776,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476426.8454044,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476429.2360032,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476431.5693078,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476446.9182239,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476450.666095,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476452.9600506,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476455.273929,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476469.2009196,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476473.263911,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476475.6126676,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476477.9167566,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476491.1169527,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476494.7702992,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476497.0308597,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476499.2969925,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476513.7276275,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476522.850976,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476526.6430385,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476528.9539728,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476531.238858,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476544.9826627,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476548.5860333,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476550.872994,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765476553.1468801,
         "eficiencia": 30.0
       }
     ],
@@ -753,376 +1455,2332 @@
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475335.6771135,
+        "timestamp": 1765475992.6224365,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475344.8442678,
+        "timestamp": 1765475996.4346437,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475348.4526503,
+        "timestamp": 1765475998.760188,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475350.717076,
+        "timestamp": 1765476001.1951394,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475352.9465067,
+        "timestamp": 1765476015.1710155,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475365.8763328,
+        "timestamp": 1765476019.000878,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475369.559792,
+        "timestamp": 1765476021.2980523,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475371.8333795,
+        "timestamp": 1765476023.6313205,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475374.1187782,
+        "timestamp": 1765476038.3717852,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475389.2760553,
+        "timestamp": 1765476042.2165494,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475392.9972055,
+        "timestamp": 1765476044.5939143,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475395.2670722,
+        "timestamp": 1765476046.9871137,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475397.5482895,
+        "timestamp": 1765476061.5062037,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475411.009284,
+        "timestamp": 1765476065.4560282,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475414.9587064,
+        "timestamp": 1765476067.8561912,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475417.2749827,
+        "timestamp": 1765476070.2572136,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475419.589401,
+        "timestamp": 1765476083.889178,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475433.009901,
+        "timestamp": 1765476087.5476966,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475436.8163593,
+        "timestamp": 1765476089.8396282,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475439.1001244,
+        "timestamp": 1765476092.081202,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475441.4441955,
+        "timestamp": 1765476106.6381068,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475455.8098555,
+        "timestamp": 1765476110.1827762,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475459.6740646,
+        "timestamp": 1765476112.4152067,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475462.0119371,
+        "timestamp": 1765476127.9550273,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475464.3717859,
+        "timestamp": 1765476131.5656605,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475478.4258106,
+        "timestamp": 1765476133.7939453,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475482.1811125,
+        "timestamp": 1765476136.0529008,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475484.4280183,
+        "timestamp": 1765476149.805953,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475486.6780887,
+        "timestamp": 1765476153.0813746,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475500.025986,
+        "timestamp": 1765476155.216061,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475503.7079954,
+        "timestamp": 1765476157.3992338,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475505.984825,
+        "timestamp": 1765476171.421668,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475508.2257826,
+        "timestamp": 1765476175.0310245,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475523.0434496,
+        "timestamp": 1765476177.2906885,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475526.391333,
+        "timestamp": 1765476179.5638967,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475528.7258792,
+        "timestamp": 1765476193.1553113,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475531.0389273,
+        "timestamp": 1765476196.8665864,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475544.3577948,
+        "timestamp": 1765476199.1650372,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475547.9945214,
+        "timestamp": 1765476201.4910107,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475550.2685583,
+        "timestamp": 1765476214.973207,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475552.534719,
+        "timestamp": 1765476218.5559332,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475565.5409405,
+        "timestamp": 1765476220.8858523,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475568.9932232,
+        "timestamp": 1765476223.2173893,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475571.2097845,
+        "timestamp": 1765476238.2382565,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475573.449003,
+        "timestamp": 1765476242.1000087,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475588.4241023,
+        "timestamp": 1765476244.4831378,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475592.0793371,
+        "timestamp": 1765476246.8739786,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475594.3562896,
+        "timestamp": 1765476261.038317,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475596.6271696,
+        "timestamp": 1765476264.699526,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475609.8346503,
+        "timestamp": 1765476268.592197,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475613.522768,
+        "timestamp": 1765476270.8637688,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475615.8146665,
+        "timestamp": 1765476287.2608716,
         "eficiencia": 25.0
       },
       {
         "damage": 200,
         "cooldown": 8,
         "sucesso": 1,
-        "timestamp": 1765475618.3204815,
+        "timestamp": 1765476290.8386047,
         "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476293.0454946,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476295.3202708,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476309.1193254,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476312.897584,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476315.26225,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476317.633844,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476331.2699022,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476335.2326717,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476337.6134157,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476339.9941065,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476354.2195864,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476358.118835,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476360.4818985,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476362.8556664,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476377.8021505,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476381.6505885,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476384.0084426,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476386.3599918,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476400.2190518,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476404.4157906,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476406.8542666,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476409.2618492,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476422.9511447,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476426.8457031,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476429.2367635,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476431.5694675,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476446.9184597,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476450.6663685,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476452.9603038,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476455.274171,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476469.2011223,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476473.264167,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476475.6128263,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476477.9175863,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476491.117093,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476494.7704606,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476497.0314288,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476499.2971492,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476513.7283337,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476522.8511152,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476526.643186,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476528.9540923,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476531.239659,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476544.9827847,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476548.5866027,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476550.8731995,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765476553.1470191,
+        "eficiencia": 25.0
+      }
+    ],
+    "1": [
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483012.9232132,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483012.923923,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483012.9272885,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483012.928877,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483012.9298697,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483012.9307535,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483012.9343097,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483012.9353673,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483012.9373102,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483012.9375646,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0444357,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0446572,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.047098,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0472765,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0523353,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0535777,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0569532,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.057344,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0608518,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0610745,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.063439,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0647063,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0668054,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0671017,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0690956,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0744033,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.0758715,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483015.077865,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.192686,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.1929147,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.1949527,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.1958394,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.198641,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.1988716,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.2019174,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.2033923,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.207801,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.2080972,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.2107215,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.2109175,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.2133617,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.2136586,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.219826,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.2202947,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.2226193,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483017.2234838,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3296304,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3307288,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3323863,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3338306,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.336363,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3377538,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3421173,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.342886,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3445358,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3454235,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.347635,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3484664,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3528748,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3549714,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3561842,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.3563602,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.359741,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483019.360142,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.4695659,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.4697723,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.4724402,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.472668,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.4754457,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.476113,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.479379,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.4803941,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.4836357,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.48429,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.487365,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.4879966,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.49356,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.4941607,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.4951627,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.4954522,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.4970183,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483021.497293,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.619888,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6211693,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6247137,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.627211,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6309562,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6311707,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6343567,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6375563,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6404078,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6409838,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6442673,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6468656,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6492777,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6496665,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6545587,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6554093,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6590984,
+        "eficiencia": 30.0
+      },
+      {
+        "damage": 150,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765483023.6601262,
+        "eficiencia": 30.0
+      }
+    ],
+    "2": [
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483012.9249752,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483012.9265218,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483012.9295733,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483012.9297104,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483012.9308915,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483012.9330971,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483012.9361575,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483012.9369748,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483012.939991,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483012.9401667,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0462115,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.046954,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0502558,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0510185,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0538352,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0552883,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.058285,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0592244,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0618827,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.062146,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.066122,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.066505,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0672557,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0680408,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0753706,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0755928,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0782382,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483015.0790305,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.193778,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.1945217,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.196812,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.198187,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2008157,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2017086,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2044733,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2068872,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2089689,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2098405,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2114365,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.212414,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2138798,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2170084,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2222025,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2224522,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2263565,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483017.2275887,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3310177,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3321552,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3341005,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3357508,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3382063,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3403254,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3430657,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3437178,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3464615,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3474002,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3513227,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3518648,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3552136,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3554862,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.357231,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3577101,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3616543,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483019.3620455,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4699562,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4701295,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4734633,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4745507,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.476608,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4791224,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4814544,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4821873,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4867666,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4870896,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4891205,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4923558,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4944725,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4945917,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4962711,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4966137,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.4998255,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483021.5011494,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6214213,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6221511,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6287503,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6298647,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.632731,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6341424,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.638129,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6390631,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6428108,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6432056,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6477897,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6485896,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6499567,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6524434,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.657367,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6581004,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.6604123,
+        "eficiencia": 25.0
+      },
+      {
+        "damage": 200,
+        "cooldown": 8,
+        "sucesso": 1,
+        "timestamp": 1765483023.660741,
+        "eficiencia": 25.0
+      }
+    ],
+    "0": [
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765477222.9473875,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765477232.029061,
+        "eficiencia": 20.0
+      },
+      {
+        "damage": 100,
+        "cooldown": 5,
+        "sucesso": 1,
+        "timestamp": 1765477235.589856,
+        "eficiencia": 20.0
       }
     ]
   },
-  "combos_eficientes": [],
-  "performance_por_hora": {},
-  "areas_por_horario": {}
+  "combos_eficientes": [
+    {
+      "combo": "1_1_2_2_1_1_2_2_1_1_2_2",
+      "skills": [
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2
+      ],
+      "eficiencia": 5250.099816369281,
+      "tempo": 11.57006573677063,
+      "exp": 60744,
+      "timestamp": 1765479219.246963
+    },
+    {
+      "combo": "1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2",
+      "skills": [
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2
+      ],
+      "eficiencia": 29743.103291734296,
+      "tempo": 10.514101266860962,
+      "exp": 312722,
+      "timestamp": 1765480803.6318467
+    },
+    {
+      "combo": "1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2_1_1_2_2",
+      "skills": [
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2,
+        "1",
+        1,
+        "2",
+        2
+      ],
+      "eficiencia": 1854.485242058937,
+      "tempo": 10.90437364578247,
+      "exp": 20222,
+      "timestamp": 1765481953.1330597
+    }
+  ],
+  "performance_por_hora": {
+    "15": [
+      315005.98898215685
+    ],
+    "16": [
+      1784586.1975040578,
+      111269.11452353622
+    ]
+  },
+  "areas_por_horario": {
+    "15": {
+      "0": 315005.98898215685
+    },
+    "16": {
+      "2": 1784586.1975040578,
+      "0": 111269.11452353622
+    }
+  }
 }

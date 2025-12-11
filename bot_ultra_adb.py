@@ -125,6 +125,14 @@ class ConfiguracaoADB:
             'usar_rotas_otimizadas': True,  # Usa rotas recomendadas por ML
             'usar_skills_otimizadas': True,  # Usa rotação de skills otimizada
             'raio_busca_area': 200,  # Raio para buscar próxima melhor área
+            
+            # Sistema de Análise de Dificuldade
+            'monitorar_dificuldade': True,  # Ativa monitoramento de dificuldade
+            'limite_perda_vida': 40,  # % vida perdida para considerar "muito forte"
+            'max_mortes_area': 2,  # Máximo de mortes antes de evitar área
+            'min_combates_analise': 3,  # Mínimo de combates para analisar área
+            'recuar_niveis': 5,  # Quantos níveis recuar se área muito forte
+            'regiao_vida_bar': {'x': 50, 'y': 50, 'width': 200, 'height': 20},  # Região da barra de vida
         }
         
         loaded_config = {}
@@ -369,6 +377,12 @@ class BotUltraADB:
         self.exp_ganho_area = 0
         self.skills_ultima_rotacao = []
         
+        # Sistema de Análise de Dificuldade
+        self.vida_antes_combate = 100
+        self.historico_dificuldade = {}  # {coordenada: {perdas_vida: [], mortes: 0, combates: 0}}
+        self.areas_perigosas = set()  # Coordenadas de áreas muito fortes
+        self.nivel_recomendado = None  # Nível atual do player
+        
         # Stats
         self.stats = {
             'tempo_inicio': time.time(),
@@ -492,17 +506,21 @@ class BotUltraADB:
                 if self.config.skills_paralelas:
                     import threading
                     for skill_id in rotacao_ml:
-                        if skill_id < len(self.config.posicoes_skills):
-                            pos = self.config.posicoes_skills[skill_id]
+                        # Converte para int se for string
+                        skill_idx = int(skill_id) if isinstance(skill_id, str) else skill_id
+                        if skill_idx < len(self.config.posicoes_skills):
+                            pos = self.config.posicoes_skills[skill_idx]
                             threading.Thread(target=self.adb.tap, args=(pos['x'], pos['y'])).start()
-                            self.registrar_skill_ml(skill_id, sucesso=True)
+                            self.registrar_skill_ml(skill_idx, sucesso=True)
                             self.stats['skills_usadas'] += 1
                     print(f"  🤖💥 {len(rotacao_ml)} Skills ML (PARALELO)")
                 else:
                     for skill_id in rotacao_ml:
-                        if skill_id < len(self.config.posicoes_skills):
-                            self.usar_skill(skill_id)
-                            self.registrar_skill_ml(skill_id, sucesso=True)
+                        # Converte para int se for string
+                        skill_idx = int(skill_id) if isinstance(skill_id, str) else skill_id
+                        if skill_idx < len(self.config.posicoes_skills):
+                            self.usar_skill(skill_idx)
+                            self.registrar_skill_ml(skill_idx, sucesso=True)
                     print(f"  🤖💥 Skills ML: {rotacao_ml}")
                 
                 self.skills_ultima_rotacao = rotacao_ml
@@ -892,6 +910,149 @@ class BotUltraADB:
         
         return None
     
+    def detectar_vida_atual(self):
+        """Detecta % de vida atual do player"""
+        try:
+            # Captura tela
+            screenshot = self.adb.screenshot()
+            if screenshot is None:
+                return 100  # Assume vida cheia se não conseguir detectar
+            
+            # Converte PIL Image para NumPy array
+            import cv2
+            screenshot_np = np.array(screenshot)
+            
+            # Região da barra de vida (configurável)
+            cfg = self.config.regiao_vida_bar
+            vida_regiao = screenshot_np[cfg['y']:cfg['y']+cfg['height'], cfg['x']:cfg['x']+cfg['width']]
+            
+            # Detecta cor vermelha (barra de vida)
+            hsv = cv2.cvtColor(vida_regiao, cv2.COLOR_RGB2HSV)
+            
+            # Máscara para vermelho
+            lower_red1 = np.array([0, 100, 100])
+            upper_red1 = np.array([10, 255, 255])
+            lower_red2 = np.array([170, 100, 100])
+            upper_red2 = np.array([180, 255, 255])
+            
+            mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
+            mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
+            mask = mask1 + mask2
+            
+            # Calcula % de pixels vermelhos (proporcional à vida)
+            pixels_vermelhos = np.sum(mask > 0)
+            pixels_totais = mask.shape[0] * mask.shape[1]
+            
+            if pixels_totais > 0:
+                percentual_vida = int((pixels_vermelhos / pixels_totais) * 100)
+                return max(0, min(100, percentual_vida))
+            
+            return 100
+        except Exception as e:
+            print(f"  ⚠️ Erro ao detectar vida: {e}")
+            return 100
+    
+    def analisar_dificuldade_area(self, x, y, vida_perdida, morreu=False):
+        """Analisa a dificuldade de uma área baseado em perda de vida"""
+        if not self.config.monitorar_dificuldade:
+            return
+        
+        # Arredonda coordenada para grid de 100x100
+        grid_x = (x // 100) * 100
+        grid_y = (y // 100) * 100
+        coord = (grid_x, grid_y)
+        
+        # Inicializa dados da área
+        if coord not in self.historico_dificuldade:
+            self.historico_dificuldade[coord] = {
+                'perdas_vida': [],
+                'mortes': 0,
+                'combates': 0,
+                'nivel_estimado': None
+            }
+        
+        area = self.historico_dificuldade[coord]
+        area['perdas_vida'].append(vida_perdida)
+        area['combates'] += 1
+        
+        if morreu:
+            area['mortes'] += 1
+            print(f"  ☠️ MORTE detectada em ({grid_x}, {grid_y})! Total: {area['mortes']}")
+        
+        # Analisa se área é muito forte
+        if area['combates'] >= self.config.min_combates_analise:
+            media_perda = sum(area['perdas_vida']) / len(area['perdas_vida'])
+            
+            # Critérios para área perigosa
+            muito_forte = (
+                media_perda > self.config.limite_perda_vida or
+                area['mortes'] >= self.config.max_mortes_area
+            )
+            
+            if muito_forte and coord not in self.areas_perigosas:
+                self.areas_perigosas.add(coord)
+                print(f"  🚨 ÁREA PERIGOSA detectada: ({grid_x}, {grid_y})")
+                print(f"     Perda média de vida: {media_perda:.1f}% | Mortes: {area['mortes']}")
+                print(f"     ⬇️ Recomendado: Voltar {self.config.recuar_niveis} níveis")
+            elif not muito_forte and coord in self.areas_perigosas:
+                # Remove da lista se ficou mais fácil (player evoluiu)
+                self.areas_perigosas.discard(coord)
+                print(f"  ✅ Área ({grid_x}, {grid_y}) agora é segura!")
+    
+    def obter_area_segura(self, x_atual, y_atual):
+        """Retorna uma área segura próxima para farming"""
+        if not self.config.monitorar_dificuldade:
+            return None
+        
+        # Procura áreas conhecidas e seguras
+        areas_seguras = []
+        
+        for coord, dados in self.historico_dificuldade.items():
+            # Pula áreas perigosas
+            if coord in self.areas_perigosas:
+                continue
+            
+            # Precisa de dados suficientes
+            if dados['combates'] < self.config.min_combates_analise:
+                continue
+            
+            # Calcula média de perda de vida
+            media_perda = sum(dados['perdas_vida']) / len(dados['perdas_vida'])
+            
+            # Área segura: baixa perda de vida, sem mortes
+            if media_perda < 30 and dados['mortes'] == 0:
+                distancia = ((coord[0] - x_atual)**2 + (coord[1] - y_atual)**2)**0.5
+                areas_seguras.append({
+                    'coord': coord,
+                    'distancia': distancia,
+                    'perda_media': media_perda,
+                    'combates': dados['combates']
+                })
+        
+        if not areas_seguras:
+            return None
+        
+        # Ordena por: menor perda de vida, depois menor distância
+        areas_seguras.sort(key=lambda a: (a['perda_media'], a['distancia']))
+        
+        melhor = areas_seguras[0]
+        print(f"  🛡️ Área SEGURA encontrada: {melhor['coord']}")
+        print(f"     Perda média: {melhor['perda_media']:.1f}% | Combates: {melhor['combates']}")
+        
+        return melhor['coord']
+    
+    def deve_evitar_area(self, x, y):
+        """Verifica se deve evitar uma área"""
+        if not self.config.monitorar_dificuldade:
+            return False
+        
+        # Arredonda coordenada para grid
+        grid_x = (x // 100) * 100
+        grid_y = (y // 100) * 100
+        coord = (grid_x, grid_y)
+        
+        return coord in self.areas_perigosas
+    
     def treinar_modelos_ml(self):
         """Treina modelos ML periodicamente"""
         if not self.ml_avancado:
@@ -1234,23 +1395,45 @@ class BotUltraADB:
         # Rotação
         self.rotacionar_area()
         
-        # Decide direção: PRIORIDADE 1 - ML Avançado, 2 - Minimapa, 3 - ML Básico
+        # Decide direção: PRIORIDADE 0 - Área Segura, 1 - ML Avançado, 2 - Minimapa, 3 - ML Básico
         intensidade_movimento = 1.0  # Padrão: movimento completo
         movimento_continuo = False  # Se deve mover até chegar ao destino
         
-        # PRIORIDADE 1: ML Avançado (se disponível e treinado)
+        # PRIORIDADE 0: Verificar se precisa voltar para área segura
         area_recomendada = None
-        if self.ml_avancado and self.ml_avancado.modelos_treinados:
+        if self.config.monitorar_dificuldade:
+            # Usa posição atual já rastreada
+            if self.deve_evitar_area(self.pos_x, self.pos_y):
+                # Está em área perigosa! Busca área segura
+                area_segura = self.obter_area_segura(self.pos_x, self.pos_y)
+                if area_segura:
+                    x_dest, y_dest = area_segura
+                    dx = x_dest - self.pos_x
+                    dy = y_dest - self.pos_y
+                    melhor_angulo = np.arctan2(dy, dx)
+                    movimento_continuo = True
+                    intensidade_movimento = 1.0
+                    area_recomendada = (x_dest, y_dest, 0)  # Marca como recomendada
+                    print(f"\n🛡️ RECUANDO para área segura: ({x_dest}, {y_dest})")
+        
+        # PRIORIDADE 1: ML Avançado (se disponível e treinado)
+        if not area_recomendada and self.ml_avancado and self.ml_avancado.modelos_treinados:
             area_recomendada = self.obter_proxima_area_ml()
             if area_recomendada:
                 x_dest, y_dest, densidade = area_recomendada
-                # Calcula ângulo para a área recomendada
-                dx = x_dest - self.pos_x
-                dy = y_dest - self.pos_y
-                melhor_angulo = np.arctan2(dy, dx)
-                movimento_continuo = True
-                intensidade_movimento = 1.0
-                print(f"\n🤖 ML Avançado: Indo para ({x_dest}, {y_dest}) - {densidade:.1f} exp/min")
+                
+                # Verifica se área recomendada não é perigosa
+                if self.config.monitorar_dificuldade and self.deve_evitar_area(x_dest, y_dest):
+                    print(f"  🚫 ML recomendou área perigosa ({x_dest}, {y_dest}), buscando alternativa...")
+                    area_recomendada = None  # Cancela recomendação
+                else:
+                    # Calcula ângulo para a área recomendada
+                    dx = x_dest - self.pos_x
+                    dy = y_dest - self.pos_y
+                    melhor_angulo = np.arctan2(dy, dx)
+                    movimento_continuo = True
+                    intensidade_movimento = 1.0
+                    print(f"\n🤖 ML Avançado: Indo para ({x_dest}, {y_dest}) - {densidade:.1f} exp/min")
         
         # PRIORIDADE 2: Minimapa (se ML não deu recomendação)
         if not area_recomendada and self.config.usar_minimapa:
@@ -1315,6 +1498,11 @@ class BotUltraADB:
             self.stats['combates'] += 1
             self.stats['xp_estimado'] += 100
             
+            # Detecta vida ANTES do combate
+            if self.config.monitorar_dificuldade:
+                self.vida_antes_combate = self.detectar_vida_atual()
+                print(f"  ❤️ Vida antes: {self.vida_antes_combate}%")
+            
             # Marca início do combate para calcular tempo
             tempo_inicio_combate = time.time()
             
@@ -1362,6 +1550,25 @@ class BotUltraADB:
             
             # Detecta EXP ganho
             exp_ganho = self.detectar_exp_ganho(debug=False)
+            
+            # Análise de dificuldade APÓS combate
+            if self.config.monitorar_dificuldade:
+                vida_depois = self.detectar_vida_atual()
+                vida_perdida = self.vida_antes_combate - vida_depois
+                
+                print(f"  ❤️ Vida após: {vida_depois}%")
+                print(f"  💔 Vida perdida: {vida_perdida}%")
+                
+                # Verifica se morreu (vida muito baixa)
+                morreu = vida_depois < 10
+                
+                # Analisa dificuldade da área usando posição atual
+                self.analisar_dificuldade_area(self.pos_x, self.pos_y, vida_perdida, morreu)
+                
+                # Se perdeu muita vida, alerta
+                if vida_perdida > self.config.limite_perda_vida:
+                    print(f"  ⚠️ COMBATE DIFÍCIL! Perdeu {vida_perdida}% de vida")
+                    print(f"  💡 Considere voltar para áreas mais fracas")
             
             # Registra dados no ML Avançado
             if exp_ganho and self.ml_avancado:
