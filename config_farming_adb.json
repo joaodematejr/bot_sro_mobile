@@ -128,5 +128,20 @@
     "y": 50,
     "width": 200,
     "height": 20
-  }
+  },
+  "detectar_inimigos_perigosos": true,
+  "inimigos_para_fugir": [
+    "Giant",
+    "Boss",
+    "Elite",
+    "Champion"
+  ],
+  "regiao_nome_inimigo": {
+    "x": 400,
+    "y": 100,
+    "largura": 600,
+    "altura": 150
+  },
+  "distancia_fuga_segura": 300,
+  "intervalo_verificacao_inimigo": 2
 }

@@ -133,6 +133,13 @@ class ConfiguracaoADB:
             'min_combates_analise': 3,  # Mínimo de combates para analisar área
             'recuar_niveis': 5,  # Quantos níveis recuar se área muito forte
             'regiao_vida_bar': {'x': 50, 'y': 50, 'width': 200, 'height': 20},  # Região da barra de vida
+            
+            # Detecção de Inimigos Perigosos
+            'detectar_inimigos_perigosos': True,  # Ativa detecção de inimigos perigosos
+            'inimigos_para_fugir': ['Giant', 'Boss', 'Elite', 'Champion'],  # Lista de nomes para fugir
+            'regiao_nome_inimigo': {'x': 400, 'y': 100, 'largura': 600, 'altura': 150},  # Região onde aparece nome do inimigo
+            'distancia_fuga_segura': 300,  # Distância para fugir do inimigo perigoso
+            'intervalo_verificacao_inimigo': 2,  # Segundos entre verificações
         }
         
         loaded_config = {}
@@ -382,6 +389,8 @@ class BotUltraADB:
         self.historico_dificuldade = {}  # {coordenada: {perdas_vida: [], mortes: 0, combates: 0}}
         self.areas_perigosas = set()  # Coordenadas de áreas muito fortes
         self.nivel_recomendado = None  # Nível atual do player
+        self.ultima_verificacao_inimigo = time.time()  # Timestamp da última verificação de inimigo perigoso
+        self.fugindo_de_inimigo = False  # Flag indicando se está fugindo
         
         # Stats
         self.stats = {
@@ -577,6 +586,25 @@ class BotUltraADB:
                 print("  🧪 Potion!")
                 time.sleep(0.5)
     
+    def enviar_notificacao(self, titulo, mensagem):
+        """Envia notificação do sistema operacional"""
+        try:
+            import subprocess
+            
+            # Notificação Linux (notify-send)
+            subprocess.run([
+                'notify-send',
+                '-u', 'critical',  # Urgência crítica
+                '-i', 'dialog-warning',  # Ícone de aviso
+                '-t', '10000',  # Duração 10 segundos
+                titulo,
+                mensagem
+            ], check=False, stderr=subprocess.DEVNULL)
+            
+        except Exception:
+            # Se falhar, apenas ignora (não trava o bot)
+            pass
+    
     def detectar_combate(self, threshold=0.15):
         """Detecta combate por mudança na tela"""
         try:
@@ -736,11 +764,174 @@ class BotUltraADB:
         except Exception as e:
             return None
     
+    def detectar_nome_inimigo(self):
+        """Detecta o nome do inimigo na tela usando OCR"""
+        if not self.config.detectar_inimigos_perigosos:
+            return None
+        
+        try:
+            import pytesseract
+            import cv2
+        except ImportError:
+            return None
+        
+        try:
+            # Captura região onde aparece o nome do inimigo
+            regiao = self.config.regiao_nome_inimigo
+            imagem = self.adb.capturar_regiao(
+                regiao['x'], regiao['y'],
+                regiao['largura'], regiao['altura']
+            )
+            
+            if imagem is None:
+                return None
+            
+            # Preprocessamento para OCR
+            img_np = np.array(imagem.convert('RGB'))
+            gray = cv2.cvtColor(img_np, cv2.COLOR_RGB2GRAY)
+            
+            # Threshold para destacar texto
+            _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
+            
+            # Amplia para melhor OCR
+            h, w = thresh.shape
+            resized = cv2.resize(thresh, (w*2, h*2), interpolation=cv2.INTER_CUBIC)
+            
+            # OCR
+            config = '--psm 7 --oem 3'  # Linha única de texto
+            texto = pytesseract.image_to_string(Image.fromarray(resized), config=config)
+            
+            # Limpa texto
+            texto = texto.strip().upper()
+            
+            if texto:
+                # Verifica se contém algum nome perigoso
+                for inimigo in self.config.inimigos_para_fugir:
+                    if inimigo.upper() in texto:
+                        return inimigo
+            
+            return None
+            
+        except Exception as e:
+            return None
+    
+    def fugir_de_inimigo_perigoso(self):
+        """Foge do inimigo perigoso até estar a uma distância segura"""
+        print("\n⚠️  INIMIGO PERIGOSO DETECTADO! FUGINDO...")
+        
+        # Envia notificação do sistema
+        self.enviar_notificacao(
+            "⚠️ ALERTA DE PERIGO!",
+            "Inimigo perigoso detectado! Bot está fugindo..."
+        )
+        
+        self.fugindo_de_inimigo = True
+        
+        # Move para trás rapidamente (direção oposta)
+        tentativas = 0
+        max_tentativas = 10
+        
+        while tentativas < max_tentativas:
+            # Move para trás
+            self.mover_direcao(np.pi, duracao=1.0)  # Move para baixo (180°)
+            time.sleep(0.3)
+            
+            # Verifica se ainda detecta o inimigo
+            nome_inimigo = self.detectar_nome_inimigo()
+            
+            if not nome_inimigo:
+                print("  ✅ Distância segura alcançada!")
+                self.fugindo_de_inimigo = False
+                return True
+            
+            tentativas += 1
+            print(f"  🏃 Fugindo... ({tentativas}/{max_tentativas})")
+        
+        print("  ⚠️  Não conseguiu fugir completamente, continuando farming...")
+        self.fugindo_de_inimigo = False
+        return False
+    
+    def verificar_inimigo_perigoso(self):
+        """Verifica periodicamente se há inimigo perigoso próximo"""
+        if not self.config.detectar_inimigos_perigosos:
+            return False
+        
+        # Verifica apenas em intervalos
+        tempo_atual = time.time()
+        if tempo_atual - self.ultima_verificacao_inimigo < self.config.intervalo_verificacao_inimigo:
+            return False
+        
+        self.ultima_verificacao_inimigo = tempo_atual
+        
+        # Detecta nome do inimigo
+        nome_inimigo = self.detectar_nome_inimigo()
+        
+        if nome_inimigo:
+            print(f"\n🚨 ALERTA: {nome_inimigo} detectado!")
+            
+            # Notificação específica com nome do inimigo
+            self.enviar_notificacao(
+                f"🚨 {nome_inimigo} DETECTADO!",
+                f"Inimigo perigoso '{nome_inimigo}' está próximo! Fugindo agora..."
+            )
+            
+            self.fugir_de_inimigo_perigoso()
+            return True
+        
+        return False
+    
+    def limpar_imagens_antigas(self):
+        """Remove imagens antigas mantendo apenas as mais recentes até o limite"""
+        try:
+            pasta = self.config.pasta_imagens_treino
+            if not os.path.exists(pasta):
+                return
+            
+            # Lista todas as imagens PNG
+            imagens = [f for f in os.listdir(pasta) if f.endswith('.png')]
+            
+            if len(imagens) <= self.config.max_imagens_treino:
+                return  # Já está dentro do limite
+            
+            # Ordena por timestamp (extraído do nome do arquivo)
+            # Formato: tipo_timestamp_dX.png
+            imagens_com_tempo = []
+            for img in imagens:
+                try:
+                    # Extrai timestamp do nome do arquivo
+                    partes = img.split('_')
+                    if len(partes) >= 2:
+                        timestamp = int(partes[1])
+                        caminho_completo = os.path.join(pasta, img)
+                        imagens_com_tempo.append((timestamp, caminho_completo))
+                except:
+                    pass
+            
+            # Ordena do mais antigo para o mais recente
+            imagens_com_tempo.sort(key=lambda x: x[0])
+            
+            # Calcula quantas devem ser deletadas
+            qtd_deletar = len(imagens_com_tempo) - self.config.max_imagens_treino
+            
+            if qtd_deletar > 0:
+                print(f"  🗑️  Removendo {qtd_deletar} imagens antigas...")
+                
+                # Remove as mais antigas
+                for i in range(qtd_deletar):
+                    try:
+                        os.remove(imagens_com_tempo[i][1])
+                    except:
+                        pass
+                
+                print(f"  ✅ Mantidas {self.config.max_imagens_treino} imagens mais recentes")
+        except Exception as e:
+            print(f"  ⚠️  Erro ao limpar imagens: {e}")
+    
     def salvar_imagem_treino(self, imagem, tipo, densidade):
         """Salva imagem para treinamento futuro"""
         try:
-            if self.stats['imagens_salvas'] >= self.config.max_imagens_treino:
-                return
+            # Limpa imagens antigas antes de salvar nova
+            self.limpar_imagens_antigas()
             
             pasta = self.config.pasta_imagens_treino
             timestamp = int(time.time())
@@ -1434,6 +1625,11 @@ class BotUltraADB:
                     movimento_continuo = True
                     intensidade_movimento = 1.0
                     print(f"\n🤖 ML Avançado: Indo para ({x_dest}, {y_dest}) - {densidade:.1f} exp/min")
+        
+        # VERIFICAÇÃO DE INIMIGO PERIGOSO (prioridade máxima!)
+        if self.verificar_inimigo_perigoso():
+            # Se detectou e fugiu, pula resto do ciclo
+            return
         
         # PRIORIDADE 2: Minimapa (se ML não deu recomendação)
         if not area_recomendada and self.config.usar_minimapa:
