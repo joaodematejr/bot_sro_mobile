@@ -23,6 +23,13 @@
       "y": 1900
     }
   ],
+  "detectar_cooldown_skills": true,
+  "cor_cooldown_skill": [
+    40,
+    40,
+    40
+  ],
+  "tolerancia_cooldown": 30,
   "auto_loot": true,
   "posicao_botao_loot": {
     "x": 540,
@@ -101,6 +108,12 @@
   "loot_instantaneo": true,
   "skills_paralelas": true,
   "threshold_inimigos_minimo": 15,
+  "usar_movimento_circular": true,
+  "threshold_poucos_inimigos": 5,
+  "raio_movimento_circular": 0.8,
+  "duracao_movimento_circular": 8,
+  "velocidade_circular": 1200,
+  "segmentos_circulo": 8,
   "arquivo_metricas": "metricas_bot.json",
   "intervalo_salvar_metricas": 5,
   "usar_detector_exp": true,
@@ -142,5 +155,97 @@
     "altura": 150
   },
   "distancia_fuga_segura": 300,
-  "intervalo_verificacao_inimigo": 2
+  "intervalo_verificacao_inimigo": 2,
+  "intervalo_verificacao_inimigo_combate": 0.6,
+  "usar_party_system": true,
+  "regiao_party_ui": {
+    "x": 1141,
+    "y": 80,
+    "width": 280,
+    "height": 280
+  },
+  "seguir_party_leader": false,
+  "priorizar_party_target": true,
+  "distancia_maxima_party": 500,
+  "verificar_party_viva": true,
+  "auto_buff": true,
+  "posicoes_buffs": [
+    {
+      "x": 1045,
+      "y": 540,
+      "nome": "Buff1",
+      "intervalo": 120
+    },
+    {
+      "x": 1125,
+      "y": 540,
+      "nome": "Buff2",
+      "intervalo": 180
+    },
+    {
+      "x": 1198,
+      "y": 540,
+      "nome": "Buff3",
+      "intervalo": 300
+    },
+    {
+      "x": 1280,
+      "y": 540,
+      "nome": "Buff4",
+      "intervalo": 240
+    }
+  ],
+  "verificar_buff_ativo": true,
+  "regiao_buffs_ativos": {
+    "x": 400,
+    "y": 30,
+    "width": 400,
+    "height": 80
+  },
+  "priorizar_loot_raro": true,
+  "cores_loot_raro": [
+    [
+      255,
+      215,
+      0
+    ],
+    [
+      147,
+      112,
+      219
+    ],
+    [
+      30,
+      144,
+      255
+    ]
+  ],
+  "regiao_scan_loot": {
+    "x": 200,
+    "y": 200,
+    "width": 880,
+    "height": 880
+  },
+  "distancia_maxima_loot_raro": 800,
+  "modo_agressivo_em_party": true,
+  "threshold_hp_em_party": 25,
+  "usar_skills_aoe_em_party": true,
+  "usar_teleporte_emergencia": true,
+  "threshold_hp_teleporte": 15,
+  "posicao_botao_teleporte": {
+    "x": 1354,
+    "y": 540
+  },
+  "cooldown_teleporte": 300,
+  "teleportar_em_boss": true,
+  "teleportar_multiplas_mortes": true,
+  "intervalo_entre_teleportes": 60,
+  "tentar_potion_antes_tp": true,
+  "max_potions_antes_tp": 5,
+  "notificar_teleporte": true,
+  "posicao_safe_zone": {
+    "x": 50,
+    "y": 50
+  },
+  "tempo_espera_pos_teleporte": 10
 }

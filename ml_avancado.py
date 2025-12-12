@@ -45,6 +45,11 @@ class MLAvancado:
         self.ultima_atualizacao = time.time()
         self.min_dados_treino = 20
         
+        # Otimização de Parâmetros
+        self.historico_parametros = []  # [(timestamp, params, exp_hora, mortes)]
+        self.melhores_parametros = {}  # Parâmetros ótimos descobertos
+        self.parametros_testados = set()  # Para evitar testes duplicados
+        
         # Carregar dados existentes
         self.carregar_dados()
     
@@ -413,7 +418,9 @@ class MLAvancado:
                 'historico_skills': {k: v for k, v in self.historico_skills.items()},
                 'combos_eficientes': self.combos_eficientes[-200:],
                 'performance_por_hora': dict(self.performance_por_hora),
-                'areas_por_horario': {k: dict(v) for k, v in self.areas_por_horario.items()}
+                'areas_por_horario': {k: dict(v) for k, v in self.areas_por_horario.items()},
+                'historico_parametros': self.historico_parametros[-100:],
+                'melhores_parametros': self.melhores_parametros
             }
             
             # Converte tuplas para strings no densidade_mobs
@@ -466,6 +473,9 @@ class MLAvancado:
                     int(k): defaultdict(float, v) for k, v in areas_hora.items()
                 })
                 
+                self.historico_parametros = dados.get('historico_parametros', [])
+                self.melhores_parametros = dados.get('melhores_parametros', {})
+                
                 print(f"  ✓ Dados ML carregados: {len(self.historico_rotas)} rotas, {len(self.densidade_mobs)} áreas")
                 
             except Exception as e:
@@ -515,3 +525,140 @@ class MLAvancado:
         stats['top_3_skills'] = top_skills
         
         return stats
+    
+    def otimizar_parametros(self, stats_atuais):
+        """Otimiza parâmetros do bot baseado em aprendizado
+        
+        Args:
+            stats_atuais (dict): Estatísticas atuais do bot
+            
+        Returns:
+            dict: Parâmetros otimizados para melhor performance
+        """
+        if len(self.historico_parametros) < 5:
+            return {}  # Precisa de mais dados
+        
+        # Analisa últimas 20 sessões
+        recentes = self.historico_parametros[-20:]
+        
+        # Calcula eficiência (exp/hora dividido por mortes+1)
+        eficiencias = []
+        for timestamp, params, exp_hora, mortes in recentes:
+            eficiencia = exp_hora / (mortes + 1)
+            eficiencias.append((eficiencia, params))
+        
+        # Ordena por eficiência
+        eficiencias.sort(reverse=True, key=lambda x: x[0])
+        
+        # Pega top 5 melhores configurações
+        top_configs = eficiencias[:5]
+        
+        # Calcula média dos melhores parâmetros
+        params_otimizados = {}
+        
+        for key in ['threshold_hp', 'threshold_hp_teleporte', 'intervalo_skills', 
+                    'threshold_poucos_inimigos', 'raio_movimento_circular']:
+            valores = []
+            for _, params in top_configs:
+                if key in params:
+                    valores.append(params[key])
+            
+            if valores:
+                # Média ponderada (favorece melhores configurações)
+                params_otimizados[key] = int(np.mean(valores))
+        
+        # Parâmetros booleanos - usa moda (mais comum nos top 5)
+        for key in ['usar_movimento_circular', 'auto_buff', 'usar_teleporte_emergencia']:
+            valores = []
+            for _, params in top_configs:
+                if key in params:
+                    valores.append(params[key])
+            
+            if valores:
+                # Usa o valor mais comum
+                params_otimizados[key] = max(set(valores), key=valores.count)
+        
+        self.melhores_parametros = params_otimizados
+        return params_otimizados
+    
+    def registrar_sessao_parametros(self, parametros_config, exp_ganho, tempo_decorrido, mortes):
+        """Registra uma sessão com seus parâmetros e resultados
+        
+        Args:
+            parametros_config (dict): Parâmetros usados na sessão
+            exp_ganho (int): EXP total ganho
+            tempo_decorrido (float): Tempo em segundos
+            mortes (int): Número de mortes
+        """
+        # Calcula EXP/hora
+        if tempo_decorrido > 0:
+            exp_hora = (exp_ganho / tempo_decorrido) * 3600
+        else:
+            exp_hora = 0
+        
+        # Extrai parâmetros relevantes
+        params_relevantes = {
+            'threshold_hp': parametros_config.get('threshold_hp', 40),
+            'threshold_hp_teleporte': parametros_config.get('threshold_hp_teleporte', 15),
+            'intervalo_skills': parametros_config.get('intervalo_skills', 3000),
+            'threshold_poucos_inimigos': parametros_config.get('threshold_poucos_inimigos', 5),
+            'raio_movimento_circular': parametros_config.get('raio_movimento_circular', 0.8),
+            'usar_movimento_circular': parametros_config.get('usar_movimento_circular', True),
+            'auto_buff': parametros_config.get('auto_buff', True),
+            'usar_teleporte_emergencia': parametros_config.get('usar_teleporte_emergencia', True),
+        }
+        
+        # Registra
+        self.historico_parametros.append((
+            time.time(),
+            params_relevantes,
+            exp_hora,
+            mortes
+        ))
+        
+        # Limita histórico a últimas 100 sessões
+        if len(self.historico_parametros) > 100:
+            self.historico_parametros = self.historico_parametros[-100:]
+    
+    def obter_relatorio_parametros(self):
+        """Gera relatório de otimização de parâmetros
+        
+        Returns:
+            dict: Relatório com histórico e melhores parâmetros
+        """
+        if not self.historico_parametros:
+            return {
+                'sessoes_registradas': 0,
+                'mensagem': 'Nenhuma sessão registrada ainda'
+            }
+        
+        # Calcula eficiências
+        eficiencias = []
+        for timestamp, params, exp_hora, mortes in self.historico_parametros:
+            eficiencia = exp_hora / (mortes + 1)
+            eficiencias.append({
+                'timestamp': timestamp,
+                'exp_hora': exp_hora,
+                'mortes': mortes,
+                'eficiencia': eficiencia,
+                'params': params
+            })
+        
+        # Ordena por eficiência
+        eficiencias.sort(reverse=True, key=lambda x: x['eficiencia'])
+        
+        # Top 5 melhores sessões
+        top_5 = eficiencias[:5]
+        
+        # Média geral
+        media_exp_hora = np.mean([e['exp_hora'] for e in eficiencias])
+        media_mortes = np.mean([e['mortes'] for e in eficiencias])
+        
+        return {
+            'sessoes_registradas': len(self.historico_parametros),
+            'media_exp_hora': media_exp_hora,
+            'media_mortes': media_mortes,
+            'top_5_sessoes': top_5,
+            'melhores_parametros': self.melhores_parametros,
+            'ultima_atualizacao': time.time()
+        }

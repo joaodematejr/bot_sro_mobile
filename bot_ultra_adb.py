@@ -13,6 +13,7 @@ import os
 from PIL import Image
 import io
 import pickle
+import threading
 from detector_exp import DetectorEXP
 from ml_avancado import MLAvancado
 
@@ -46,14 +47,22 @@ class ConfiguracaoADB:
             'velocidade_movimento': 1500,  # ms de swipe
             'intervalo_entre_acoes': 500,  # ms
             
-            # Skills (coordenadas absolutas)
+            # Skills (coordenadas absolutas) - Baseado na imagem
             'usar_skills_automaticas': True,
             'intervalo_skills': 3000,  # ms
             'posicoes_skills': [
-                {'x': 920, 'y': 1800},  # Skill 1
-                {'x': 970, 'y': 1900},  # Skill 2
-                {'x': 860, 'y': 1900},  # Skill 3
+                {'x': 1015, 'y': 610, 'nome': 'Skill1', 'cooldown': 5},    # Skill superior esquerda
+                {'x': 1105, 'y': 610, 'nome': 'Skill2', 'cooldown': 8},    # Skill superior centro
+                {'x': 1173, 'y': 610, 'nome': 'Skill3', 'cooldown': 6},    # Skill superior direita
+                {'x': 1250, 'y': 610, 'nome': 'Skill4', 'cooldown': 12},   # Skill superior extrema direita
+                {'x': 985, 'y': 695, 'nome': 'Skill5', 'cooldown': 10},    # Skill inferior esquerda
+                {'x': 1067, 'y': 695, 'nome': 'Skill6', 'cooldown': 7},    # Skill inferior centro-esquerda
+                {'x': 1145, 'y': 695, 'nome': 'Skill7', 'cooldown': 15},   # Skill inferior centro
             ],
+            # Detectar cooldown visualmente (cor escura sobre skill = em cooldown)
+            'detectar_cooldown_skills': True,
+            'cor_cooldown_skill': [40, 40, 40],  # Cor escura que aparece sobre skill em cooldown
+            'tolerancia_cooldown': 30,
             
             # Auto-loot
             'auto_loot': True,
@@ -61,7 +70,9 @@ class ConfiguracaoADB:
             
             # Auto-potion
             'auto_potion': True,
-            'threshold_hp': 0.5,
+            # Threshold de HP em porcentagem (0-100). Se a vida ficar abaixo deste
+            # valor, o bot tentará usar potion e recuar se necessário.
+            'threshold_hp': 40,
             'posicao_hp_bar': {'x': 110, 'y': 120},
             'posicao_botao_potion': {'x': 160, 'y': 2160},
             
@@ -70,7 +81,7 @@ class ConfiguracaoADB:
             'usar_ocr_xp': True,
             
             # Minimapa (para detecção de inimigos)
-            'posicao_minimapa': {'x': 120, 'y': 150, 'width': 220, 'height': 220},
+            'posicao_minimapa': {'x': 130, 'y': 150, 'width': 220, 'height': 220},
             'usar_minimapa': True,
             'cor_inimigo_minimapa': [255, 0, 0],  # Vermelho (ajuste conforme necessário)
             
@@ -112,6 +123,14 @@ class ConfiguracaoADB:
             'skills_paralelas': True,  # Usa múltiplas skills ao mesmo tempo
             'threshold_inimigos_minimo': 15,  # Mínimo de inimigos para valer a pena
             
+            # Movimento Circular para Agregar Inimigos
+            'usar_movimento_circular': True,  # Ativa movimento circular quando poucos inimigos
+            'threshold_poucos_inimigos': 5,  # Considera "poucos" se <= este número
+            'raio_movimento_circular': 0.8,  # Raio do círculo (0.0-1.0 do joystick)
+            'duracao_movimento_circular': 8,  # Segundos girando em círculo
+            'velocidade_circular': 1200,  # ms por movimento do círculo
+            'segmentos_circulo': 8,  # Quantos pontos no círculo (8 = octógono)
+            
             # Métricas
             'arquivo_metricas': 'metricas_bot.json',  # Arquivo JSON para exportar métricas
             'intervalo_salvar_metricas': 5,  # Salva métricas a cada X segundos
@@ -142,7 +161,60 @@ class ConfiguracaoADB:
             'inimigos_para_fugir': ['Giant', 'Boss', 'Elite', 'Champion'],  # Lista de nomes para fugir
             'regiao_nome_inimigo': {'x': 400, 'y': 100, 'largura': 600, 'altura': 150},  # Região onde aparece nome do inimigo
             'distancia_fuga_segura': 300,  # Distância para fugir do inimigo perigoso
-            'intervalo_verificacao_inimigo': 2,  # Segundos entre verificações
+            # Checagem de inimigos perigosos (segundos)
+            # Reduzido para detectar mais cedo. Use valores >= 0.5 para não sobrecarregar.
+            'intervalo_verificacao_inimigo': 1.0,  # Segundos entre verificações (padrão)
+            # Intervalo mais frequente durante combate (checa mais cedo)
+            'intervalo_verificacao_inimigo_combate': 0.6,  # Segundos entre verificações em combate
+            
+            # Sistema de Party (baseado na imagem)
+            'usar_party_system': True,  # Detecta se está em party e ajusta comportamento
+            'regiao_party_ui': {'x': 1141, 'y': 80, 'width': 280, 'height': 280},  # Região da UI de party (lado direito)
+            'seguir_party_leader': False,  # Se True, segue o líder da party (desabilita exploração solo)
+            'priorizar_party_target': True,  # Ataca o mesmo alvo que a party
+            'distancia_maxima_party': 500,  # Distância máxima dos membros da party
+            'verificar_party_viva': True,  # Recua se membros da party morrerem
+            
+            # Auto-Buff System
+            'auto_buff': True,  # Ativa uso automático de buffs
+            'posicoes_buffs': [
+                {'x': 1045, 'y': 540, 'nome': 'Buff1', 'intervalo': 120},  # Buff superior (potion azul)
+                {'x': 1125, 'y': 540, 'nome': 'Buff2', 'intervalo': 180},  # Buff superior centro
+                {'x': 1198, 'y': 540, 'nome': 'Buff3', 'intervalo': 300},  # Buff superior direita (potion roxa)
+                {'x': 1280, 'y': 540, 'nome': 'Buff4', 'intervalo': 240},  # Buff extrema direita (potion rosa)
+            ],
+            'verificar_buff_ativo': True,  # Tenta detectar se buff já está ativo (evita desperdício)
+            'regiao_buffs_ativos': {'x': 400, 'y': 30, 'width': 400, 'height': 80},  # Região onde buffs aparecem
+            
+            # Detecção de Loot Raro/Valioso
+            'priorizar_loot_raro': True,  # Vai até itens raros mesmo se longe
+            'cores_loot_raro': [
+                [255, 215, 0],   # Dourado (legendary)
+                [147, 112, 219],  # Roxo (epic)
+                [30, 144, 255],   # Azul (rare)
+            ],
+            'regiao_scan_loot': {'x': 200, 'y': 200, 'width': 880, 'height': 880},  # Área central para detectar drops
+            'distancia_maxima_loot_raro': 800,  # Vai buscar loot raro até essa distância
+            
+            # Otimizações baseadas em Party
+            'modo_agressivo_em_party': True,  # Mais agressivo quando em party (menos recuo)
+            'threshold_hp_em_party': 25,  # HP mínimo quando em party (mais baixo que solo)
+            'usar_skills_aoe_em_party': True,  # Prioriza skills de área quando em party
+            
+            # Sistema de Teleporte de Emergência
+            'usar_teleporte_emergencia': True,  # Ativa teleporte automático em situações críticas
+            'threshold_hp_teleporte': 15,  # HP crítico (%) para usar teleporte emergencial
+            'posicao_botao_teleporte': {'x': 1354, 'y': 540},  # Botão de teleporte/scroll (ajustar conforme UI)
+            'cooldown_teleporte': 300,  # Cooldown do teleporte em segundos (5 min padrão)
+            'teleportar_em_boss': True,  # Teleporta se detectar boss e vida baixa
+            'teleportar_multiplas_mortes': True,  # Teleporta se morrer 2x seguidas na mesma área
+            'intervalo_entre_teleportes': 60,  # Tempo mínimo entre teleportes (evita spam)
+            'tentar_potion_antes_tp': True,  # Tenta usar todas as potions antes de teleportar
+            'max_potions_antes_tp': 5,  # Máximo de potions para tentar antes de TP
+            'notificar_teleporte': True,  # Envia notificação do sistema quando teleportar
+            # Posição de retorno após teleporte (cidade/safe zone)
+            'posicao_safe_zone': {'x': 50, 'y': 50},  # Coordenadas virtuais da safe zone
+            'tempo_espera_pos_teleporte': 10,  # Segundos para esperar após teleporte (carregar área)
         }
         
         loaded_config = {}
@@ -196,8 +268,9 @@ class ConfiguracaoADB:
 class ADBController:
     """Controlador ADB para input e captura"""
     
-    def __init__(self, device=ADB_DEVICE):
+    def __init__(self, device=ADB_DEVICE, config=None):
         self.device = device
+        self.config = config
         self.verificar_conexao()
     
     def verificar_conexao(self):
@@ -224,6 +297,23 @@ class ADBController:
     def tap(self, x, y):
         """Toca na posição especificada"""
         try:
+            # Evita clicar dentro do minimapa se a configuração estiver disponível.
+            try:
+                if self.config is not None:
+                    pm = getattr(self.config, 'posicao_minimapa', None)
+                    if isinstance(pm, dict):
+                        x_int = int(x)
+                        y_int = int(y)
+                        if (pm.get('x') is not None and pm.get('y') is not None
+                                and pm.get('width') is not None and pm.get('height') is not None):
+                            if (pm['x'] <= x_int <= pm['x'] + pm['width'] and
+                                    pm['y'] <= y_int <= pm['y'] + pm['height']):
+                                print(f"  ⚠️ Tap ignorado dentro do minimapa em ({x_int},{y_int})")
+                                return
+            except Exception:
+                # Se algo falhar na checagem, continua com o tap normal
+                pass
+
             subprocess.run(
                 ['adb', '-s', self.device, 'shell', 'input', 'tap', str(int(x)), str(int(y))],
                 capture_output=True,
@@ -342,7 +432,8 @@ class BotUltraADB:
     
     def __init__(self):
         self.config = ConfiguracaoADB()
-        self.adb = ADBController(self.config.adb_device)
+        # Passa a config para o ADBController para evitar taps acidentais no minimapa
+        self.adb = ADBController(self.config.adb_device, config=self.config)
         
         # ML
         from sklearn.ensemble import RandomForestRegressor
@@ -395,6 +486,29 @@ class BotUltraADB:
         self.ultima_verificacao_inimigo = time.time()  # Timestamp da última verificação de inimigo perigoso
         self.fugindo_de_inimigo = False  # Flag indicando se está fugindo
         
+        # Sistema de Party
+        self.em_party = False  # Se está em party no momento
+        self.membros_party_vivos = 0  # Número de membros vivos
+        self.ultima_verificacao_party = time.time()
+        
+        # Sistema de Buffs
+        self.ultimos_buffs = {}  # {nome_buff: timestamp_ultimo_uso}
+        self.buffs_ativos = []  # Lista de buffs atualmente ativos
+        
+        # Sistema de Cooldown de Skills
+        self.skills_em_cooldown = set()  # IDs de skills em cooldown
+        self.ultimo_check_cooldown = time.time()
+        
+        # Sistema de Teleporte de Emergência
+        self.ultimo_teleporte = 0  # Timestamp do último teleporte
+        self.teleportes_realizados = 0  # Contador de teleportes
+        self.mortes_consecutivas_area = {}  # {coordenada: contador_mortes}
+        self.em_cooldown_teleporte = False  # Se teleporte está em cooldown
+        
+        # Sistema de Movimento Circular
+        self.ultimo_movimento_circular = 0  # Timestamp do último movimento circular
+        self.movimentos_circulares_realizados = 0  # Contador
+        
         # Stats
         self.stats = {
             'tempo_inicio': time.time(),
@@ -412,6 +526,8 @@ class BotUltraADB:
             'exp_total_ganho': 0,  # EXP real detectado
             'exp_por_combate': [],  # Histórico de EXP por combate
             'exp_atual_level': self.config.exp_atual_level,  # EXP acumulado no level
+            'teleportes_usados': 0,  # Número de teleportes de emergência
+            'buffs_usados': 0,  # Número de buffs aplicados
         }
         
         # Cria pasta de treinamento se necessário
@@ -488,15 +604,23 @@ class BotUltraADB:
         self.pos_y = np.clip(self.pos_y + movimento_distancia * np.sin(angulo), 0, 100)
     
     def usar_skill(self, index):
-        """Usa skill via tap ADB"""
+        """Usa skill via tap ADB (com verificação de cooldown)"""
         if index < len(self.config.posicoes_skills):
+            # Verifica se skill está em cooldown
+            if self.verificar_skill_em_cooldown(index):
+                # print(f"  ⏳ Skill {index + 1} em cooldown, pulando...")
+                return False
+            
             pos = self.config.posicoes_skills[index]
             self.adb.tap(pos['x'], pos['y'])
             self.stats['skills_usadas'] += 1
-            print(f"  💥 Skill {index + 1}")
+            skill_nome = pos.get('nome', f'Skill{index+1}')
+            print(f"  💥 {skill_nome}")
             # Delay reduzido em modo turbo
             delay = 0.1 if self.config.modo_turbo else 0.3
             time.sleep(delay)
+            return True
+        return False
     
     def usar_skills_rotacao(self):
         """Usa skills em rotação (paralelo se habilitado, otimizado por ML)"""
@@ -576,18 +700,38 @@ class BotUltraADB:
         if not self.config.auto_potion:
             return
         
-        # Verifica HP pela cor da barra
-        pos_hp = self.config.posicao_hp_bar
-        cor = self.adb.get_pixel_color(pos_hp['x'], pos_hp['y'])
-        
-        if cor:
-            # Se mais vermelho que verde = HP baixo
-            if cor[0] > cor[1] * 1.5:
+        # Preferencialmente, usa detecção de vida por visão (porcentagem)
+        try:
+            vida = self.detectar_vida_atual()
+        except Exception:
+            vida = None
+
+        # Se souber a vida atual em porcentagem, compara com threshold (0-100)
+        if vida is not None:
+            if vida <= self.config.threshold_hp:
                 pos = self.config.posicao_botao_potion
-                self.adb.tap(pos['x'], pos['y'])
-                self.stats['potions_usadas'] += 1
-                print("  🧪 Potion!")
-                time.sleep(0.5)
+                # Tenta usar até 3 potions rápidas para emergências
+                for _ in range(3):
+                    self.adb.tap(pos['x'], pos['y'])
+                    self.stats['potions_usadas'] += 1
+                    print("  🧪 Potion (emergencial)")
+                    time.sleep(0.4)
+                return
+
+        # Fallback: tenta detectar por cor do pixel (antigo método)
+        try:
+            pos_hp = self.config.posicao_hp_bar
+            cor = self.adb.get_pixel_color(pos_hp['x'], pos_hp['y'])
+            if cor:
+                # Se mais vermelho que verde = HP baixo
+                if cor[0] > cor[1] * 1.5:
+                    pos = self.config.posicao_botao_potion
+                    self.adb.tap(pos['x'], pos['y'])
+                    self.stats['potions_usadas'] += 1
+                    print("  🧪 Potion (fallback por cor)")
+                    time.sleep(0.5)
+        except Exception:
+            pass
     
     def enviar_notificacao(self, titulo, mensagem):
         """Envia notificação do sistema operacional"""
@@ -785,6 +929,19 @@ class BotUltraADB:
                     'inimigos': melhor_setor[1]['count'],
                     'total_inimigos': total_inimigos,
                     'setores': setores,  # Todos os setores para análise
+                    'poucos_inimigos': False,  # Quantidade suficiente
+                }
+            
+            # Detectou inimigos mas são poucos - sinaliza para movimento circular
+            threshold_poucos = getattr(self.config, 'threshold_poucos_inimigos', 5)
+            if total_inimigos > 0 and total_inimigos <= threshold_poucos:
+                return {
+                    'direcao': melhor_setor[0],
+                    'angulo': melhor_setor[1]['angulo'],
+                    'inimigos': melhor_setor[1]['count'],
+                    'total_inimigos': total_inimigos,
+                    'setores': setores,
+                    'poucos_inimigos': True,  # Sinaliza movimento circular
                 }
             
             return None
@@ -879,33 +1036,465 @@ class BotUltraADB:
         self.fugindo_de_inimigo = False
         return False
     
-    def verificar_inimigo_perigoso(self):
-        """Verifica periodicamente se há inimigo perigoso próximo"""
+    def verificar_party(self):
+        """Verifica se está em party e conta membros vivos"""
+        if not self.config.usar_party_system:
+            return False
+        
+        tempo_atual = time.time()
+        # Verifica a cada 5 segundos
+        if tempo_atual - self.ultima_verificacao_party < 5.0:
+            return self.em_party
+        
+        self.ultima_verificacao_party = tempo_atual
+        
+        try:
+            import cv2
+            
+            # Captura região da UI de party
+            regiao = self.config.regiao_party_ui
+            party_ui = self.adb.capturar_regiao(
+                regiao['x'], regiao['y'],
+                regiao['width'], regiao['height']
+            )
+            
+            if party_ui is None:
+                return False
+            
+            # Converte para análise
+            img = np.array(party_ui)
+            
+            # Detecta barras de vida verdes (membros vivos)
+            hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+            
+            # Range para verde (barras de vida)
+            lower_green = np.array([40, 40, 40])
+            upper_green = np.array([80, 255, 255])
+            mask = cv2.inRange(hsv, lower_green, upper_green)
+            
+            # Conta barras de vida (aproximação: área de pixels verdes)
+            pixels_verdes = np.sum(mask > 0)
+            
+            # Se tem pixels verdes significativos, está em party
+            if pixels_verdes > 500:  # Threshold ajustável
+                self.em_party = True
+                # Estima número de membros (cada barra ~2000 pixels)
+                self.membros_party_vivos = max(1, pixels_verdes // 2000)
+                return True
+            else:
+                self.em_party = False
+                self.membros_party_vivos = 0
+                return False
+        except Exception:
+            return False
+    
+    def usar_buffs(self):
+        """Usa buffs automaticamente baseado em intervalo"""
+        if not self.config.auto_buff:
+            return
+        
+        tempo_atual = time.time()
+        
+        for buff in self.config.posicoes_buffs:
+            nome = buff['nome']
+            intervalo = buff['intervalo']
+            
+            # Verifica se já passou tempo suficiente desde último uso
+            ultimo_uso = self.ultimos_buffs.get(nome, 0)
+            
+            if tempo_atual - ultimo_uso >= intervalo:
+                # Usa o buff
+                self.adb.tap(buff['x'], buff['y'])
+                self.ultimos_buffs[nome] = tempo_atual
+                self.stats['buffs_usados'] += 1
+                print(f"  ✨ Buff: {nome}")
+                time.sleep(0.3)
+    
+    def verificar_skill_em_cooldown(self, skill_index):
+        """Verifica se uma skill está em cooldown visualmente"""
+        if not self.config.detectar_cooldown_skills:
+            return False
+        
+        try:
+            if skill_index >= len(self.config.posicoes_skills):
+                return False
+            
+            skill = self.config.posicoes_skills[skill_index]
+            x, y = skill['x'], skill['y']
+            
+            # Captura cor do pixel central da skill
+            cor = self.adb.get_pixel_color(x, y)
+            
+            if cor is None:
+                return False
+            
+            # Verifica se a cor é escura (indicando cooldown)
+            cor_cooldown = np.array(self.config.cor_cooldown_skill)
+            tolerancia = self.config.tolerancia_cooldown
+            
+            # Se pixel está escuro = skill em cooldown
+            diferenca = np.abs(np.array(cor[:3]) - cor_cooldown)
+            em_cooldown = np.all(diferenca <= tolerancia)
+            
+            return em_cooldown
+        except Exception:
+            return False
+    
+    def usar_teleporte_emergencia(self, motivo="vida crítica"):
+        """Usa teleporte de emergência em situação crítica
+        
+        Args:
+            motivo (str): Razão do teleporte para logging
+        
+        Returns:
+            bool: True se teleportou com sucesso, False caso contrário
+        """
+        if not self.config.usar_teleporte_emergencia:
+            return False
+        
+        tempo_atual = time.time()
+        
+        # Verifica se está em cooldown
+        if self.em_cooldown_teleporte:
+            print(f"  ⏳ Teleporte em cooldown, não pode usar agora")
+            return False
+        
+        # Verifica intervalo mínimo entre teleportes
+        if tempo_atual - self.ultimo_teleporte < self.config.intervalo_entre_teleportes:
+            tempo_restante = int(self.config.intervalo_entre_teleportes - (tempo_atual - self.ultimo_teleporte))
+            print(f"  ⏳ Aguardar {tempo_restante}s antes de teleportar novamente")
+            return False
+        
+        # Tenta usar potions antes de teleportar (última chance)
+        if self.config.tentar_potion_antes_tp:
+            print(f"  🧪 Tentando potions de emergência antes de TP...")
+            for i in range(self.config.max_potions_antes_tp):
+                self.usar_potion()
+                time.sleep(0.2)
+            
+            # Recheca vida após potions
+            try:
+                vida_apos_potion = self.detectar_vida_atual()
+                if vida_apos_potion and vida_apos_potion > self.config.threshold_hp_teleporte:
+                    print(f"  ✅ Vida recuperada para {vida_apos_potion}%, cancelando TP")
+                    return False
+            except Exception:
+                pass
+        
+        print(f"\n🚨 TELEPORTE DE EMERGÊNCIA! Motivo: {motivo}")
+        
+        # Envia notificação crítica
+        if self.config.notificar_teleporte:
+            self.enviar_notificacao(
+                "🚨 TELEPORTE DE EMERGÊNCIA",
+                f"Bot usou teleporte! Motivo: {motivo}\nLocalização salva."
+            )
+        
+        # Clica no botão de teleporte
+        pos = self.config.posicao_botao_teleporte
+        self.adb.tap(pos['x'], pos['y'])
+        print(f"  📍 Teleportando...")
+        
+        # Aguarda confirmação (alguns jogos tem popup)
+        time.sleep(1.0)
+        
+        # Clica no centro da tela para confirmar (se houver popup)
+        self.adb.tap(self.config.screen_width // 2, self.config.screen_height // 2)
+        
+        # Aguarda carregar área segura
+        print(f"  ⏳ Aguardando {self.config.tempo_espera_pos_teleporte}s (loading safe zone)...")
+        time.sleep(self.config.tempo_espera_pos_teleporte)
+        
+        # Atualiza estado
+        self.ultimo_teleporte = tempo_atual
+        self.teleportes_realizados += 1
+        self.stats['teleportes_usados'] += 1
+        self.em_cooldown_teleporte = True
+        
+        # Atualiza posição virtual para safe zone
+        safe = self.config.posicao_safe_zone
+        self.pos_x = safe['x']
+        self.pos_y = safe['y']
+        
+        # Agenda fim do cooldown
+        threading.Timer(
+            self.config.cooldown_teleporte,
+            lambda: setattr(self, 'em_cooldown_teleporte', False)
+        ).start()
+        
+        print(f"  ✅ Teleporte realizado! Total: {self.teleportes_realizados}")
+        print(f"  ⏰ Cooldown: {self.config.cooldown_teleporte}s")
+        
+        # Usa potions e buffs após teleporte
+        time.sleep(2)
+        self.usar_potion()
+        self.usar_buffs()
+        
+        return True
+    
+    def verificar_necessidade_teleporte(self):
+        """Verifica se deve usar teleporte de emergência
+        
+        Returns:
+            tuple: (deve_teleportar, motivo)
+        """
+        if not self.config.usar_teleporte_emergencia:
+            return False, None
+        
+        # 1. Checa vida crítica
+        try:
+            vida = self.detectar_vida_atual()
+            if vida and vida <= self.config.threshold_hp_teleporte:
+                return True, f"vida crítica ({vida}%)"
+        except Exception:
+            pass
+        
+        # 2. Checa se está sendo atacado por boss com vida baixa
+        if self.config.teleportar_em_boss:
+            try:
+                vida = self.detectar_vida_atual()
+                if vida and vida <= 30:  # 30% com boss
+                    nome_inimigo = self.detectar_nome_inimigo()
+                    if nome_inimigo:
+                        return True, f"boss {nome_inimigo} + vida baixa ({vida}%)"
+            except Exception:
+                pass
+        
+        # 3. Checa mortes consecutivas na mesma área
+        if self.config.teleportar_multiplas_mortes:
+            grid_x = int(self.pos_x // 10) * 10
+            grid_y = int(self.pos_y // 10) * 10
+            coord = (grid_x, grid_y)
+            
+            mortes_area = self.mortes_consecutivas_area.get(coord, 0)
+            if mortes_area >= 2:
+                return True, f"morreu 2x em ({grid_x},{grid_y})"
+        
+        return False, None
+    
+    def detectar_loot_raro(self):
+        """Detecta presença de loot raro/valioso na tela"""
+        if not self.config.priorizar_loot_raro:
+            return None
+        
+        try:
+            import cv2
+            
+            # Captura região de scan
+            regiao = self.config.regiao_scan_loot
+            area = self.adb.capturar_regiao(
+                regiao['x'], regiao['y'],
+                regiao['width'], regiao['height']
+            )
+            
+            if area is None:
+                return None
+            
+            img = np.array(area)
+            
+            # Procura por cada cor de loot raro
+            for cor_raro in self.config.cores_loot_raro:
+                cor_alvo = np.array(cor_raro)
+                tolerancia = 30
+                
+                lower = np.clip(cor_alvo - tolerancia, 0, 255)
+                upper = np.clip(cor_alvo + tolerancia, 0, 255)
+                
+                mask = cv2.inRange(img, lower, upper)
+                
+                # Se detectou pixels da cor rara
+                if np.sum(mask > 0) > 100:  # Threshold
+                    # Encontra posição aproximada
+                    coords = np.column_stack(np.where(mask > 0))
+                    if len(coords) > 0:
+                        # Centro de massa dos pixels
+                        centro_y, centro_x = coords.mean(axis=0)
+                        
+                        # Converte para coordenadas absolutas
+                        abs_x = regiao['x'] + centro_x
+                        abs_y = regiao['y'] + centro_y
+                        
+                        return {
+                            'x': int(abs_x),
+                            'y': int(abs_y),
+                            'cor': cor_raro,
+                            'tipo': 'legendary' if cor_raro == [255, 215, 0] else 'epic' if cor_raro == [147, 112, 219] else 'rare'
+                        }
+            
+            return None
+        except Exception:
+            return None
+    
+    def usar_teleporte_emergencia(self, motivo="vida crítica"):
+        """Usa teleporte de emergência em situação crítica
+        
+        Args:
+            motivo (str): Razão do teleporte para logging
+        
+        Returns:
+            bool: True se teleportou com sucesso, False caso contrário
+        """
+        if not self.config.usar_teleporte_emergencia:
+            return False
+        
+        tempo_atual = time.time()
+        
+        # Verifica se está em cooldown
+        if self.em_cooldown_teleporte:
+            print(f"  ⏳ Teleporte em cooldown, não pode usar agora")
+            return False
+        
+        # Verifica intervalo mínimo entre teleportes
+        if tempo_atual - self.ultimo_teleporte < self.config.intervalo_entre_teleportes:
+            tempo_restante = int(self.config.intervalo_entre_teleportes - (tempo_atual - self.ultimo_teleporte))
+            print(f"  ⏳ Aguardar {tempo_restante}s antes de teleportar novamente")
+            return False
+        
+        # Tenta usar potions antes de teleportar (última chance)
+        if self.config.tentar_potion_antes_tp:
+            print(f"  🧪 Tentando potions de emergência antes de TP...")
+            for i in range(self.config.max_potions_antes_tp):
+                self.usar_potion()
+                time.sleep(0.2)
+            
+            # Recheca vida após potions
+            try:
+                vida_apos_potion = self.detectar_vida_atual()
+                if vida_apos_potion and vida_apos_potion > self.config.threshold_hp_teleporte:
+                    print(f"  ✅ Vida recuperada para {vida_apos_potion}%, cancelando TP")
+                    return False
+            except Exception:
+                pass
+        
+        print(f"\n🚨 TELEPORTE DE EMERGÊNCIA! Motivo: {motivo}")
+        
+        # Envia notificação crítica
+        if self.config.notificar_teleporte:
+            self.enviar_notificacao(
+                "🚨 TELEPORTE DE EMERGÊNCIA",
+                f"Bot usou teleporte! Motivo: {motivo}\nLocalização salva."
+            )
+        
+        # Clica no botão de teleporte
+        pos = self.config.posicao_botao_teleporte
+        self.adb.tap(pos['x'], pos['y'])
+        print(f"  📍 Teleportando...")
+        
+        # Aguarda confirmação (alguns jogos tem popup)
+        time.sleep(1.0)
+        
+        # Clica no centro da tela para confirmar (se houver popup)
+        self.adb.tap(self.config.screen_width // 2, self.config.screen_height // 2)
+        
+        # Aguarda carregar área segura
+        print(f"  ⏳ Aguardando {self.config.tempo_espera_pos_teleporte}s (loading safe zone)...")
+        time.sleep(self.config.tempo_espera_pos_teleporte)
+        
+        # Atualiza estado
+        self.ultimo_teleporte = tempo_atual
+        self.teleportes_realizados += 1
+        self.em_cooldown_teleporte = True
+        
+        # Atualiza posição virtual para safe zone
+        safe = self.config.posicao_safe_zone
+        self.pos_x = safe['x']
+        self.pos_y = safe['y']
+        
+        # Agenda fim do cooldown
+        import threading
+        threading.Timer(
+            self.config.cooldown_teleporte,
+            lambda: setattr(self, 'em_cooldown_teleporte', False)
+        ).start()
+        
+        print(f"  ✅ Teleporte realizado! Total: {self.teleportes_realizados}")
+        print(f"  ⏰ Cooldown: {self.config.cooldown_teleporte}s")
+        
+        # Usa potions e buffs após teleporte
+        time.sleep(2)
+        self.usar_potion()
+        self.usar_buffs()
+        
+        return True
+    
+    def verificar_necessidade_teleporte(self):
+        """Verifica se deve usar teleporte de emergência
+        
+        Returns:
+            tuple: (deve_teleportar, motivo)
+        """
+        if not self.config.usar_teleporte_emergencia:
+            return False, None
+        
+        # 1. Checa vida crítica
+        try:
+            vida = self.detectar_vida_atual()
+            if vida and vida <= self.config.threshold_hp_teleporte:
+                return True, f"vida crítica ({vida}%)"
+        except Exception:
+            pass
+        
+        # 2. Checa se está sendo atacado por boss com vida baixa
+        if self.config.teleportar_em_boss:
+            try:
+                vida = self.detectar_vida_atual()
+                if vida and vida <= 30:  # 30% com boss
+                    nome_inimigo = self.detectar_nome_inimigo()
+                    if nome_inimigo:
+                        return True, f"boss {nome_inimigo} + vida baixa ({vida}%)"
+            except Exception:
+                pass
+        
+        # 3. Checa mortes consecutivas na mesma área
+        if self.config.teleportar_multiplas_mortes:
+            grid_x = int(self.pos_x // 10) * 10
+            grid_y = int(self.pos_y // 10) * 10
+            coord = (grid_x, grid_y)
+            
+            mortes_area = self.mortes_consecutivas_area.get(coord, 0)
+            if mortes_area >= 2:
+                return True, f"morreu 2x em ({grid_x},{grid_y})"
+        
+        return False, None
+    
+    def verificar_inimigo_perigoso(self, force=False, durante_combate=False):
+        """Verifica periodicamente se há inimigo perigoso próximo.
+
+        Args:
+            force (bool): Ignora o intervalo e faz a verificação imediatamente.
+            durante_combate (bool): Usa um intervalo menor quando em combate.
+        """
         if not self.config.detectar_inimigos_perigosos:
             return False
-        
-        # Verifica apenas em intervalos
+
+        # Determina o intervalo a utilizar
+        intervalo_padrao = getattr(self.config, 'intervalo_verificacao_inimigo', 1.0)
+        intervalo_combate = getattr(self.config, 'intervalo_verificacao_inimigo_combate', 0.6)
+        intervalo_usado = intervalo_combate if durante_combate else intervalo_padrao
+
+        # Verifica apenas em intervalos, a menos que forçado
         tempo_atual = time.time()
-        if tempo_atual - self.ultima_verificacao_inimigo < self.config.intervalo_verificacao_inimigo:
+        if not force and (tempo_atual - self.ultima_verificacao_inimigo < intervalo_usado):
             return False
-        
+
         self.ultima_verificacao_inimigo = tempo_atual
-        
+
         # Detecta nome do inimigo
         nome_inimigo = self.detectar_nome_inimigo()
-        
+
         if nome_inimigo:
             print(f"\n🚨 ALERTA: {nome_inimigo} detectado!")
-            
+
             # Notificação específica com nome do inimigo
             self.enviar_notificacao(
                 f"🚨 {nome_inimigo} DETECTADO!",
                 f"Inimigo perigoso '{nome_inimigo}' está próximo! Fugindo agora..."
             )
-            
+
+            # Fugir imediatamente
             self.fugir_de_inimigo_perigoso()
             return True
-        
+
         return False
     
     def limpar_imagens_antigas(self):
@@ -1299,8 +1888,58 @@ class BotUltraADB:
             
             if stats_ml.get('melhor_horario'):
                 hora = stats_ml['melhor_horario']['hora']
-                exp_min = stats_ml['melhor_horario']['exp_min']
-                print(f"  ⏰ Melhor horário: {hora}:00 ({exp_min:.1f} exp/min)")
+    
+    def atualizar_parametros_ml(self):
+        """Atualiza parâmetros do bot usando otimização por ML"""
+        if not self.ml_avancado:
+            return
+        
+        print("\n🔧 Otimizando parâmetros com ML...")
+        
+        # Registra sessão atual
+        tempo_decorrido = time.time() - self.stats['tempo_inicio']
+        exp_ganho = self.stats.get('exp_total_ganho', 0)  # EXP real detectado
+        if exp_ganho == 0:
+            exp_ganho = self.stats.get('xp_estimado', 0)  # Fallback para estimado
+        mortes = self.stats['mortes']
+        
+        # Salva configuração atual com resultados
+        self.ml_avancado.registrar_sessao_parametros(
+            self.config.__dict__,
+            exp_ganho,
+            tempo_decorrido,
+            mortes
+        )
+        
+        # Obtém parâmetros otimizados
+        params_otimizados = self.ml_avancado.otimizar_parametros(self.stats)
+        
+        if params_otimizados:
+            print(f"  ✓ Parâmetros otimizados encontrados:")
+            
+            # Aplica parâmetros otimizados
+            for key, valor in params_otimizados.items():
+                if hasattr(self.config, key):
+                    valor_antigo = getattr(self.config, key)
+                    setattr(self.config, key, valor)
+                    
+                    # Mostra apenas se houver mudança significativa
+                    if key.startswith('threshold') and abs(valor - valor_antigo) >= 5:
+                        print(f"    • {key}: {valor_antigo} → {valor}")
+                    elif key.startswith('intervalo') and abs(valor - valor_antigo) >= 500:
+                        print(f"    • {key}: {valor_antigo} → {valor}")
+                    elif isinstance(valor, bool) and valor != valor_antigo:
+                        print(f"    • {key}: {valor_antigo} → {valor}")
+                    elif key == 'raio_movimento_circular' and abs(valor - valor_antigo) >= 0.1:
+                        print(f"    • {key}: {valor_antigo:.1f} → {valor:.1f}")
+            
+            # Salva configuração atualizada
+            self.config.salvar()
+            self.ml_avancado.salvar_dados()
+            
+            print(f"  💾 Configuração otimizada salva!")
+        else:
+            print(f"  ⏳ Aguardando mais dados (mínimo 5 sessões)")
     
     def exportar_metricas(self):
         """Exporta métricas atuais para arquivo JSON"""
@@ -1438,10 +2077,26 @@ class BotUltraADB:
             if proporcao > 0.3:
                 print("  💀 MORTE!")
                 self.stats['mortes'] += 1
+                
+                # Registra morte consecutiva na área atual
+                grid_x = int(self.pos_x // 10) * 10
+                grid_y = int(self.pos_y // 10) * 10
+                coord = (grid_x, grid_y)
+                self.mortes_consecutivas_area[coord] = self.mortes_consecutivas_area.get(coord, 0) + 1
+                
+                print(f"  📍 Mortes nesta área ({grid_x},{grid_y}): {self.mortes_consecutivas_area[coord]}")
+                
                 # Tap no centro para respawn
                 time.sleep(2)
                 self.adb.tap(self.config.screen_width // 2, self.config.screen_height // 2)
                 time.sleep(3)
+                
+                # Após respawn, verifica se deve teleportar
+                if self.config.teleportar_multiplas_mortes and self.mortes_consecutivas_area[coord] >= 2:
+                    print(f"  ⚠️ Muitas mortes nesta área! Preparando teleporte...")
+                    time.sleep(2)
+                    self.usar_teleporte_emergencia(f"mortes consecutivas em ({grid_x},{grid_y})")
+                
                 return True
         except:
             pass
@@ -1601,11 +2256,42 @@ class BotUltraADB:
         # Treina modelos ML periodicamente
         self.treinar_modelos_ml()
         
+        # Atualiza parâmetros baseado em ML (a cada 15 minutos)
+        if tempo_atual - getattr(self, 'ultima_otimizacao_params', 0) >= 900:  # 15 min
+            self.atualizar_parametros_ml()
+            self.ultima_otimizacao_params = tempo_atual
+        
         # Verifica morte
         if self.verificar_morte():
             return
         
-        # Potion
+        # === NOVOS SISTEMAS ===
+        # Verifica party e ajusta comportamento
+        self.verificar_party()
+        
+        # Usa buffs automaticamente
+        self.usar_buffs()
+        
+        # Verifica loot raro prioritário
+        loot_raro = self.detectar_loot_raro()
+        if loot_raro:
+            print(f"\n💎 LOOT {loot_raro['tipo'].upper()} detectado em ({loot_raro['x']}, {loot_raro['y']})!")
+            # Vai direto para o loot raro
+            dx = loot_raro['x'] - self.config.screen_width // 2
+            dy = loot_raro['y'] - self.config.screen_height // 2
+            angulo_loot = np.arctan2(dy, dx)
+            self.mover_joystick(angulo_loot, intensidade=1.0, continuo=True)
+            time.sleep(1.5)
+            self.coletar_loot()
+            return
+        # === FIM NOVOS SISTEMAS ===
+        
+        # Ajusta threshold de HP baseado em party
+        threshold_hp_atual = self.config.threshold_hp
+        if self.em_party and self.config.modo_agressivo_em_party:
+            threshold_hp_atual = self.config.threshold_hp_em_party
+        
+        # Potion (com threshold ajustado)
         self.usar_potion()
         
         # Anti-AFK
@@ -1655,7 +2341,8 @@ class BotUltraADB:
                     print(f"\n🤖 ML Avançado: Indo para ({x_dest}, {y_dest}) - {densidade:.1f} exp/min")
         
         # VERIFICAÇÃO DE INIMIGO PERIGOSO (prioridade máxima!)
-        if self.verificar_inimigo_perigoso():
+        # Faz uma verificação imediata (force) aqui para detectar cedo
+        if self.verificar_inimigo_perigoso(force=True):
             # Se detectou e fugiu, pula resto do ciclo
             return
         
@@ -1663,6 +2350,25 @@ class BotUltraADB:
         if not area_recomendada and self.config.usar_minimapa:
             info_minimapa = self.analisar_minimapa()
             if info_minimapa:
+                # Verifica se são poucos inimigos - faz movimento circular
+                if info_minimapa.get('poucos_inimigos', False):
+                    print(f"\n⚠️  Poucos inimigos detectados ({info_minimapa['total_inimigos']})")
+                    print(f"  🔄 Executando movimento circular para agregar inimigos...")
+                    
+                    # Reseta câmera antes
+                    self.resetar_camera()
+                    time.sleep(0.3)
+                    
+                    # Faz movimento circular
+                    self.fazer_movimento_circular()
+                    
+                    # Usa skills após circular para garantir aggro
+                    self.usar_skills_rotacao()
+                    
+                    # Pula resto do ciclo para reanalisar após agregação
+                    return
+                
+                # Quantidade suficiente de inimigos - vai direto
                 melhor_angulo = info_minimapa['angulo']
                 # Se detectou inimigos, movimento contínuo até chegar lá
                 movimento_continuo = True
@@ -1681,6 +2387,39 @@ class BotUltraADB:
                     # Exploração com intensidade reduzida (mais cauteloso)
                     intensidade_movimento = 0.6
                     print(f"\n🔍 Explorando: {np.degrees(melhor_angulo):.0f}°")
+
+                # --- Checagem de emergência: teleporte > recuo > potion ---
+                try:
+                    vida_atual = self.detectar_vida_atual()
+                except Exception:
+                    vida_atual = None
+
+                # PRIORIDADE MÁXIMA: Verifica se precisa teleportar
+                deve_teleportar, motivo_tp = self.verificar_necessidade_teleporte()
+                if deve_teleportar:
+                    if self.usar_teleporte_emergencia(motivo_tp):
+                        # Teleportou com sucesso, pula resto do ciclo
+                        return
+
+                # Se não teleportou, tenta potion e recuo
+                if vida_atual is not None and vida_atual <= self.config.threshold_hp:
+                    print(f"\n⚠️ Vida baixa detectada: {vida_atual}% <= {self.config.threshold_hp}% — tentando potion e recuar")
+                    # Tenta usar potion
+                    self.usar_potion()
+                    time.sleep(0.5)
+                    # Recheca vida
+                    try:
+                        vida_depois = self.detectar_vida_atual()
+                    except Exception:
+                        vida_depois = None
+
+                    if vida_depois is None or vida_depois <= self.config.threshold_hp:
+                        # Movimento de recuo (oposto ao ângulo planejado)
+                        angulo_recuo = (melhor_angulo + np.pi) % (2 * np.pi)
+                        print(f"  🏃 Recuando para segurança (ângulo {np.degrees(angulo_recuo):.0f}°)")
+                        self.mover_joystick(angulo_recuo, intensidade=1.0, continuo=True)
+                        # Pula o restante do ciclo para priorizar fuga/curas
+                        return
         else:
             # Usa ML/exploração se minimapa desabilitado
             if self.modelo_treinado and len(self.X_train) >= 15:
@@ -1718,9 +2457,14 @@ class BotUltraADB:
         em_combate = self.detectar_combate(threshold=threshold_combate)
         
         if em_combate:
-            print("  ⚔️  COMBATE!")
+            # Mostra status de party se estiver em grupo
+            party_info = f" [PARTY: {self.membros_party_vivos} vivos]" if self.em_party else ""
+            print(f"  ⚔️  COMBATE!{party_info}")
             self.stats['combates'] += 1
             self.stats['xp_estimado'] += 100
+            
+            # Usa buffs no início do combate
+            self.usar_buffs()
             
             # Detecta vida ANTES do combate
             if self.config.monitorar_dificuldade:
@@ -1767,6 +2511,20 @@ class BotUltraADB:
             
             for _ in range(3):
                 self.usar_skills_rotacao()
+                
+                # Checagem rápida durante combate para inimigos perigosos
+                try:
+                    self.verificar_inimigo_perigoso(durante_combate=True)
+                except Exception:
+                    pass
+                
+                # Checagem de teleporte durante combate
+                deve_tp, motivo = self.verificar_necessidade_teleporte()
+                if deve_tp:
+                    print(f"  🚨 Situação crítica durante combate!")
+                    if self.usar_teleporte_emergencia(motivo):
+                        return  # Sai do combate após TP
+
                 if self.skills_ultima_rotacao:
                     skills_combo.extend(self.skills_ultima_rotacao)
                 time.sleep(delay_combate)
@@ -1945,6 +2703,24 @@ class BotUltraADB:
                 print(f"    Faltam: {previsao_level['combates_necessarios']:,} combates")
                 print(f"    ⏱️  Tempo Estimado: {previsao_level['tempo_restante_formatado']}")
                 print(f"    📅 Data Prevista: {previsao_level['data_estimada']}")
+        
+        # Mostra estatísticas de otimização ML
+        if self.ml_avancado and len(self.ml_avancado.historico_parametros) >= 5:
+            print(f"\n  🔧 OTIMIZAÇÃO ML:")
+            relatorio = self.ml_avancado.obter_relatorio_parametros()
+            print(f"    Sessões: {relatorio['sessoes_registradas']}")
+            print(f"    Média EXP/hora: {relatorio['media_exp_hora']:,.0f}")
+            print(f"    Média Mortes: {relatorio['media_mortes']:.1f}")
+            
+            if relatorio.get('melhores_parametros'):
+                print(f"\n  🏆 MELHORES PARÂMETROS:")
+                for key, valor in relatorio['melhores_parametros'].items():
+                    if isinstance(valor, bool):
+                        print(f"    • {key}: {'✓' if valor else '✗'}")
+                    elif isinstance(valor, float):
+                        print(f"    • {key}: {valor:.1f}")
+                    else:
+                        print(f"    • {key}: {valor}")
 
 def menu():
     """Menu principal"""
@@ -1956,7 +2732,8 @@ def menu():
     print("  2. Treinar por N ciclos")
     print("  3. Calibrar joystick/skills (manual)")
     print("  4. Ver estatísticas")
-    print("  5. Sair")
+    print("  5. Relatório de Otimização ML")
+    print("  6. Sair")
     print()
     
     escolha = input("Escolha: ").strip()
@@ -1992,6 +2769,49 @@ def menu():
         menu()
     
     elif escolha == '5':
+        bot = BotUltraADB()
+        if len(bot.ml_avancado.historico_parametros) >= 1:
+            relatorio = bot.ml_avancado.obter_relatorio_parametros()
+            
+            print("\n" + "="*60)
+            print("   🔧 RELATÓRIO DE OTIMIZAÇÃO ML")
+            print("="*60)
+            print(f"\n📊 Sessões Registradas: {relatorio['sessoes_registradas']}")
+            print(f"📈 Média EXP/hora: {relatorio['media_exp_hora']:,.0f}")
+            print(f"💀 Média Mortes/sessão: {relatorio['media_mortes']:.1f}")
+            
+            if relatorio.get('top_5_sessoes'):
+                print(f"\n🏆 TOP 5 MELHORES SESSÕES:")
+                for i, sessao in enumerate(relatorio['top_5_sessoes'], 1):
+                    print(f"\n  #{i}")
+                    print(f"    EXP/hora: {sessao['exp_hora']:,.0f}")
+                    print(f"    Mortes: {sessao['mortes']}")
+                    print(f"    Eficiência: {sessao['eficiencia']:,.1f}")
+                    print(f"    Parâmetros:")
+                    for key, val in sessao['params'].items():
+                        if isinstance(val, bool):
+                            print(f"      • {key}: {'✓' if val else '✗'}")
+                        elif isinstance(val, float):
+                            print(f"      • {key}: {val:.1f}")
+                        else:
+                            print(f"      • {key}: {val}")
+            
+            if relatorio.get('melhores_parametros'):
+                print(f"\n🎯 PARÂMETROS RECOMENDADOS:")
+                for key, valor in relatorio['melhores_parametros'].items():
+                    if isinstance(valor, bool):
+                        print(f"  • {key}: {'✓' if valor else '✗'}")
+                    elif isinstance(valor, float):
+                        print(f"  • {key}: {valor:.1f}")
+                    else:
+                        print(f"  • {key}: {valor}")
+        else:
+            print("\n❌ Nenhum dado de otimização ainda! Execute o bot primeiro.")
+        
+        input("\nPressione ENTER...")
+        menu()
+    
+    elif escolha == '6':
         print("\nAté logo!")
         return
     
