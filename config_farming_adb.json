@@ -2,44 +2,41 @@
   "adb_device": "192.168.240.112:5555",
   "screen_width": 1080,
   "screen_height": 2400,
-  "joystick_centro_x": 288,
-  "joystick_centro_y": 868,
-  "joystick_raio": 73,
+  "joystick_centro_x": 160,
+  "joystick_centro_y": 2100,
+  "joystick_raio": 80,
   "velocidade_movimento": 1500,
   "intervalo_entre_acoes": 500,
   "usar_skills_automaticas": true,
   "intervalo_skills": 3000,
   "posicoes_skills": [
     {
-      "nome": "Skill 1",
-      "x": 1632,
-      "y": 744
+      "x": 920,
+      "y": 1800
     },
     {
-      "nome": "Skill 2",
-      "x": 1728,
-      "y": 784
+      "x": 970,
+      "y": 1900
     },
     {
-      "nome": "Skill 3",
-      "x": 1536,
-      "y": 784
+      "x": 860,
+      "y": 1900
     }
   ],
   "auto_loot": true,
   "posicao_botao_loot": {
-    "x": 960,
-    "y": 595
+    "x": 540,
+    "y": 1440
   },
   "auto_potion": true,
   "threshold_hp": 0.5,
   "posicao_hp_bar": {
-    "x": 192,
-    "y": 49
+    "x": 110,
+    "y": 120
   },
   "posicao_botao_potion": {
-    "x": 288,
-    "y": 893
+    "x": 160,
+    "y": 2160
   },
   "posicao_xp_bar": {
     "x": 140,
@@ -49,10 +46,10 @@
   },
   "usar_ocr_xp": true,
   "posicao_minimapa": {
-    "x": 50,
-    "y": 50,
-    "width": 200,
-    "height": 200
+    "x": 120,
+    "y": 150,
+    "width": 220,
+    "height": 220
   },
   "usar_minimapa": true,
   "cor_inimigo_minimapa": [
@@ -89,13 +86,15 @@
   "intervalo_anti_afk": 60,
   "auto_reset_camera": true,
   "posicao_botao_camera": {
-    "x": 50,
+    "x": 192,
     "y": 150
   },
-  "intervalo_reset_camera": 1,
+  "intervalo_reset_camera": 10,
   "salvar_imagens_treino": true,
   "pasta_imagens_treino": "treino_ml",
   "max_imagens_treino": 100,
+  "debug_minimap": false,
+  "pasta_debug_minimap": "debug_minimap",
   "modo_turbo": true,
   "skip_areas_vazias": true,
   "priorizar_combate": true,
@@ -106,10 +105,10 @@
   "intervalo_salvar_metricas": 5,
   "usar_detector_exp": true,
   "regiao_exp": {
-    "x": 576,
-    "y": 150,
-    "largura": 768,
-    "altura": 200
+    "x": 672,
+    "y": 397,
+    "largura": 576,
+    "altura": 198
   },
   "exp_necessario_level": 1000000,
   "exp_atual_level": 0,

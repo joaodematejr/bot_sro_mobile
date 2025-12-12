@@ -70,7 +70,7 @@ class ConfiguracaoADB:
             'usar_ocr_xp': True,
             
             # Minimapa (para detecção de inimigos)
-            'posicao_minimapa': {'x': 50, 'y': 50, 'width': 200, 'height': 200},
+            'posicao_minimapa': {'x': 120, 'y': 150, 'width': 220, 'height': 220},
             'usar_minimapa': True,
             'cor_inimigo_minimapa': [255, 0, 0],  # Vermelho (ajuste conforme necessário)
             
@@ -100,6 +100,9 @@ class ConfiguracaoADB:
             'salvar_imagens_treino': True,
             'pasta_imagens_treino': 'treino_ml',
             'max_imagens_treino': 100,
+            # Debug minimapa
+            'debug_minimap': False,
+            'pasta_debug_minimap': 'debug_minimap',
             
             # Otimizações de velocidade
             'modo_turbo': True,  # Reduz delays entre ações
@@ -742,6 +745,31 @@ class BotUltraADB:
             melhor_setor = max(setores.items(), key=lambda x: x[1]['count'])
             total_inimigos = sum(s['count'] for s in setores.values())
             
+            # --- Debug: salva imagens anotadas do minimapa e heatmap ---
+            try:
+                if getattr(self.config, 'debug_minimap', False):
+                    pasta_debug = getattr(self.config, 'pasta_debug_minimap', 'debug_minimap')
+                    os.makedirs(pasta_debug, exist_ok=True)
+                    ts = int(time.time())
+
+                    # Normaliza máscara e cria heatmap colorido
+                    mask_norm = cv2.normalize(mask, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+                    heat = cv2.applyColorMap(mask_norm, cv2.COLORMAP_JET)
+
+                    # Overlay semi-transparente com a região do minimapa
+                    minimapa_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+                    overlay = cv2.addWeighted(heat, 0.6, minimapa_bgr, 0.4, 0)
+
+                    caminho_annot = os.path.join(pasta_debug, f"minimap_{ts}.png")
+                    caminho_heat = os.path.join(pasta_debug, f"minimap_{ts}_heat.png")
+                    caminho_mask = os.path.join(pasta_debug, f"minimap_{ts}_mask.png")
+
+                    cv2.imwrite(caminho_annot, overlay)
+                    cv2.imwrite(caminho_heat, heat)
+                    cv2.imwrite(caminho_mask, mask_norm)
+            except Exception:
+                pass
+
             # Retorna info sobre distribuição de inimigos
             # Threshold ajustável baseado em configuração
             threshold_minimo = self.config.threshold_inimigos_minimo if hasattr(self.config, 'threshold_inimigos_minimo') else 10
