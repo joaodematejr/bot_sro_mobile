@@ -1,9 +1,9 @@
 {
   "adb_device": "192.168.240.112:5555",
-  "screen_width": 1080,
-  "screen_height": 2400,
-  "joystick_centro_x": 160,
-  "joystick_centro_y": 2100,
+  "screen_width": 1920,
+  "screen_height": 993,
+  "joystick_centro_x": 240,
+  "joystick_centro_y": 783,
   "joystick_raio": 80,
   "velocidade_movimento": 1500,
   "intervalo_entre_acoes": 500,
@@ -36,10 +36,10 @@
     "y": 1440
   },
   "auto_potion": true,
-  "threshold_hp": 0.5,
+  "threshold_hp": 0,
   "posicao_hp_bar": {
-    "x": 110,
-    "y": 120
+    "x": 263,
+    "y": 46
   },
   "posicao_botao_potion": {
     "x": 160,
@@ -53,8 +53,8 @@
   },
   "usar_ocr_xp": true,
   "posicao_minimapa": {
-    "x": 120,
-    "y": 150,
+    "x": 236,
+    "y": 258,
     "width": 220,
     "height": 220
   },
@@ -90,11 +90,11 @@
     }
   ],
   "anti_afk": true,
-  "intervalo_anti_afk": 60,
+  "intervalo_anti_afk": 2,
   "auto_reset_camera": true,
   "posicao_botao_camera": {
-    "x": 192,
-    "y": 150
+    "x": 63,
+    "y": 144
   },
   "intervalo_reset_camera": 10,
   "salvar_imagens_treino": true,
@@ -110,7 +110,7 @@
   "threshold_inimigos_minimo": 15,
   "usar_movimento_circular": true,
   "threshold_poucos_inimigos": 5,
-  "raio_movimento_circular": 0.8,
+  "raio_movimento_circular": 0,
   "duracao_movimento_circular": 8,
   "velocidade_circular": 1200,
   "segmentos_circulo": 8,
@@ -247,5 +247,10 @@
     "x": 50,
     "y": 50
   },
-  "tempo_espera_pos_teleporte": 10
+  "tempo_espera_pos_teleporte": 10,
+  "janela_xp_leituras": 120,
+  "janela_exp_min_segundos": 300,
+  "habilitar_ab_test": true,
+  "duracao_ab_minutos": 30,
+  "queda_max_percentual": -0.1
 }

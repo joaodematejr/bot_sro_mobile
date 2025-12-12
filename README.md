@@ -200,7 +200,29 @@ Pressione `Ctrl+C` para parar o bot com segurança. As estatísticas serão salv
 
 ## 🎮 Calibração
 
-### Calibrador Interativo
+### 📍 Método Rápido: Visualização de Coordenadas (RECOMENDADO)
+
+**Ative a exibição de coordenadas na tela do dispositivo:**
+
+```bash
+# Ativar visualização de coordenadas (mostra X,Y no topo da tela ao tocar)
+adb -s 192.168.240.112:5555 shell settings put system pointer_location 1
+
+# Agora toque em qualquer lugar do jogo e veja as coordenadas aparecerem!
+# Anote os valores X,Y de cada botão/região
+
+# Desativar quando terminar a calibração
+adb -s 192.168.240.112:5555 shell settings put system pointer_location 0
+```
+
+**Como usar:**
+1. Execute o comando para ativar
+2. Toque em cada botão/região do jogo (joystick, skills, loot, etc.)
+3. As coordenadas aparecem em tempo real no topo da tela
+4. Anote os valores X,Y e atualize `config_farming_adb.json`
+5. Desative quando terminar
+
+### Calibrador Interativo (Alternativo)
 Use o calibrador para encontrar coordenadas precisas:
 
 ```bash

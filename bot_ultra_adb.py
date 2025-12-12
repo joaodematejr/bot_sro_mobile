@@ -509,6 +509,11 @@ class BotUltraADB:
         self.ultimo_movimento_circular = 0  # Timestamp do último movimento circular
         self.movimentos_circulares_realizados = 0  # Contador
         
+        # Cache de Screenshots (Otimização de Performance)
+        self.screenshot_cache = None  # Screenshot atual em cache
+        self.timestamp_screenshot = 0  # Quando foi capturado
+        self.cache_validade = 0.5  # Cache válido por 500ms
+        
         # Stats
         self.stats = {
             'tempo_inicio': time.time(),
@@ -547,6 +552,39 @@ class BotUltraADB:
                 self.stats['xp_atual'] = xp
                 self.stats['historico_xp'].append((time.time(), xp))
                 print(f"✓ XP inicial: {xp:.2f}%")
+    
+    def obter_screenshot_cached(self, force_new=False):
+        """Obtém screenshot do cache ou captura novo se necessário
+        
+        Args:
+            force_new: Força captura de novo screenshot mesmo se cache válido
+            
+        Returns:
+            PIL.Image: Screenshot atual
+        """
+        tempo_atual = time.time()
+        
+        # Verifica se cache é válido
+        cache_valido = (
+            not force_new and 
+            self.screenshot_cache is not None and 
+            (tempo_atual - self.timestamp_screenshot) < self.cache_validade
+        )
+        
+        if cache_valido:
+            return self.screenshot_cache
+        
+        # Captura novo screenshot
+        screenshot = self.adb.screenshot()
+        if screenshot:
+            self.screenshot_cache = screenshot
+            self.timestamp_screenshot = tempo_atual
+        
+        return screenshot
+    
+    def invalidar_cache_screenshot(self):
+        """Invalida o cache de screenshot (usado após ações que mudam a tela)"""
+        self.timestamp_screenshot = 0
     
     def mover_joystick(self, angulo, duracao_ms=None, intensidade=1.0, continuo=False):
         """Move usando o joystick via press-and-drag (como no celular)
@@ -774,8 +812,12 @@ class BotUltraADB:
         except:
             return False
     
-    def ler_xp_atual(self):
-        """Lê a porcentagem de XP atual via OCR"""
+    def ler_xp_atual(self, screenshot=None):
+        """Lê a porcentagem de XP atual via OCR
+        
+        Args:
+            screenshot: Screenshot opcional (usa cache se None)
+        """
         try:
             import pytesseract
             import cv2
@@ -783,14 +825,20 @@ class BotUltraADB:
             return None
         
         try:
-            pos = self.config.posicao_xp_bar
-            regiao = self.adb.capturar_regiao(
-                pos['x'], pos['y'], 
-                pos['width'], pos['height']
-            )
-            
-            if regiao is None:
+            # Usa screenshot em cache se não fornecido
+            if screenshot is None:
+                screenshot = self.obter_screenshot_cached()
+            if screenshot is None:
                 return None
+            
+            # Extrai região da barra de XP do screenshot
+            pos = self.config.posicao_xp_bar
+            regiao = screenshot.crop((
+                pos['x'],
+                pos['y'],
+                pos['x'] + pos['width'],
+                pos['y'] + pos['height']
+            ))
             
             # Converte para numpy/cv2
             img = np.array(regiao)
@@ -816,19 +864,83 @@ class BotUltraADB:
         except Exception:
             return None
     
-    def analisar_minimapa(self):
-        """Analisa o minimapa e encontra a direção com mais inimigos"""
+    def ler_coordenadas_minimapa(self, screenshot=None):
+        """Lê as coordenadas X,Y do personagem exibidas no minimapa
+        
+        Args:
+            screenshot: Screenshot opcional (usa cache se None)
+            
+        Returns:
+            tuple: (x, y) ou None se não conseguir ler
+        """
+        try:
+            import pytesseract
+            
+            # Usa screenshot em cache se não fornecido
+            if screenshot is None:
+                screenshot = self.obter_screenshot_cached()
+            if screenshot is None:
+                return None
+            
+            # Extrai região da coordenada X do screenshot
+            pos_x = screenshot.crop((218, 194, 218+30, 194+15))
+            if pos_x:
+                # Pré-processamento para melhor OCR
+                img_x = np.array(pos_x)
+                gray_x = cv2.cvtColor(img_x, cv2.COLOR_RGB2GRAY)
+                _, thresh_x = cv2.threshold(gray_x, 150, 255, cv2.THRESH_BINARY)
+                
+                # OCR apenas números
+                texto_x = pytesseract.image_to_string(thresh_x, config='--psm 7 digits')
+                coord_x = int(''.join(filter(str.isdigit, texto_x)))
+            else:
+                return None
+            
+            # Extrai região da coordenada Y do screenshot
+            pos_y = screenshot.crop((249, 197, 249+30, 197+15))
+            if pos_y:
+                # Pré-processamento para melhor OCR
+                img_y = np.array(pos_y)
+                gray_y = cv2.cvtColor(img_y, cv2.COLOR_RGB2GRAY)
+                _, thresh_y = cv2.threshold(gray_y, 150, 255, cv2.THRESH_BINARY)
+                
+                # OCR apenas números
+                texto_y = pytesseract.image_to_string(thresh_y, config='--psm 7 digits')
+                coord_y = int(''.join(filter(str.isdigit, texto_y)))
+            else:
+                return None
+            
+            return (coord_x, coord_y)
+            
+        except Exception as e:
+            return None
+    
+    def analisar_minimapa(self, screenshot=None):
+        """Analisa o minimapa e encontra a direção com mais inimigos
+        
+        Args:
+            screenshot: Screenshot opcional (usa cache se None)
+        """
         try:
             import cv2
         except ImportError:
             return None
         
         try:
+            # Usa screenshot em cache se não fornecido
+            if screenshot is None:
+                screenshot = self.obter_screenshot_cached()
+            if screenshot is None:
+                return None
+            
             pos = self.config.posicao_minimapa
-            minimapa = self.adb.capturar_regiao(
-                pos['x'], pos['y'],
-                pos['width'], pos['height']
-            )
+            # Extrai região do minimapa do screenshot
+            minimapa = screenshot.crop((
+                pos['x'], 
+                pos['y'],
+                pos['x'] + pos['width'],
+                pos['y'] + pos['height']
+            ))
             
             if minimapa is None:
                 return None
@@ -949,8 +1061,12 @@ class BotUltraADB:
         except Exception as e:
             return None
     
-    def detectar_nome_inimigo(self):
-        """Detecta o nome do inimigo na tela usando OCR"""
+    def detectar_nome_inimigo(self, screenshot=None):
+        """Detecta o nome do inimigo na tela usando OCR
+        
+        Args:
+            screenshot: Screenshot opcional (usa cache se None)
+        """
         if not self.config.detectar_inimigos_perigosos:
             return None
         
@@ -961,15 +1077,20 @@ class BotUltraADB:
             return None
         
         try:
-            # Captura região onde aparece o nome do inimigo
-            regiao = self.config.regiao_nome_inimigo
-            imagem = self.adb.capturar_regiao(
-                regiao['x'], regiao['y'],
-                regiao['largura'], regiao['altura']
-            )
-            
-            if imagem is None:
+            # Usa screenshot em cache se não fornecido
+            if screenshot is None:
+                screenshot = self.obter_screenshot_cached()
+            if screenshot is None:
                 return None
+            
+            # Extrai região do nome do inimigo do screenshot
+            regiao = self.config.regiao_nome_inimigo
+            imagem = screenshot.crop((
+                regiao['x'],
+                regiao['y'],
+                regiao['x'] + regiao['largura'],
+                regiao['y'] + regiao['altura']
+            ))
             
             # Preprocessamento para OCR
             img_np = np.array(imagem.convert('RGB'))
@@ -1036,8 +1157,12 @@ class BotUltraADB:
         self.fugindo_de_inimigo = False
         return False
     
-    def verificar_party(self):
-        """Verifica se está em party e conta membros vivos"""
+    def verificar_party(self, screenshot=None):
+        """Verifica se está em party e conta membros vivos
+        
+        Args:
+            screenshot: Screenshot opcional (usa cache se None)
+        """
         if not self.config.usar_party_system:
             return False
         
@@ -1051,12 +1176,20 @@ class BotUltraADB:
         try:
             import cv2
             
-            # Captura região da UI de party
+            # Usa screenshot em cache se não fornecido
+            if screenshot is None:
+                screenshot = self.obter_screenshot_cached()
+            if screenshot is None:
+                return False
+            
+            # Extrai região da UI de party do screenshot
             regiao = self.config.regiao_party_ui
-            party_ui = self.adb.capturar_regiao(
-                regiao['x'], regiao['y'],
-                regiao['width'], regiao['height']
-            )
+            party_ui = screenshot.crop((
+                regiao['x'],
+                regiao['y'],
+                regiao['x'] + regiao['width'],
+                regiao['y'] + regiao['height']
+            ))
             
             if party_ui is None:
                 return False
@@ -1272,23 +1405,32 @@ class BotUltraADB:
         
         return False, None
     
-    def detectar_loot_raro(self):
-        """Detecta presença de loot raro/valioso na tela"""
+    def detectar_loot_raro(self, screenshot=None):
+        """Detecta presença de loot raro/valioso na tela
+        
+        Args:
+            screenshot: Screenshot opcional (usa cache se None)
+        """
         if not self.config.priorizar_loot_raro:
             return None
         
         try:
             import cv2
             
-            # Captura região de scan
-            regiao = self.config.regiao_scan_loot
-            area = self.adb.capturar_regiao(
-                regiao['x'], regiao['y'],
-                regiao['width'], regiao['height']
-            )
-            
-            if area is None:
+            # Usa screenshot em cache se não fornecido
+            if screenshot is None:
+                screenshot = self.obter_screenshot_cached()
+            if screenshot is None:
                 return None
+            
+            # Extrai região de scan do screenshot
+            regiao = self.config.regiao_scan_loot
+            area = screenshot.crop((
+                regiao['x'],
+                regiao['y'],
+                regiao['x'] + regiao['width'],
+                regiao['y'] + regiao['height']
+            ))
             
             img = np.array(area)
             
@@ -1718,11 +1860,16 @@ class BotUltraADB:
         
         return None
     
-    def detectar_vida_atual(self):
-        """Detecta % de vida atual do player"""
+    def detectar_vida_atual(self, screenshot=None):
+        """Detecta % de vida atual do player
+        
+        Args:
+            screenshot: Screenshot opcional (usa cache se None)
+        """
         try:
-            # Captura tela
-            screenshot = self.adb.screenshot()
+            # Usa screenshot em cache ou fornecido
+            if screenshot is None:
+                screenshot = self.obter_screenshot_cached()
             if screenshot is None:
                 return 100  # Assume vida cheia se não conseguir detectar
             
@@ -1934,10 +2081,21 @@ class BotUltraADB:
                         print(f"    • {key}: {valor_antigo:.1f} → {valor:.1f}")
             
             # Salva configuração atualizada
-            self.config.salvar()
+            self.config.salvar_config()
             self.ml_avancado.salvar_dados()
             
             print(f"  💾 Configuração otimizada salva!")
+
+            # Valida com A/B e rollback se perder performance
+            print("  🔬 Validando com A/B e rollback se necessário...")
+            try:
+                resultado_ab = self.comparar_ab_e_rollback()
+                if resultado_ab:
+                    print("  ✅ A/B aprovado — mantendo ajustes.")
+                else:
+                    print("  ↩️  Rollback aplicado — ajustes revertidos.")
+            except Exception as e:
+                print(f"  ⚠️  Falha na validação A/B: {e}")
         else:
             print(f"  ⏳ Aguardando mais dados (mínimo 5 sessões)")
     
@@ -2013,18 +2171,131 @@ class BotUltraADB:
         if not self.config.usar_ocr_xp:
             return
         
-        xp = self.ler_xp_atual()
+        # Usa screenshot cache para leitura consistente
+        screenshot = self.obter_screenshot_cached()
+        xp = self.ler_xp_atual(screenshot)
         if xp is not None:
             self.stats['xp_atual'] = xp
             self.stats['historico_xp'].append((time.time(), xp))
             
-            # Mantém apenas últimas 100 leituras
-            if len(self.stats['historico_xp']) > 100:
-                self.stats['historico_xp'] = self.stats['historico_xp'][-100:]
+            # Mantém janela móvel configurável
+            janela = getattr(self.config, 'janela_xp_leituras', 120)  # ~2min se intervalo ~1s
+            if len(self.stats['historico_xp']) > janela:
+                self.stats['historico_xp'] = self.stats['historico_xp'][-janela:]
     
     def calcular_previsao_100(self):
         """Calcula previsão de tempo para atingir 100% de XP"""
         hist = self.stats['historico_xp']
+        # Usa mediana para robustez e média móvel
+        if not hist:
+            return None
+        try:
+            import numpy as np
+            tempos, valores = zip(*hist)
+            valores_np = np.array(valores)
+            # Suavização simples (média móvel)
+            janela_mm = min(10, len(valores_np))
+            media_movel = np.convolve(valores_np, np.ones(janela_mm)/janela_mm, mode='valid')
+            # Derivada aproximada de ganho por segundo
+            if len(media_movel) < 2:
+                return None
+            ganho_seg = (media_movel[-1] - media_movel[0]) / (tempos[len(tempos) - len(media_movel)] - tempos[len(tempos) - len(media_movel) - (len(media_movel)-1)])
+            if ganho_seg <= 0:
+                return None
+            restante = 100.0 - media_movel[-1]
+            previsao_seg = restante / ganho_seg
+            return previsao_seg
+        except Exception:
+            return None
+
+    def exp_por_minuto_suavizado(self):
+        """Calcula exp/min usando janela móvel, mediana e penalização de risco."""
+        try:
+            import numpy as np
+            hist = self.stats['historico_xp']
+            if len(hist) < 10:
+                return None
+            tempos, valores = zip(*hist)
+            # Converter para ganho por minuto baseado em últimas N leituras
+            janela_min = getattr(self.config, 'janela_exp_min_segundos', 300)  # 5min
+            t_final = tempos[-1]
+            relevantes = [(t, v) for (t, v) in hist if t >= t_final - janela_min]
+            if len(relevantes) < 5:
+                return None
+            tempos_r, valores_r = zip(*relevantes)
+            ganho = valores_r[-1] - valores_r[0]
+            dur = tempos_r[-1] - tempos_r[0]
+            if dur <= 0:
+                return None
+            exp_min = (ganho / dur) * 60.0
+            # Penalização por risco (mortes e vida baixa)
+            mortes = self.stats.get('mortes', 0)
+            vida_media = self.stats.get('vida_media', 100)
+            penal_risco = 1.0
+            if mortes > 0:
+                penal_risco *= max(0.7, 1.0 - 0.05 * mortes)
+            if vida_media < 50:
+                penal_risco *= max(0.6, vida_media / 100.0)
+            # Confiança do OCR (se disponível)
+            conf_ocr = self.stats.get('conf_ocr_xp', 0.9)
+            penal_conf = max(0.5, conf_ocr)
+            return exp_min * penal_risco * penal_conf
+        except Exception:
+            return None
+
+    def aplicar_atualizacao_suave(self, valor_atual, sugerido, taxa=0.2, minimo=None, maximo=None):
+        """Aplica atualização suave e limitada para um parâmetro numérico."""
+        novo = valor_atual + taxa * (sugerido - valor_atual)
+        if minimo is not None:
+            novo = max(minimo, novo)
+        if maximo is not None:
+            novo = min(maximo, novo)
+        return novo
+
+    def comparar_ab_e_rollback(self, duracao_min=None, queda_max=None):
+        """Executa A/B entre configuração atual e proposta; faz rollback se performance cair."""
+        # Leitura de configs
+        if duracao_min is None:
+            duracao_min = getattr(self.config, 'duracao_ab_minutos', 30)
+        if queda_max is None:
+            # queda_max percentual negativo (ex.: -0.10 = -10%)
+            queda_max = getattr(self.config, 'queda_max_percentual', -0.10)
+        habilitar_ab = getattr(self.config, 'habilitar_ab_test', True)
+        if not habilitar_ab:
+            return True
+        # Mede baseline
+        baseline = self.exp_por_minuto_suavizado()
+        if baseline is None:
+            return False
+        # Aplica parâmetros ML propostos de forma suave
+        propostos = self.ml.melhores_parametros if hasattr(self, 'ml') and hasattr(self.ml, 'melhores_parametros') else {}
+        if propostos:
+            # Exemplo de parâmetros numéricos com limites
+            for chave in ['distancia_camera', 'agressividade_combate', 'raio_busca']:
+                if chave in propostos and hasattr(self.config, chave):
+                    atual = getattr(self.config, chave)
+                    sugerido = propostos[chave]
+                    minimo = 0
+                    maximo = 100 if chave != 'raio_busca' else 500
+                    setattr(self.config, chave, self.aplicar_atualizacao_suave(atual, sugerido, taxa=0.2, minimo=minimo, maximo=maximo))
+            # Testa por uma janela
+            t_ini = time.time()
+            while time.time() - t_ini < duracao_min:
+                # Atualiza métricas periodicamente
+                self.atualizar_xp()
+                time.sleep(1)
+            teste = self.exp_por_minuto_suavizado()
+            if teste is None:
+                return False
+            # Se caiu mais do que queda_max, rollback
+            if teste < baseline * (1.0 + queda_max):
+                # Rollback: reverte parâmetros ao anterior
+                for chave in ['distancia_camera', 'agressividade_combate', 'raio_busca']:
+                    if chave in propostos and hasattr(self.config, chave):
+                        setattr(self.config, chave, atual)
+                self.enviar_notificacao("Rollback ML", f"Performance caiu: {teste:.1f} < {baseline:.1f}")
+                return False
+        return True
         
         if len(hist) < 2:
             return None
@@ -2057,12 +2328,18 @@ class BotUltraADB:
             'xp_restante': xp_restante
         }
     
-    def verificar_morte(self):
-        """Verifica se morreu"""
+    def verificar_morte(self, screenshot=None):
+        """Verifica se morreu
+        
+        Args:
+            screenshot: Screenshot opcional (usa cache se None)
+        """
         if not self.config.verificar_morte:
             return False
         
-        screenshot = self.adb.screenshot()
+        # Usa screenshot em cache ou captura novo
+        if screenshot is None:
+            screenshot = self.obter_screenshot_cached(force_new=True)  # Morte precisa screenshot fresco
         if not screenshot:
             return False
         
@@ -2116,7 +2393,7 @@ class BotUltraADB:
             self.ultimo_reset_camera = tempo_atual
     
     def anti_afk(self):
-        """Anti-AFK com movimento variável"""
+        """Anti-AFK com movimento variável + clique periódico"""
         if not self.config.anti_afk:
             return
         
@@ -2127,6 +2404,14 @@ class BotUltraADB:
             intensidade = np.random.uniform(0.3, 0.6)  # Movimento curto
             self.mover_joystick(angulo, duracao_ms=300, intensidade=intensidade)
             self.ultimo_anti_afk = tempo_atual
+        
+        # Clique periódico a cada 3 segundos
+        if not hasattr(self, 'ultimo_clique_periodico'):
+            self.ultimo_clique_periodico = 0
+        
+        if tempo_atual - self.ultimo_clique_periodico >= 3:
+            self.adb.tap(1726, 800)
+            self.ultimo_clique_periodico = tempo_atual
     
     def rotacionar_area(self):
         """Rotação de áreas"""
@@ -2247,6 +2532,17 @@ class BotUltraADB:
     def ciclo_farming(self):
         """Ciclo completo de farming"""
         
+        # === CAPTURA SCREENSHOT 1x E REUTILIZA (OTIMIZAÇÃO) ===
+        screenshot = self.obter_screenshot_cached(force_new=True)
+        
+        # Atualiza posição real do personagem lendo do minimapa
+        coords = self.ler_coordenadas_minimapa(screenshot)
+        if coords:
+            self.pos_x, self.pos_y = coords
+            # Mostra coordenadas a cada 10 ciclos
+            if self.stats['combates'] % 10 == 0:
+                print(f"  📍 Posição atual: ({self.pos_x}, {self.pos_y})")
+        
         # Salva métricas periodicamente
         tempo_atual = time.time()
         if tempo_atual - self.ultimo_salvamento_metricas >= self.config.intervalo_salvar_metricas:
@@ -2260,20 +2556,25 @@ class BotUltraADB:
         if tempo_atual - getattr(self, 'ultima_otimizacao_params', 0) >= 900:  # 15 min
             self.atualizar_parametros_ml()
             self.ultima_otimizacao_params = tempo_atual
+            # Valida ciclo com A/B logo após otimização
+            try:
+                self.comparar_ab_e_rollback()
+            except Exception:
+                pass
         
-        # Verifica morte
-        if self.verificar_morte():
+        # Verifica morte (usa screenshot em cache)
+        if self.verificar_morte(screenshot):
             return
         
         # === NOVOS SISTEMAS ===
         # Verifica party e ajusta comportamento
-        self.verificar_party()
+        self.verificar_party(screenshot)
         
         # Usa buffs automaticamente
         self.usar_buffs()
         
-        # Verifica loot raro prioritário
-        loot_raro = self.detectar_loot_raro()
+        # Verifica loot raro prioritário (usa screenshot em cache)
+        loot_raro = self.detectar_loot_raro(screenshot)
         if loot_raro:
             print(f"\n💎 LOOT {loot_raro['tipo'].upper()} detectado em ({loot_raro['x']}, {loot_raro['y']})!")
             # Vai direto para o loot raro
@@ -2283,6 +2584,7 @@ class BotUltraADB:
             self.mover_joystick(angulo_loot, intensidade=1.0, continuo=True)
             time.sleep(1.5)
             self.coletar_loot()
+            self.invalidar_cache_screenshot()  # Invalida cache após ação
             return
         # === FIM NOVOS SISTEMAS ===
         
@@ -2348,7 +2650,7 @@ class BotUltraADB:
         
         # PRIORIDADE 2: Minimapa (se ML não deu recomendação)
         if not area_recomendada and self.config.usar_minimapa:
-            info_minimapa = self.analisar_minimapa()
+            info_minimapa = self.analisar_minimapa(screenshot)  # Usa screenshot em cache
             if info_minimapa:
                 # Verifica se são poucos inimigos - faz movimento circular
                 if info_minimapa.get('poucos_inimigos', False):
@@ -2438,6 +2740,9 @@ class BotUltraADB:
         
         # Move com intensidade variável (contínuo se minimapa detectou inimigos)
         self.mover_joystick(melhor_angulo, intensidade=intensidade_movimento, continuo=movimento_continuo)
+        
+        # Invalida cache após movimento (tela mudou)
+        self.invalidar_cache_screenshot()
         
         # Reduz delay em modo turbo
         delay_acao = self.config.intervalo_entre_acoes / 1000.0
