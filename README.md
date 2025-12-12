@@ -22,6 +22,13 @@ Bot automatizado para farming em Silkroad Origin Mobile usando controle ADB (And
 - **Anti-AFK**: Movimentos aleatórios para evitar desconexão
 - **Rotação de Áreas**: Troca de área de farming automaticamente
 
+### 🛡️ Sistema de Proteção Inteligente
+- **Detecção de Inimigos Perigosos**: Identifica inimigos como "Giant", "Boss", "Elite" e "Champion" via OCR
+- **Fuga Automática**: Bot foge automaticamente ao detectar inimigos perigosos
+- **Notificações do Sistema**: Alertas visuais e sonoros quando detecta ameaças
+- **Gerenciamento de Imagens**: Mantém apenas as 100 imagens mais recentes de treinamento
+- **Análise de Dificuldade**: Monitora perda de vida e evita áreas muito fortes
+
 ### 🧠 Inteligência Artificial
 
 #### Machine Learning (Scikit-learn)
@@ -37,17 +44,28 @@ Bot automatizado para farming em Silkroad Origin Mobile usando controle ADB (And
 - **Movimento Inteligente**: Move automaticamente para direção com mais inimigos
 - **Detecção de Combate**: Compara frames com `imagehash` para identificar ação
 - **OCR com Tesseract**: Lê XP% e outros textos via `pytesseract`
+- **Detecção de Nomes**: OCR para identificar nomes de inimigos perigosos na tela
+- **Preprocessamento de Imagem**: Threshold, resize e filtros para melhorar precisão do OCR
 
 #### Algoritmo de Decisão
-1. **Prioridade 1 - Minimapa**: Se detectar inimigos, move para setor com maior densidade
-2. **Prioridade 2 - ML**: Usa RandomForest para prever melhor direção baseado em histórico
-3. **Prioridade 3 - Exploração**: Algoritmo inteligente que retorna a áreas produtivas
+1. **Prioridade 0 - Segurança**: Verifica inimigos perigosos e foge se necessário
+2. **Prioridade 1 - Minimapa**: Se detectar inimigos, move para setor com maior densidade
+3. **Prioridade 2 - ML**: Usa RandomForest para prever melhor direção baseado em histórico
+4. **Prioridade 3 - Exploração**: Algoritmo inteligente que retorna a áreas produtivas
 
 ### 📊 Analytics
 - **Tracking de XP**: Lê XP atual via OCR
+- **Detector de EXP Ganho**: Detecta quantidade exata de EXP após cada combate
 - **Previsão de Level**: Calcula tempo estimado para atingir 100% de XP
 - **Estatísticas**: Combates, mortes, potions, skills, loots, XP/min
 - **Histórico**: Salva dados de farming para análise
+- **Exportação de Métricas**: Gera arquivo JSON com estatísticas detalhadas
+
+### 🔔 Sistema de Notificações
+- **Alertas de Perigo**: Notificação do sistema quando detecta inimigos perigosos
+- **Urgência Crítica**: Notificações com alta prioridade e som
+- **Informações Detalhadas**: Nome do inimigo e status da fuga
+- **Notificações Não Bloqueantes**: Bot continua funcionando mesmo se notificação falhar
 
 ## 📦 Requisitos
 
@@ -71,6 +89,8 @@ pytesseract>=0.3.10
 ```bash
 android-tools-adb
 tesseract-ocr
+tesseract-ocr-por
+libnotify-bin  # Para notificações do sistema
 ```
 
 ## 🚀 Instalação
@@ -85,7 +105,7 @@ cd Python
 ### 2. Instale dependências do sistema
 ```bash
 sudo apt-get update
-sudo apt-get install -y android-tools-adb tesseract-ocr tesseract-ocr-por
+sudo apt-get install -y android-tools-adb tesseract-ocr tesseract-ocr-por libnotify-bin
 ```
 
 ### 3. Instale dependências Python
@@ -131,7 +151,15 @@ O bot gera automaticamente um arquivo de configuração com valores padrão. Pri
   "intervalo_reset_camera": 1,
   
   "usar_minimapa": true,
-  "posicao_minimapa": {"x": 50, "y": 50, "width": 200, "height": 200}
+  "posicao_minimapa": {"x": 50, "y": 50, "width": 200, "height": 200},
+  
+  "detectar_inimigos_perigosos": true,
+  "inimigos_para_fugir": ["Giant", "Boss", "Elite", "Champion"],
+  "regiao_nome_inimigo": {"x": 400, "y": 100, "largura": 600, "altura": 150},
+  "intervalo_verificacao_inimigo": 2,
+  
+  "salvar_imagens_treino": true,
+  "max_imagens_treino": 100
 }
 ```
 
@@ -202,6 +230,20 @@ O script permite testar coordenadas digitando X e Y. Clica no dispositivo e voc�
 6. **Barra de XP** (parte inferior da tela)
    - Região para OCR ler percentual de XP
 
+7. **Região de Nome do Inimigo** (centro-superior da tela)
+   - Área onde aparece o nome do inimigo durante combate
+   - Usado para detectar inimigos perigosos (Giant, Boss, etc.)
+
+### Calibrando Região de Nome do Inimigo
+
+Para melhor detecção de inimigos perigosos:
+
+1. Entre em combate com qualquer inimigo
+2. Observe onde o nome aparece (geralmente centro-superior)
+3. Tire um screenshot: `adb shell screencap -p > screenshot.png`
+4. Meça as coordenadas da região do nome
+5. Ajuste `regiao_nome_inimigo` no config
+
 ### Testando Coordenadas Manualmente
 ```bash
 # Teste básico
@@ -216,10 +258,19 @@ adb -s 192.168.240.112:5555 shell input swipe 288 868 361 868 1500
 ```
 Python/
 ├── bot_ultra_adb.py              # Bot principal
+├── detector_exp.py               # Detector de EXP ganho via OCR
+├── ml_avancado.py                # Sistema ML avançado
+├── metricas_aprendizado.py       # Análise de métricas ML
+├── visualizador_metricas.py      # Visualizador de estatísticas
+├── visualizador_3d_ml.py         # Visualizador 3D de densidade
+├── dashboard_ml.py               # Dashboard completo ML
 ├── calibrador_interativo.py      # Ferramenta de calibração
 ├── config_farming_adb.json       # Configuração (gerado automaticamente)
 ├── modelo_ultra_adb.pkl          # Modelo ML treinado (gerado)
 ├── farming_data.json             # Dados históricos (gerado)
+├── metricas_bot.json             # Métricas exportadas (gerado)
+├── ml_avancado_dados.json        # Dados ML avançado (gerado)
+├── treino_ml/                    # Pasta com imagens de treino
 ├── requirements.txt              # Dependências Python
 └── README.md                     # Esta documentação
 ```
@@ -261,6 +312,17 @@ Arquivo JSON com todas as configurações. Editável manualmente ou via script.
 2. Ajuste `cor_inimigo_minimapa` (padrão vermelho: [255, 0, 0])
 3. Aumente tolerância de cor (editando código se necessário)
 
+### Inimigos perigosos não são detectados
+1. Calibre `regiao_nome_inimigo` para capturar onde o nome aparece
+2. Adicione mais nomes à lista `inimigos_para_fugir` no config
+3. Verifique se `tesseract-ocr` está instalado corretamente
+4. Teste OCR manualmente com screenshot da região
+
+### Notificações não aparecem
+1. Instale `libnotify-bin`: `sudo apt-get install libnotify-bin`
+2. Teste manualmente: `notify-send "Teste" "Mensagem de teste"`
+3. Verifique configurações de notificação do sistema
+
 ### Dispositivo não conecta
 ```bash
 # Reinicie ADB
@@ -292,7 +354,25 @@ O bot mostra estatísticas a cada 10 ciclos:
   ⚡ Taxa: 0.154% XP/min
   🎯 Para 100%: 3h 28min
   🕒 Previsão: 18:45
+  
+  💰 EXP Ganho: +125,450
+  📊 Total: 2,345,670
 ```
+
+### Notificações de Alerta
+
+Quando inimigos perigosos são detectados:
+
+```
+🚨 ALERTA: Giant DETECTADO!
+Inimigo perigoso 'Giant' está próximo! Fugindo agora...
+```
+
+A notificação aparece no sistema com:
+- ⚠️ Ícone de alerta
+- 🔊 Som de notificação (se habilitado)
+- ⏱️ Duração de 10 segundos
+- 🔴 Urgência crítica
 
 ## 🤝 Contribuindo
 
