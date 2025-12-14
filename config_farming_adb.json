@@ -88,12 +88,12 @@
   
   "ia_habilitada": true,
   "ia_config": {
-    "usar_minimap_vision": true,
+    "usar_minimap_vision": false,
     "usar_ml_predictor": true,
     "usar_ocr": false,
     "usar_combat_detector": false,
     "usar_movimento_inteligente": false,
-    "usar_advanced_vision": true,
+    "usar_advanced_vision": false,
     
     "minimap_analise_intervalo": 10,
     "ml_auto_treino": true,
