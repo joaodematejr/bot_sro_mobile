@@ -40,10 +40,44 @@ except ImportError as e:
     print(f"⚠️ Analytics não disponível: {e}")
     ANALYTICS_AVAILABLE = False
 
+# Detector Visual Corrigido (minimapa)
+try:
+    from detector_corrigido import DetectorVisualCorrigido
+    DETECTOR_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ Detector visual não disponível: {e}")
+    DETECTOR_AVAILABLE = False
+
 ADB_DEVICE = "192.168.240.112:5555"
 
 # Arquivo de configuração
 CONFIG_FILE = "config_farming_adb.json"
+
+
+def cleanup_folder_images(folder: str, max_keep: int = 10, pattern: str = "*.png"):
+    """
+    Limpa pasta mantendo apenas as N imagens mais recentes
+    
+    Args:
+        folder: Caminho da pasta
+        max_keep: Quantidade máxima de imagens a manter
+        pattern: Padrão de arquivos (*.png, *.jpg, etc.)
+    """
+    try:
+        folder_path = Path(folder)
+        if not folder_path.exists():
+            return
+        
+        # Lista todos os arquivos do padrão
+        images = sorted(folder_path.glob(pattern), key=os.path.getmtime)
+        
+        # Remove imagens excedentes
+        if len(images) > max_keep:
+            to_remove = len(images) - max_keep
+            for img in images[:to_remove]:
+                img.unlink()
+    except Exception as e:
+        pass  # Silencioso para não poluir logs
 
 
 class Config:
@@ -534,9 +568,10 @@ class ADBConnection:
 class MinimapAnalyzer:
     """Analisador de mini mapa usando OpenCV"""
     
-    def __init__(self, adb: ADBConnection, config: Config):
+    def __init__(self, adb: ADBConnection, config: Config, detector_visual=None):
         self.adb = adb
         self.config = config
+        self.detector_visual = detector_visual  # Detector corrigido
         self.minimap_folder = "minimap_captures"
         self.enemies_detected = []
         self.players_detected = []
@@ -556,9 +591,6 @@ class MinimapAnalyzer:
             if not self.adb.screenshot(filepath):
                 return None
             
-            # Aqui futuramente será implementada a análise com OpenCV
-            # Por enquanto apenas salva a captura para treino
-            
             result = {
                 "timestamp": timestamp,
                 "filepath": filepath,
@@ -567,6 +599,39 @@ class MinimapAnalyzer:
                 "coordinates": None,
                 "status": "captured"
             }
+            
+            # Analisa com detector visual se disponível
+            if self.detector_visual:
+                try:
+                    detection = self.detector_visual.detectar_objetos_reais(
+                        filepath, 
+                        crop_minimap=True
+                    )
+                    
+                    if detection:
+                        resultados, debug_path = detection
+                        
+                        # Atualiza contagens
+                        result["enemies_count"] = resultados.get('vermelho_mob', 0)
+                        result["players_count"] = resultados.get('azul', 0)
+                        result["player_marker"] = resultados.get('amarelo', 0)
+                        result["party_members"] = resultados.get('verde', 0)
+                        result["debug_path"] = str(debug_path)
+                        result["status"] = "analyzed"
+                        
+                        # Armazena histórico
+                        self.enemies_detected.append({
+                            "timestamp": timestamp,
+                            "count": result["enemies_count"]
+                        })
+                        
+                        # Mantém apenas últimos 100 registros
+                        if len(self.enemies_detected) > 100:
+                            self.enemies_detected = self.enemies_detected[-100:]
+                        
+                except Exception as e:
+                    print(f"⚠️ Erro ao analisar minimap: {e}")
+                    result["status"] = "error"
             
             return result
             
@@ -893,6 +958,12 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
         xp_detector = XPGainDetector()
         print("📊 Analytics habilitado")
     
+    # Inicializa Detector Visual
+    detector_visual = None
+    if DETECTOR_AVAILABLE:
+        detector_visual = DetectorVisualCorrigido()
+        print("🔍 Detector Visual habilitado (minimapa)")
+    
     # Inicializa módulos de IA
     ai_enabled = config.is_ai_enabled()
     minimap_vision = None
@@ -1100,8 +1171,49 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
                     # Verifica se arquivo existe antes de processar
                     if os.path.exists(temp_screenshot):
                         try:
-                            # 1. MinimapVision - Análise do minimap
-                            if minimap_vision:
+                            # 1. Detector Visual Corrigido - Análise precisa do minimapa
+                            if detector_visual:
+                                try:
+                                    detection = detector_visual.detectar_objetos_reais(
+                                        temp_screenshot,
+                                        crop_minimap=True
+                                    )
+                                    
+                                    if detection:
+                                        resultados, debug_path = detection
+                                        
+                                        mobs_count = resultados.get('vermelho_mob', 0)
+                                        
+                                        # Mostra info no console
+                                        if mobs_count > 0:
+                                            print(f"  🔴 {mobs_count} mobs detectados no minimapa")
+                                        
+                                        contador_ia_analises += 1
+                                        
+                                        # Limpa pastas antigas (mantém apenas 10 mais recentes)
+                                        cleanup_folder_images("minimap_captures", max_keep=10)
+                                        cleanup_folder_images("debug_deteccao", max_keep=10)
+                                        
+                                        # Adiciona dados para ML
+                                        if ml_predictor:
+                                            now = datetime.now()
+                                            ml_predictor.add_training_data({
+                                                'hour': now.hour,
+                                                'minute': now.minute,
+                                                'pos_x': 0,
+                                                'pos_y': 0,
+                                                'sector_N': 0,
+                                                'sector_E': 0,
+                                                'sector_S': 0,
+                                                'sector_W': 0,
+                                                'enemy_count': mobs_count
+                                            })
+                                    
+                                except Exception as e:
+                                    print(f"⚠️ Erro detector visual: {e}")
+                            
+                            # 2. MinimapVision - Análise do minimap (fallback/complementar)
+                            elif minimap_vision:
                                 try:
                                     analise = minimap_vision.analyze_screenshot(temp_screenshot)
                                     

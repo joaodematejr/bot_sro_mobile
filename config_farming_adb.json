@@ -59,7 +59,7 @@
   
   "intervalo_captura_exp_ganho": 3,
   "pasta_exp_ganho": "exp_ganho_treino",
-  "max_imagens_exp_ganho": 200,
+  "max_imagens_exp_ganho": 10,
   
   "detectar_inimigos_minimap": true,
   "detectar_jogadores_minimap": true,
@@ -146,5 +146,5 @@
   
   "pasta_imagens_treino": "treino_ml",
   "salvar_imagens_treino": true,
-  "max_imagens_treino": 100
+  "max_imagens_treino": 10
 }

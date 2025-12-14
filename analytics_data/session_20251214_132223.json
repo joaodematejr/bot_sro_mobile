@@ -1,0 +1,35 @@
+{
+  "session_id": "20251214_132223",
+  "session_start": "2025-12-14T13:22:23.457410",
+  "current_xp": 0.0,
+  "initial_xp": null,
+  "xp_history": [],
+  "xp_gains": [
+    {
+      "timestamp": "2025-12-14T07:48:41.543185",
+      "amount": 24.0,
+      "source": "combat"
+    }
+  ],
+  "combat_count": 1,
+  "kills_count": 1,
+  "deaths_count": 0,
+  "combat_history": [
+    {
+      "timestamp": "2025-12-14T07:48:41.543215",
+      "duration": 2.0,
+      "killed": true
+    }
+  ],
+  "potions_used": {
+    "hp": 0,
+    "mp": 0,
+    "vigor": 0
+  },
+  "skills_used": {},
+  "loot_collected": [],
+  "ai_detections": 0,
+  "ai_movements": 0,
+  "enemies_detected": [],
+  "actions_log": []
+}
