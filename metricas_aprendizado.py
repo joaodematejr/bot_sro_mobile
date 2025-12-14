@@ -62,10 +62,11 @@ class MetricasAprendizadoML:
                     data = json.load(f)
                     
                     # Restaura timelines
-                    for key in ['samples_timeline', 'accuracy_timeline', 'loss_timeline', 
-                               'training_times', 'model_versions']:
-                        if key in data:
-                            self.training_history[key] = data[key]
+                    if 'training_history' in data:
+                        for key in ['samples_timeline', 'accuracy_timeline', 'loss_timeline', 
+                                   'training_times', 'model_versions']:
+                            if key in data['training_history']:
+                                self.training_history[key] = data['training_history'][key]
                     
                     # Restaura performance
                     if 'performance_metrics' in data:
@@ -77,10 +78,28 @@ class MetricasAprendizadoML:
                         self.performance_metrics['correlation_ml_performance'] = \
                             perf.get('correlation_ml_performance', 0.0)
                     
-                    print("✅ Métricas de aprendizado carregadas")
+                    # Restaura sessão atual
+                    if 'current_session' in data:
+                        sess = data['current_session']
+                        if 'start_time' in sess and isinstance(sess['start_time'], str):
+                            sess['start_time'] = datetime.fromisoformat(sess['start_time'])
+                        
+                        # Atualiza apenas campos que existem
+                        for key in ['samples_at_start', 'samples_added', 'trainings_performed', 'avg_sample_rate']:
+                            if key in sess:
+                                self.current_session[key] = sess[key]
+                    
+                    # Mostra estatísticas carregadas
+                    total_samples = 0
+                    if self.training_history['samples_timeline']:
+                        total_samples = self.training_history['samples_timeline'][-1][1]
+                    
+                    print(f"✅ Métricas carregadas: {total_samples} amostras, {len(self.training_history['training_times'])} treinos")
                     
             except Exception as e:
                 print(f"⚠️  Erro ao carregar métricas: {e}")
+                import traceback
+                traceback.print_exc()
     
     def save_metrics(self):
         """Salva métricas no disco"""
