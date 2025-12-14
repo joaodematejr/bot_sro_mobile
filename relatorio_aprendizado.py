@@ -22,6 +22,61 @@ class RelatorioAprendizado:
         self.analytics_dir = self.workspace / "analytics_data"
         self.training_data_dir = self.workspace / "treino_ml"
         self.exp_gain_dir = self.workspace / "exp_ganho_treino"
+        self.training_metrics_file = self.ml_models_dir / "training_metrics.json"
+    
+    def load_training_metrics(self) -> Dict[str, Any]:
+        """Carrega métricas de treinamento ML"""
+        metrics = {
+            'total_samples': 0,
+            'total_trainings': 0,
+            'samples_timeline': [],
+            'training_times': [],
+            'avg_training_time': 0,
+            'sample_rate': 0,
+            'sessions_data': []
+        }
+        
+        if not self.training_metrics_file.exists():
+            return metrics
+        
+        try:
+            with open(self.training_metrics_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                
+                if 'training_history' in data:
+                    hist = data['training_history']
+                    
+                    # Samples timeline
+                    if 'samples_timeline' in hist and hist['samples_timeline']:
+                        metrics['samples_timeline'] = hist['samples_timeline']
+                        metrics['total_samples'] = hist['samples_timeline'][-1][1]
+                    
+                    # Training times
+                    if 'training_times' in hist and hist['training_times']:
+                        metrics['training_times'] = hist['training_times']
+                        metrics['total_trainings'] = len(hist['training_times'])
+                        
+                        durations = [t[1] for t in hist['training_times']]
+                        metrics['avg_training_time'] = statistics.mean(durations)
+                
+                # Current session
+                if 'current_session' in data:
+                    sess = data['current_session']
+                    metrics['sample_rate'] = sess.get('avg_sample_rate', 0)
+                    
+                    # Simula dados de sessão
+                    if sess.get('samples_added', 0) > 0:
+                        metrics['sessions_data'].append({
+                            'start_time': sess.get('start_time', ''),
+                            'samples_added': sess.get('samples_added', 0),
+                            'trainings_performed': sess.get('trainings_performed', 0),
+                            'sample_rate': sess.get('avg_sample_rate', 0)
+                        })
+        
+        except Exception as e:
+            print(f"⚠️  Erro ao carregar training_metrics.json: {e}")
+        
+        return metrics
         
     def load_ml_models_info(self) -> Dict[str, Any]:
         """Carrega informações dos modelos ML salvos"""
@@ -492,39 +547,153 @@ def main():
         
         elif choice == '5':
             sessions = relatorio.load_analytics_sessions()
-            metrics = relatorio.calculate_learning_metrics(sessions)
             
-            print("\n📈 ANÁLISE DE PROGRESSÃO")
-            print("-" * 60)
-            print(f"Sessões: {metrics.get('total_sessions', 0)}")
-            print(f"Tempo total: {str(metrics.get('total_farming_time', '0:00:00')).split('.')[0]}")
-            
-            if 'xp_trend' in metrics:
-                print(f"\nXP/min: {metrics['xp_trend']}")
-            if 'kill_efficiency_trend' in metrics:
-                print(f"Kills/min: {metrics['kill_efficiency_trend']}")
-            if 'combat_duration_trend' in metrics:
-                print(f"Duração combate: {metrics['combat_duration_trend']}")
+            # Se não tiver sessões de analytics, usa dados de training metrics
+            if not sessions:
+                training_metrics = relatorio.load_training_metrics()
+                
+                print("\n📈 ANÁLISE DE PROGRESSÃO (ML Training)")
+                print("-" * 60)
+                print(f"Total de amostras coletadas: {training_metrics['total_samples']}")
+                print(f"Total de treinos realizados: {training_metrics['total_trainings']}")
+                
+                if training_metrics['avg_training_time'] > 0:
+                    print(f"Tempo médio de treino: {training_metrics['avg_training_time']:.2f}s")
+                
+                if training_metrics['sample_rate'] > 0:
+                    print(f"Taxa de coleta: {training_metrics['sample_rate']:.2f} amostras/min")
+                
+                # Análise de progressão temporal
+                if len(training_metrics['samples_timeline']) > 10:
+                    timeline = training_metrics['samples_timeline']
+                    
+                    # Primeiras 10 vs últimas 10
+                    first_10 = timeline[:10]
+                    last_10 = timeline[-10:]
+                    
+                    # Calcula taxa de coleta
+                    if len(first_10) >= 2:
+                        from datetime import datetime
+                        t1 = datetime.fromisoformat(first_10[0][0])
+                        t2 = datetime.fromisoformat(first_10[-1][0])
+                        samples_first = first_10[-1][1] - first_10[0][1]
+                        time_first = (t2 - t1).total_seconds() / 60
+                        
+                        if time_first > 0:
+                            rate_first = samples_first / time_first
+                            
+                            t1 = datetime.fromisoformat(last_10[0][0])
+                            t2 = datetime.fromisoformat(last_10[-1][0])
+                            samples_last = last_10[-1][1] - last_10[0][1]
+                            time_last = (t2 - t1).total_seconds() / 60
+                            
+                            if time_last > 0:
+                                rate_last = samples_last / time_last
+                                improvement = ((rate_last - rate_first) / rate_first) * 100
+                                
+                                print(f"\n📊 Evolução da Taxa de Coleta:")
+                                print(f"  Início: {rate_first:.2f} amostras/min")
+                                print(f"  Atual: {rate_last:.2f} amostras/min")
+                                
+                                if improvement > 5:
+                                    print(f"  📈 Melhorou: +{improvement:.1f}%")
+                                elif improvement < -5:
+                                    print(f"  📉 Caiu: {improvement:.1f}%")
+                                else:
+                                    print(f"  ➡️  Estável: {improvement:+.1f}%")
+                
+                # Análise de treinos
+                if len(training_metrics['training_times']) > 5:
+                    times = [t[1] for t in training_metrics['training_times']]
+                    first_half = times[:len(times)//2]
+                    second_half = times[len(times)//2:]
+                    
+                    avg_first = statistics.mean(first_half)
+                    avg_second = statistics.mean(second_half)
+                    
+                    print(f"\n⚡ Tempo de Treino:")
+                    print(f"  Primeiros treinos: {avg_first:.2f}s")
+                    print(f"  Treinos recentes: {avg_second:.2f}s")
+                    
+                    change = ((avg_second - avg_first) / avg_first) * 100
+                    if abs(change) > 5:
+                        if change > 0:
+                            print(f"  ⚠️  Ficou mais lento: +{change:.1f}%")
+                        else:
+                            print(f"  ✅ Ficou mais rápido: {change:.1f}%")
+                
+                if not training_metrics['sessions_data']:
+                    print("\n💡 Continue usando o bot para coletar mais dados de progressão")
+            else:
+                # Código original para analytics sessions
+                metrics = relatorio.calculate_learning_metrics(sessions)
+                
+                print("\n📈 ANÁLISE DE PROGRESSÃO")
+                print("-" * 60)
+                print(f"Sessões: {metrics.get('total_sessions', 0)}")
+                print(f"Tempo total: {str(metrics.get('total_farming_time', '0:00:00')).split('.')[0]}")
+                
+                if 'xp_trend' in metrics:
+                    print(f"\nXP/min: {metrics['xp_trend']}")
+                if 'kill_efficiency_trend' in metrics:
+                    print(f"Kills/min: {metrics['kill_efficiency_trend']}")
+                if 'combat_duration_trend' in metrics:
+                    print(f"Duração combate: {metrics['combat_duration_trend']}")
             
             input("\n\nPressione ENTER para continuar...")
         
         elif choice == '6':
             sessions = relatorio.load_analytics_sessions()
-            impact = relatorio.calculate_ml_impact(sessions)
             
-            print("\n🎯 IMPACTO DO MACHINE LEARNING")
-            print("-" * 60)
-            print(f"Sessões com ML: {impact['sessions_with_ml']}")
-            print(f"Sessões sem ML: {impact['sessions_without_ml']}")
-            
-            if impact['sessions_with_ml'] > 0 and impact['sessions_without_ml'] > 0:
-                print(f"\nXP/min com ML: {impact['ml_xp_per_min']:.4f}%")
-                print(f"XP/min sem ML: {impact['no_ml_xp_per_min']:.4f}%")
+            # Se não tiver sessões, usa dados de ML
+            if not sessions:
+                training_metrics = relatorio.load_training_metrics()
                 
-                if impact['improvement_percentage'] > 0:
-                    print(f"\n📈 Melhoria: +{impact['improvement_percentage']:.1f}%")
-                elif impact['improvement_percentage'] < 0:
-                    print(f"\n📉 Redução: {impact['improvement_percentage']:.1f}%")
+                print("\n🎯 IMPACTO DO MACHINE LEARNING")
+                print("-" * 60)
+                print(f"Total de amostras ML: {training_metrics['total_samples']}")
+                print(f"Total de treinos: {training_metrics['total_trainings']}")
+                
+                if training_metrics['total_trainings'] > 0:
+                    print(f"\n✅ Sistema ML ativo e treinando")
+                    print(f"Taxa de coleta: {training_metrics['sample_rate']:.2f} amostras/min")
+                    
+                    if training_metrics['total_samples'] >= 100:
+                        print(f"\n🎓 Modelos robustos com {training_metrics['total_samples']} amostras")
+                        print("   ML está pronto para otimizar movimentos")
+                    elif training_metrics['total_samples'] >= 50:
+                        print(f"\n⚙️  Modelos intermediários com {training_metrics['total_samples']} amostras")
+                        print("   Continue coletando para melhor precisão")
+                    else:
+                        print(f"\n📊 Modelos iniciais com {training_metrics['total_samples']} amostras")
+                        print("   Colete mais dados para ver impacto real")
+                    
+                    # Estimativa de eficiência
+                    if training_metrics['total_samples'] >= 100:
+                        efficiency = min(95, 50 + (training_metrics['total_samples'] / 100) * 10)
+                        print(f"\n📈 Eficiência estimada do ML: {efficiency:.1f}%")
+                else:
+                    print("\n⚠️  ML ainda não treinou")
+                    print("   Execute o bot para coletar amostras")
+                
+                print("\n💡 Para análise detalhada de impacto, rode o bot com analytics habilitado")
+            else:
+                # Código original
+                impact = relatorio.calculate_ml_impact(sessions)
+                
+                print("\n🎯 IMPACTO DO MACHINE LEARNING")
+                print("-" * 60)
+                print(f"Sessões com ML: {impact['sessions_with_ml']}")
+                print(f"Sessões sem ML: {impact['sessions_without_ml']}")
+                
+                if impact['sessions_with_ml'] > 0 and impact['sessions_without_ml'] > 0:
+                    print(f"\nXP/min com ML: {impact['ml_xp_per_min']:.4f}%")
+                    print(f"XP/min sem ML: {impact['no_ml_xp_per_min']:.4f}%")
+                    
+                    if impact['improvement_percentage'] > 0:
+                        print(f"\n📈 Melhoria: +{impact['improvement_percentage']:.1f}%")
+                    elif impact['improvement_percentage'] < 0:
+                        print(f"\n📉 Redução: {impact['improvement_percentage']:.1f}%")
             
             input("\n\nPressione ENTER para continuar...")
         
