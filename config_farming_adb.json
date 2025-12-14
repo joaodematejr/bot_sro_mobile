@@ -1,0 +1,150 @@
+{
+  "adb_device": "192.168.240.112:5555",
+  "screen_width": 1920,
+  "screen_height": 993,
+  
+  "posicao_botao_camera": {
+    "x": 67,
+    "y": 144,
+    "descricao": "Botão para resetar câmera (voltar para trás do personagem)"
+  },
+  
+  "intervalo_reset_camera": 2,
+  
+  "posicao_botao_target": {
+    "x": 1726,
+    "y": 797,
+    "descricao": "Botão para mirar/targetar inimigos próximos"
+  },
+  
+  "intervalo_target": 2,
+  "target_clicks_por_ciclo": 15,
+  "target_pausa_entre_ciclos": 15,
+  
+  "posicao_botao_demon": {
+    "x": 1830,
+    "y": 552,
+    "descricao": "Botão para ativar habilidade Demon"
+  },
+  
+  "intervalo_demon": 900,
+  
+  "regiao_exp": {
+    "x": 119,
+    "y": 964,
+    "width": 200,
+    "height": 30,
+    "descricao": "Região da barra de EXP para OCR"
+  },
+  
+  "intervalo_captura_exp": 60,
+  
+  "regiao_minimap": {
+    "x": 231,
+    "y": 255,
+    "width": 200,
+    "height": 200,
+    "descricao": "Região do mini mapa para detectar inimigos, jogadores e posição"
+  },
+  
+  "intervalo_captura_minimap": 5,
+  
+  "regiao_exp_ganho": {
+    "x": 764,
+    "y": 498,
+    "width": 150,
+    "height": 50,
+    "descricao": "Região onde aparece o EXP ganho ao matar inimigos"
+  },
+  
+  "intervalo_captura_exp_ganho": 3,
+  "pasta_exp_ganho": "exp_ganho_treino",
+  "max_imagens_exp_ganho": 200,
+  
+  "detectar_inimigos_minimap": true,
+  "detectar_jogadores_minimap": true,
+  "detectar_coordenadas_minimap": true,
+  
+  "cores_minimap": {
+    "inimigos": {
+      "cor": "vermelho",
+      "hsv_min": [0, 100, 100],
+      "hsv_max": [10, 255, 255],
+      "descricao": "Círculos vermelhos = inimigos"
+    },
+    "jogadores": {
+      "cor": "azul",
+      "hsv_min": [100, 100, 100],
+      "hsv_max": [130, 255, 255],
+      "descricao": "Círculos azuis = outros jogadores"
+    },
+    "player": {
+      "cor": "amarelo",
+      "hsv_min": [20, 100, 100],
+      "hsv_max": [30, 255, 255],
+      "descricao": "Seta amarela = sua posição"
+    }
+  },
+  
+  "ia_habilitada": true,
+  "ia_config": {
+    "usar_minimap_vision": true,
+    "usar_ml_predictor": true,
+    "usar_ocr": false,
+    "usar_combat_detector": false,
+    "usar_movimento_inteligente": false,
+    "usar_advanced_vision": true,
+    
+    "minimap_analise_intervalo": 10,
+    "ml_auto_treino": true,
+    "ml_min_amostras": 50,
+    "combat_detection_threshold": 10,
+    
+    "movimento_auto": false,
+    "movimento_intervalo": 30,
+    
+    "nomes_perigosos": ["Giant", "Boss", "Elite", "Champion", "Unique", "Lord"],
+    "acao_ao_detectar_perigo": "fugir"
+  },
+  
+  "advanced_vision": {
+    "color_ranges": {
+      "vermelho": {"hsv_min": [0, 100, 100], "hsv_max": [10, 255, 255]},
+      "azul": {"hsv_min": [100, 100, 100], "hsv_max": [130, 255, 255]},
+      "verde": {"hsv_min": [40, 50, 50], "hsv_max": [80, 255, 255]},
+      "amarelo": {"hsv_min": [20, 100, 100], "hsv_max": [30, 255, 255]},
+      "roxo": {"hsv_min": [130, 50, 50], "hsv_max": [160, 255, 255]},
+      "laranja": {"hsv_min": [10, 100, 100], "hsv_max": [20, 255, 255]},
+      "branco": {"hsv_min": [0, 0, 200], "hsv_max": [180, 30, 255]},
+      "preto": {"hsv_min": [0, 0, 0], "hsv_max": [180, 255, 50]}
+    },
+    "circle_detection": {
+      "dp": 1.2,
+      "minDist": 20,
+      "param1": 50,
+      "param2": 30,
+      "minRadius": 5,
+      "maxRadius": 50
+    },
+    "coord_region": {
+      "x": 10,
+      "y": 10,
+      "width": 200,
+      "height": 30,
+      "descricao": "Região onde aparecem as coordenadas X: Y:"
+    },
+    "detection_interval": 5,
+    "detect_colors_enabled": true,
+    "detect_circles_enabled": true,
+    "read_coords_enabled": true,
+    "target_colors": ["vermelho", "azul", "amarelo"]
+  },
+  
+  "joystick_centro_x": 150,
+  "joystick_centro_y": 850,
+  "joystick_raio": 80,
+  
+  "pasta_imagens_treino": "treino_ml",
+  "salvar_imagens_treino": true,
+  "max_imagens_treino": 100
+}
