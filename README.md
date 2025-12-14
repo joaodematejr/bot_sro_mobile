@@ -1,11 +1,12 @@
 # 🎮 Bot SRO Mobile - Sistema Completo de Farming Inteligente
 
-Bot automatizado ultra-avançado para Silkroad Origin Mobile usando controle ADB (Android Debug Bridge). Sistema completo com **Inteligência Artificial**, **Machine Learning**, **Computer Vision**, **Analytics Detalhado** e **Métricas de Aprendizado**.
+Bot automatizado ultra-avançado para Silkroad Origin Mobile usando controle ADB (Android Debug Bridge). Sistema completo com **Inteligência Artificial**, **Machine Learning**, **Computer Vision**, **Analytics Detalhado**, **Sistema de Recompensas**, **Treinamento com Feedback** e **Mapeamento de Hotspots**.
 
 ## 📋 Índice
 
 - [Funcionalidades](#-funcionalidades)
 - [Sistemas Inteligentes](#-sistemas-inteligentes)
+- [Sistemas Avançados de ML](#-sistemas-avançados-de-ml)
 - [Requisitos](#-requisitos)
 - [Instalação](#-instalação)
 - [Configuração](#️-configuração)
@@ -125,6 +126,217 @@ Bot automatizado ultra-avançado para Silkroad Origin Mobile usando controle ADB
 - 🚨 **Alertas de Perigo** - Quando detecta inimigos perigosos
 - ⚠️ **Urgência Crítica** - Som + ícone de alerta
 - ⏱️ **Duração Configurável** - 10s para alertas importantes
+
+## 🎯 Sistemas Avançados de ML
+
+### 💰 Sistema de Recompensas (`sistema_recompensas.py`)
+
+Sistema de **Reinforcement Learning** que avalia qualidade das ações do bot em tempo real.
+
+#### Pesos de Recompensas
+- ✅ **Kill** = +10 pontos
+- ✅ **Kill Rápido** (< 10s) = +5 pontos
+- ✅ **Multi-Kill** (3+ em 30s) = +15 pontos
+- ✅ **XP Ganho** = +1 por 0.01%
+- ⚔️ **Sem Dano** = +2 pontos
+- 🎯 **Mob Próximo** = +5 pontos
+- 🏃 **Fuga Sucesso** = +8 pontos
+- 💎 **Item Coletado** = +3 pontos
+- 🗺️ **Área Boa** = +5 pontos
+- 🔥 **AOE Eficiente** (3+ mobs) = +7 pontos
+- ⚡ **Skill Eficiente** = +3 pontos
+
+#### Penalidades
+- ❌ **Morte** = -50 pontos
+- ⚠️ **HP Crítico** (< 20%) = -10 pontos
+- 🩹 **HP Baixo** (< 50%) = -5 pontos
+- ⏱️ **Tempo Ocioso** = -2 pontos/min
+- 📍 **Área Ruim** = -3 pontos
+- 🚫 **Stuck** (sem movimento) = -8 pontos
+- 💥 **Skill Desperdiçada** = -2 pontos
+
+#### Funcionalidades
+```python
+# Registra estado e calcula recompensa
+recompensa = sistema.registrar_estado({
+    'hp_percent': 85,
+    'mobs_nearby': 3,
+    'xp_percent': 45.5,
+    'in_combat': True,
+    'kills_recent': 2
+})
+
+# Relatório completo ao finalizar
+sistema.finalizar_sessao()  # Mostra melhores/piores ações
+```
+
+#### Saída
+```
+💰 Sistema de Recompensas - Relatório Final
+============================================================
+📊 Estatísticas da Sessão:
+   Duração: 45.2 min
+   Estados registrados: 542
+   Recompensa total: +1,247.5
+   Recompensa média: +2.30 por estado
+   Melhor recompensa: +25.0
+   Pior recompensa: -15.0
+
+🏆 Melhores Ações:
+   #1. Multi-kill + XP alto: +25.0
+   #2. Kill rápido + sem dano: +17.0
+   #3. AOE eficiente: +15.0
+
+⚠️ Piores Ações:
+   #1. HP crítico + área ruim: -15.0
+   #2. Morte: -50.0
+```
+
+### 🎓 Treinador com Recompensas (`treinador_recompensas.py`)
+
+Treina **RandomForest** usando recompensas como **sample weights** para aprendizado acelerado.
+
+#### Características
+- 🌲 **RandomForest**: 300 estimators, max_depth=20
+- ⚡ **GradientBoosting**: 200 estimators, max_depth=8 (alternativa)
+- 🎯 **Sample Weighting**: Ações com alta recompensa = maior peso no treino
+- 📊 **Comparação**: Mostra melhora vs modelo anterior
+- 🔍 **Feature Importance**: Identifica features mais relevantes
+
+#### Uso
+```bash
+# Menu interativo
+python3 treinador_recompensas.py
+
+# Treinamento rápido
+./treinar_rapido.sh
+```
+
+#### Saída
+```
+🎓 Treinando RandomForest com Recompensas...
+============================================================
+✅ Modelo treinado com 4,500 amostras
+   Acurácia: 87.3%
+   Tempo: 2.45s
+
+📊 Comparação com Modelo Anterior:
+   Modelo antigo: 82.1% acurácia
+   Modelo novo: 87.3% acurácia
+   Melhora: +5.2% ⬆️
+
+🔍 Features Mais Importantes:
+   1. enemy_count: 34.2%
+   2. hour: 18.5%
+   3. sector_N: 12.3%
+```
+
+### 🗺️ Mapeamento de Hotspots (`mapeamento_hotspots.py`)
+
+Sistema que **identifica e ranqueia** as melhores áreas de farming automaticamente.
+
+#### Grid de Mapeamento
+- 📍 Grid **10x10** (100 células)
+- 📊 Rastreia: XP/hora, Kills/min, Mortes, Densidade de mobs
+- 🏆 Calcula **score de qualidade** por região
+- 🎨 Gera **heatmaps visuais** com matplotlib
+
+#### Cálculo de Score
+```python
+Score = XP/hora × 1000 × 0.5        # 50% peso
+      + Kills/min × 20 × 0.3         # 30% peso
+      + Mobs médios × 5 × 0.1        # 10% peso
+      - Mortes/hora × 10 × 0.1       # 10% penalidade
+```
+
+#### Uso
+```bash
+# 1. Rodar bot (coleta dados automaticamente)
+python3 main.py
+
+# 2. Ver hotspots mapeados
+./ver_hotspots.sh
+# OU
+python3 mapeamento_hotspots.py
+```
+
+#### Menu Interativo
+```
+🗺️  MAPEAMENTO DE HOTSPOTS
+======================================
+1. 📊 Ver relatório de hotspots
+2. 🎨 Gerar heatmap (score)
+3. 🎨 Gerar heatmap (XP)
+4. 🎨 Gerar heatmap (Kills)
+5. 🏆 Ver melhor hotspot
+0. ❌ Voltar
+```
+
+#### Saída
+```
+🏆 TOP 3 HOTSPOTS:
+----------------------------------------------------------------------
+#1. auto_5,5
+   Score: 127.45
+   XP/hora: 0.0245%
+   Kills/min: 3.2
+   Mortes/hora: 0.0
+   Mobs médios: 8.5
+   Sessões: 3
+   🌟🌟🌟 MELHOR HOTSPOT!
+
+#2. auto_4,6
+   Score: 98.30
+   XP/hora: 0.0198%
+   Kills/min: 2.8
+   🌟🌟 Excelente!
+
+#3. auto_6,5
+   Score: 85.67
+   XP/hora: 0.0176%
+   Kills/min: 2.5
+   🌟🌟 Excelente!
+```
+
+#### Heatmaps Gerados
+- 📊 `heatmap_score_*.png` - Qualidade geral
+- 💰 `heatmap_xp_*.png` - XP ganho
+- ⚔️ `heatmap_kills_*.png` - Kills por região
+
+### 🔍 Detector Visual Corrigido (`detector_corrigido.py`)
+
+Detecção precisa de objetos **apenas no minimap**.
+
+#### Melhorias
+- ✅ **Crop do minimap**: Analisa região (150,150) → 200x200
+- ✅ **HSV otimizado**: S≥200, V≥200 (cores vibrantes)
+- ✅ **Auto-cleanup**: Mantém apenas 10 imagens debug
+- ✅ **Blob detection**: min_area=20, max_area=500
+
+#### Cores Detectadas
+- 🔴 **Vermelho**: Inimigos (HSV: 0-10, 200-255, 200-255)
+- 🔵 **Azul**: Aliados (HSV: 100-130, 180-255, 180-255)
+- 🟡 **Amarelo**: Itens/NPCs (HSV: 20-30, 200-255, 200-255)
+
+### 📊 Análise de Diversidade (`analisar_diversidade.py`)
+
+Ferramenta de diagnóstico para qualidade dos dados de treino.
+
+#### Métricas
+- 🎯 **Unicidade**: % de amostras únicas
+- 📊 **Variância**: Features com baixa variância
+- 📏 **Distâncias**: Similaridade entre amostras
+- 💡 **Recomendações**: Quantos clusters usar
+
+#### Exemplo de Saída
+```
+📊 Análise de Diversidade - 4,300 amostras
+============================================================
+✅ Amostras únicas: 2,228 (51.8%)
+⚠️  Features baixa variância: 44%
+📏 Distância média: 3.45
+💡 Recomendação: Use 5-10 clusters (não 3)
+```
 
 
 ## 📦 Requisitos
@@ -317,6 +529,16 @@ Pressione `Ctrl+C` para parar. O bot irá:
   Kills/min: 2.10
   XP médio/kill: 0.0523%
 
+💰 Sistema de Recompensas - Relatório Final:
+  Duração: 45.2 min
+  Recompensa total: +1,247.5
+  Melhor ação: Multi-kill + XP alto (+25.0)
+
+🗺️  Hotspot Finalizado: auto_farming_area
+  Score: 127.45
+  XP/hora: 0.0245%
+  Rank: #1 🌟🌟🌟
+
 💾 Métricas exportadas: metrics_20251214_143052.json
 
 🧠 Estatísticas de IA:
@@ -326,6 +548,51 @@ Pressione `Ctrl+C` para parar. O bot irá:
   📊 Média por scan: 2.6
   🎓 Amostras ML coletadas: 89
 ```
+
+## 🎓 Ferramentas de Treinamento
+
+### Treinamento com Recompensas
+```bash
+# Menu interativo
+python3 treinador_recompensas.py
+
+# Treinamento rápido
+./treinar_rapido.sh
+```
+
+**Opções:**
+1. 🌲 **RandomForest** com recompensas (recomendado)
+2. ⚡ **GradientBoosting** com recompensas (alternativa)
+3. 🧪 **Testar modelo** (predição de ações)
+4. 📊 **Comparar** com modelo anterior
+
+### Visualização de Hotspots
+```bash
+# Menu de hotspots
+./ver_hotspots.sh
+
+# OU direto
+python3 mapeamento_hotspots.py
+```
+
+**Opções:**
+1. 📊 **Relatório** - Top 10 hotspots ranqueados
+2. 🎨 **Heatmap Score** - Mapa de qualidade
+3. 🎨 **Heatmap XP** - Mapa de XP ganho
+4. 🎨 **Heatmap Kills** - Mapa de kills
+5. 🏆 **Melhor hotspot** - Detalhes do #1
+
+### Análise de Diversidade
+```bash
+# Diagnóstico dos dados de treino
+python3 analisar_diversidade.py
+```
+
+**Mostra:**
+- % de amostras únicas
+- Features com baixa variância
+- Recomendação de clusters
+- Plano de coleta de dados
 
 ## 📊 Analytics e Métricas
 
@@ -577,44 +844,67 @@ bot_sro_mobile/
 ├── view_analytics.py                # 📈 Visualizador de analytics
 │   └── Menu interativo              # 7 opções de visualização
 │
+├── sistema_recompensas.py           # 💰 Sistema de Recompensas (RL)
+│   └── SistemaRecompensas           # Avaliação de ações (reward/penalty)
+│
+├── treinador_recompensas.py         # 🎓 ML com Sample Weighting
+│   └── TreinadorComRecompensas      # RandomForest + rewards
+│
+├── mapeamento_hotspots.py           # 🗺️ Mapeamento de Áreas
+│   └── MapeadorHotspots             # Grid 10x10, scores, heatmaps
+│
+├── detector_corrigido.py            # 🔍 Detecção Visual Otimizada
+│   └── DetectorVisualCorrigido      # Minimap-only, HSV ajustado
+│
+├── analisar_diversidade.py          # 📊 Análise de Dados
+│   └── Diagnóstico de qualidade     # Unicidade, variância, clusters
+│
+├── limpar_imagens.py                # 🧹 Gerenciador de Imagens
+│   └── Limpeza interativa           # Mantém N mais recentes
+│
 ├── ml_status.py                     # 🔍 Status do ML
 ├── test_screenshot.py               # 🧪 Testa métodos de screenshot
 ├── clean_corrupted.py               # 🧹 Remove PNGs corrompidos
 │
+├── treinar_rapido.sh                # ⚡ Script de treino rápido
+├── ver_hotspots.sh                  # 🗺️ Visualizador de hotspots
+│
 ├── config_farming_adb.json          # ⚙️ Configuração principal
 ├── requirements.txt                 # 📦 Dependências Python
 │
-├── ml_models/                       # 🤖 Modelos treinados
-│   ├── modelo_sklearn.pkl           # RandomForest
-│   ├── modelo_ultra.pkl             # KMeans
-│   ├── modelo_ultra_adb.pkl         # Modelo completo
-│   ├── ml_avancado_modelo.pkl       # Modelo avançado
-│   ├── training_data.pkl            # Dados de treino
-│   └── training_metrics.json        # Métricas de treinamento
+├── ml_models/                       # 🤖 Modelos e Dados
+│   ├── modelo_sklearn.pkl           # RandomForest base
+│   ├── modelo_com_recompensas.pkl   # RF com rewards
+│   ├── training_data.json           # 4,500+ amostras
+│   ├── rewards_history.json         # Histórico de recompensas
+│   └── hotspots_map.json            # Mapa de hotspots
 │
 ├── analytics_data/                  # 📊 Dados de analytics
-│   └── session_*.json               # Sessões de farming
+│   ├── session_*.json               # Sessões de farming
+│   └── heatmaps/                    # Mapas visuais de hotspots
+│       ├── heatmap_score_*.png
+│       ├── heatmap_xp_*.png
+│       └── heatmap_kills_*.png
 │
-├── treino_ml/                       # 📸 Screenshots de treino
-│   └── minimap_*.png                # Imagens de minimap
-│
-├── exp_ganho_treino/                # 💰 Screenshots de XP ganho
-│   └── exp_*.png                    # Capturas de EXP
+├── treino_ml/                       # 📸 Screenshots de treino (max: 10)
+├── exp_ganho_treino/                # 💰 XP ganho (max: 10)
+├── minimap_captures/                # 🗺️ Capturas minimap (max: 10)
+├── debug_deteccao/                  # 🔍 Debug detector (max: 10)
 │
 └── README.md                        # 📖 Esta documentação
 ```
 
 ### Arquivos Principais
 
-#### `main.py` (1300+ linhas)
+#### `main.py` (1635+ linhas)
 **Bot completo com:**
 - `Config`: Gerenciamento de configurações JSON
 - `screenshot()`: Captura de tela via ADB (shell + pull)
 - `start_infinite_farming()`: Loop principal de farming
-- Integração completa: IA + ML + Analytics + Advanced Vision
-- Signal handler com relatório final
+- Integração: IA + ML + Analytics + Recompensas + Hotspots
+- Signal handler com relatório final completo
 
-#### `ai_modules.py` (1040+ linhas)
+#### `ai_modules.py` (1072+ linhas)
 **Cinco módulos de IA:**
 1. **MinimapVision**: Análise OpenCV do minimap
    - 8 setores direcionais
@@ -623,7 +913,7 @@ bot_sro_mobile/
    
 2. **MLPredictor**: Machine Learning
    - RandomForest para predição de densidade
-   - KMeans para clustering de áreas
+   - KMeans para clustering (2 clusters otimizado)
    - Auto-treino a cada 100 amostras
    - 4 formatos de modelo salvos
    - Integração com MetricasAprendizadoML
@@ -664,12 +954,53 @@ bot_sro_mobile/
 - `print_live_dashboard()`: Dashboard ao vivo
 - `generate_summary_report()`: Relatório resumido
 
-#### `xp_detector.py` (250 linhas)
+#### `xp_detector.py` (250+ linhas)
 **XPGainDetector - OCR de EXP:**
 - Preprocessamento: CLAHE, threshold, resize
 - 4 regex patterns para parsing
 - Batch processing de screenshots
 - Estatísticas de valores detectados
+
+#### `sistema_recompensas.py` (400+ linhas)
+**SistemaRecompensas - Reinforcement Learning:**
+- 15+ tipos de recompensas (kills, XP, combate, etc.)
+- Penalidades (mortes, HP baixo, stuck)
+- Histórico completo (1000 últimas ações)
+- Relatório final com melhores/piores ações
+- Salva em `ml_models/rewards_history.json`
+
+#### `treinador_recompensas.py` (450+ linhas)
+**TreinadorComRecompensas - ML com Feedback:**
+- RandomForest com sample_weight baseado em rewards
+- GradientBoosting como alternativa
+- Comparação com modelo anterior
+- Feature importance analysis
+- Menu interativo com 4 opções
+
+#### `mapeamento_hotspots.py` (550+ linhas)
+**MapeadorHotspots - Spatial Analysis:**
+- Grid 10x10 para 1000x1000 coordenadas
+- Rastreamento: XP/hora, Kills/min, Mortes, Mobs
+- Cálculo de score de qualidade
+- Ranking automático de regiões
+- Geração de heatmaps com matplotlib
+- Salva em `ml_models/hotspots_map.json`
+
+#### `detector_corrigido.py` (293 linhas)
+**DetectorVisualCorrigido - CV Otimizado:**
+- Crop minimap: região (150,150) → 200x200
+- HSV ajustado: S≥200, V≥200 (cores vibrantes)
+- Blob detection: min=20, max=500, circularity≥0.5
+- Auto-cleanup: mantém 10 imagens debug
+- 3 cores: Vermelho (inimigos), Azul (aliados), Amarelo (itens)
+
+#### `analisar_diversidade.py` (235 linhas)
+**Diagnóstico de Dados:**
+- Calcula % de amostras únicas
+- Identifica features de baixa variância
+- Análise de distâncias entre amostras
+- Recomendação de clusters otimizada
+- Plano de coleta de dados diversificados
 
 ## 🔧 Troubleshooting
 
@@ -767,6 +1098,47 @@ python3 clean_corrupted.py
 ### Advanced Vision não detecta
 
 **Problema:** Cores, círculos ou coordenadas não são detectados.
+
+**Soluções:**
+```json
+// config_farming_adb.json
+"advanced_vision_config": {
+  "detect_colors_enabled": true,
+  "detect_circles_enabled": true,
+  "read_coords_enabled": true
+}
+```
+
+### KMeans Convergência Warning
+
+**Problema:** `ConvergenceWarning: Number of distinct clusters (1) found smaller than n_clusters (3)`
+
+**Solução:** Já corrigido! Reduzido de 3 → 2 clusters em `ai_modules.py`:
+```python
+# Otimizado para 51.8% dados únicos
+self.cluster_model = KMeans(n_clusters=2, random_state=42, n_init=10)
+```
+
+**Se quiser ajustar manualmente:**
+```bash
+# Analise diversidade primeiro
+python3 analisar_diversidade.py
+
+# Use recomendação de clusters sugerida
+```
+
+### Detector contando objetos errados
+
+**Problema:** "77 objetos vermelhos" quando há apenas 8 visíveis.
+
+**Causa:** Detector analisando tela inteira em vez de apenas minimap.
+
+**Solução:** Use `detector_corrigido.py` (já integrado):
+```python
+# Analisa APENAS minimap (150,150 → 200x200)
+detector = DetectorVisualCorrigido()
+resultado = detector.detectar_objetos_reais(screenshot, crop_minimap=True)
+```
 
 **Soluções:**
 
@@ -1226,27 +1598,68 @@ crontab -e
 0 2 * * * cd /path/to/bot_sro_mobile && ./daily_report.sh
 ```
 
+### Visualizando Hotspots
+
+**1. Após Farm:**
+```bash
+./ver_hotspots.sh
+
+# Ver top hotspots
+# Opção 1: Relatório completo
+
+# Gerar heatmaps
+# Opção 2-4: Diferentes métricas
+```
+
+**2. Identificar Melhor Região:**
+```bash
+python3 mapeamento_hotspots.py
+
+# Opção 5: Ver melhor hotspot
+# Mostra região #1 com maior score
+```
+
+**3. Comparar Áreas:**
+```python
+# Analise heatmap_score_*.png
+# Células com cores mais quentes = melhores áreas
+# Círculos dourado/prata/bronze = top 3
+```
+
 ## 🚀 Roadmap e Melhorias Futuras
 
-### Em Desenvolvimento
+### ✅ Implementado (Dezembro 2025)
+- ✅ Sistema de Recompensas (Reinforcement Learning)
+- ✅ Treinamento com Sample Weighting (Rewards)
+- ✅ Mapeamento de Hotspots (Grid 10x10 + Heatmaps)
+- ✅ Detector Visual Corrigido (Minimap-only)
+- ✅ Análise de Diversidade de Dados
+- ✅ Auto-cleanup de imagens (10 max)
+- ✅ KMeans otimizado (2 clusters)
+
+### 🔄 Em Desenvolvimento
 - [ ] Interface gráfica (GUI) com PyQt5
-- [ ] Gráficos de performance (matplotlib)
-- [ ] Sistema de auto-calibração
-- [ ] Detecção de drops raros via OCR
+- [ ] Detector de HP (OCR da barra de vida)
+- [ ] Detector de Morte (tela preta/respawn)
+- [ ] Auto-movimento para hotspots
 - [ ] Telegram/Discord notifications
 - [ ] Multi-account support
 
-### Melhorias de IA
+### 🎯 Melhorias de IA Planejadas
 - [ ] Deep Learning com TensorFlow
+- [ ] Q-Learning para decisões ótimas
 - [ ] Reconhecimento de padrões de spawn
 - [ ] Previsão de horários com mais inimigos
 - [ ] Auto-ajuste de configurações baseado em performance
+- [ ] Detector de items raros (OCR + CV)
 
-### Analytics
+### 📊 Analytics Futuro
+- [ ] Gráficos interativos com plotly
 - [ ] Comparação com outros players
 - [ ] Benchmarks de eficiência
 - [ ] Alertas de anomalias
 - [ ] Exportação para Google Sheets
+- [ ] Dashboard web em tempo real
 
 ## 🤝 Contribuindo
 
@@ -1294,7 +1707,21 @@ Permissão concedida para uso, cópia, modificação e distribuição deste soft
 - **OpenCV** - Computer Vision
 - **Scikit-learn** - Machine Learning
 - **Tesseract** - OCR Engine
+- **Matplotlib** - Data Visualization
+- **NumPy** - Numerical Computing
 - **Python Community** - Ferramentas incríveis
+
+---
+
+## 📊 Estatísticas do Projeto
+
+- 📝 **Linhas de Código**: 10,000+
+- 🧠 **Módulos de IA**: 8 sistemas diferentes
+- 🎓 **Amostras Treináveis**: 4,500+ coletadas
+- 🗺️ **Células de Mapeamento**: 100 (grid 10x10)
+- 💰 **Tipos de Recompensas**: 15+ configuradas
+- 📊 **Métricas Rastreadas**: 30+ diferentes
+- 🔧 **Ferramentas**: 15+ scripts auxiliares
 
 ---
 

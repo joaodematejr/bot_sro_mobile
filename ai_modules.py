@@ -219,9 +219,10 @@ class MLPredictor:
         self.model_folder = Path(model_folder)
         self.model_folder.mkdir(exist_ok=True)
         
-        # Modelos
+        # Modelos - Ajustado para 2 clusters (baseado na análise de diversidade)
+        # Com 51.8% de dados únicos, usar menos clusters evita convergência
         self.density_model = RandomForestRegressor(n_estimators=100, random_state=42)
-        self.cluster_model = KMeans(n_clusters=3, random_state=42)
+        self.cluster_model = KMeans(n_clusters=2, random_state=42, n_init=10)
         self.scaler = StandardScaler()
         
         # Dados de treino

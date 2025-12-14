@@ -40,6 +40,22 @@ except ImportError as e:
     print(f"⚠️ Analytics não disponível: {e}")
     ANALYTICS_AVAILABLE = False
 
+# Sistema de Recompensas
+try:
+    from sistema_recompensas import SistemaRecompensas
+    REWARDS_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ Sistema de recompensas não disponível: {e}")
+    REWARDS_AVAILABLE = False
+
+# Mapeamento de Hotspots
+try:
+    from mapeamento_hotspots import MapeadorHotspots
+    HOTSPOTS_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ Mapeamento de hotspots não disponível: {e}")
+    HOTSPOTS_AVAILABLE = False
+
 # Detector Visual Corrigido (minimapa)
 try:
     from detector_corrigido import DetectorVisualCorrigido
@@ -958,6 +974,21 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
         xp_detector = XPGainDetector()
         print("📊 Analytics habilitado")
     
+    # Inicializa Sistema de Recompensas
+    sistema_recompensas = None
+    if REWARDS_AVAILABLE:
+        sistema_recompensas = SistemaRecompensas()
+        print("💰 Sistema de Recompensas habilitado")
+    
+    # Inicializa Mapeador de Hotspots
+    mapeador_hotspots = None
+    if HOTSPOTS_AVAILABLE:
+        mapeador_hotspots = MapeadorHotspots()
+        print("🗺️  Mapeamento de Hotspots habilitado")
+        # Inicia sessão na região atual
+        regiao_inicial = "auto_farming_area"
+        mapeador_hotspots.iniciar_sessao_regiao(regiao_inicial, 0.0, 500, 500)
+    
     # Inicializa Detector Visual
     detector_visual = None
     if DETECTOR_AVAILABLE:
@@ -1103,6 +1134,16 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
             if ml_predictor and len(ml_predictor.training_data) > 0:
                 print(f"  🎓 Amostras ML coletadas: {len(ml_predictor.training_data)}")
         
+        # Sistema de Recompensas
+        if sistema_recompensas:
+            sistema_recompensas.finalizar_sessao()
+        
+        # Mapeamento de Hotspots
+        if mapeador_hotspots and analytics:
+            stats = analytics.get_current_statistics()
+            xp_final = stats['xp']['current'] or 0
+            mapeador_hotspots.finalizar_sessao_regiao(xp_final)
+        
         if config.should_save_training_images():
             exp_stats = exp_tracker.get_stats()
             exp_gain_stats = exp_gain_tracker.get_stats()
@@ -1193,6 +1234,33 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
                                         # Limpa pastas antigas (mantém apenas 10 mais recentes)
                                         cleanup_folder_images("minimap_captures", max_keep=10)
                                         cleanup_folder_images("debug_deteccao", max_keep=10)
+                                        
+                                        # Sistema de Recompensas - Registra estado
+                                        if sistema_recompensas and analytics:
+                                            stats = analytics.get_current_statistics()
+                                            
+                                            estado_atual = {
+                                                'hp_percent': 100,  # TODO: Detectar HP real
+                                                'mobs_nearby': mobs_count,
+                                                'xp_percent': stats['xp']['current'] or 0,
+                                                'in_combat': in_combat,
+                                                'last_action': 'target',
+                                                'kills_recent': stats['combat']['kills'],
+                                                'damage_taken': 0,  # TODO: Detectar dano
+                                                'items_collected': 0  # TODO: Detectar items
+                                            }
+                                            
+                                            recompensa = sistema_recompensas.registrar_estado(estado_atual)
+                                        
+                                        # Mapeamento de Hotspots - Atualiza região
+                                        if mapeador_hotspots and analytics:
+                                            stats = analytics.get_current_statistics()
+                                            xp_atual = stats['xp']['current'] or 0
+                                            kills = stats['combat']['kills']
+                                            
+                                            mapeador_hotspots.atualizar_estado(
+                                                xp_atual, kills, 0, mobs_count, 500, 500
+                                            )
                                         
                                         # Adiciona dados para ML
                                         if ml_predictor:
