@@ -36,6 +36,7 @@ class MovimentoInteligente:
         # Configurações de movimento
         movimento_config = config.get('movimento_automatico_config', {})
         self.min_mobs_para_ficar = movimento_config.get('min_mobs_area', 2)
+        self.max_mobs_seguro = movimento_config.get('max_mobs_seguro', 5)  # NOVO: limite máximo
         self.raio_busca = movimento_config.get('raio_busca_pixels', 80)
         self.tempo_movimento = movimento_config.get('tempo_movimento_segundos', 2.5)
         self.intervalo_verificacao = movimento_config.get('intervalo_verificacao', 30)
@@ -104,6 +105,8 @@ class MovimentoInteligente:
         densidade_por_direcao = {}
         melhor_direcao = None
         max_densidade = 0
+        direcao_fuga = None  # NOVO: direção para fugir se muito perigoso
+        min_densidade = float('inf')
         
         # Analisa cada direção
         for nome, (dx, dy) in direcoes.items():
@@ -128,9 +131,15 @@ class MovimentoInteligente:
             
             densidade_por_direcao[nome] = pixels_vermelho
             
-            if pixels_vermelho > max_densidade:
+            # Melhor direção: mais mobs, mas NÃO mais que o limite seguro
+            if pixels_vermelho > max_densidade and pixels_vermelho <= self.max_mobs_seguro * 50:
                 max_densidade = pixels_vermelho
                 melhor_direcao = nome
+            
+            # Direção de fuga: MENOS mobs (para fugir se necessário)
+            if pixels_vermelho < min_densidade:
+                min_densidade = pixels_vermelho
+                direcao_fuga = nome
             
             if debug:
                 # Salva máscara de cada direção
@@ -142,15 +151,36 @@ class MovimentoInteligente:
         mobs_perto = cv2.bitwise_and(mask_mobs, mask_perto)
         mobs_atual = cv2.countNonZero(mobs_perto)
         
-        # Decisão: mover se tem poucos mobs perto E tem mais mobs em outra direção
-        precisa_mover = (mobs_atual < self.min_mobs_para_ficar * 50) and (max_densidade > mobs_atual * 1.5)
+        # ========= LÓGICA DE SEGURANÇA =========
+        # 1. PERIGO: Se tem MUITOS mobs perto → FUGIR
+        em_perigo = mobs_atual > self.max_mobs_seguro * 50
+        
+        # 2. POUCOS: Se tem poucos mobs → BUSCAR área melhor
+        poucos_mobs = mobs_atual < self.min_mobs_para_ficar * 50
+        
+        # 3. DECISÃO:
+        if em_perigo:
+            # FUGIR para onde tem MENOS mobs
+            precisa_mover = True
+            melhor_direcao = direcao_fuga
+            print(f"🚨 PERIGO! {mobs_atual} pixels de mobs → Fugindo para {direcao_fuga}")
+        elif poucos_mobs and max_densidade > mobs_atual * 1.5:
+            # BUSCAR área com mais mobs (mas não perigosa)
+            precisa_mover = True
+            print(f"🔍 Poucos mobs ({mobs_atual}) → Indo para {melhor_direcao} ({max_densidade} pixels)")
+        else:
+            # FICAR: área está boa
+            precisa_mover = False
+            print(f"✅ Área boa ({mobs_atual} pixels) → Ficando aqui")
         
         resultado = {
             'precisa_mover': precisa_mover,
             'mobs_atual': mobs_atual,
             'melhor_direcao': melhor_direcao,
             'densidade_direcao': densidade_por_direcao,
-            'max_densidade': max_densidade
+            'max_densidade': max_densidade,
+            'em_perigo': em_perigo,
+            'direcao_fuga': direcao_fuga
         }
         
         if debug:
@@ -258,7 +288,9 @@ class MovimentoInteligente:
         
         # Move se necessário
         if analise['precisa_mover'] and analise['melhor_direcao']:
-            self.mover_para_direcao(analise['melhor_direcao'], self.tempo_movimento)
+            # Aumenta a duração se for fuga
+            duracao = self.tempo_movimento * (1.4 if analise.get('em_perigo') else 1.0)
+            self.mover_para_direcao(analise['melhor_direcao'], duracao)
             self.ultimo_movimento = tempo_atual
             return True
         else:

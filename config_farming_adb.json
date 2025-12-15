@@ -156,10 +156,11 @@
   "movimento_automatico": true,
   "movimento_automatico_config": {
     "min_mobs_area": 2,
+    "max_mobs_seguro": 4,
     "raio_busca_pixels": 80,
-    "tempo_movimento_segundos": 2.5,
-    "intervalo_verificacao": 30,
-    "descricao": "Move automaticamente para áreas com mais mobs"
+    "tempo_movimento_segundos": 3.0,
+    "intervalo_verificacao": 10,
+    "descricao": "Move automaticamente para áreas com mais mobs (mas não perigosas)"
   },
   
   "pasta_imagens_treino": "treino_ml",

@@ -1126,7 +1126,7 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
         regiao_demon = config.config.get("regiao_botao_demon")
         if regiao_demon:
             demon_detector = DemonDetector(regiao_demon)
-            print(f"😈 Detector de Demon habilitado (verifica a cada 5s)")
+            print(f"😈 Detector de Demon habilitado (verifica a cada 10min)")
         else:
             print("⚠️ Região do botão Demon não configurada, usando intervalo de tempo")
             usar_deteccao_demon = False
@@ -1320,8 +1320,8 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
             
             # Ativa Demon - com detecção visual ou intervalo
             if demon_detector:
-                # Modo detecção visual: verifica a cada 5 segundos se botão está disponível
-                if tempo_atual - ultimo_demon >= 5:  # Verifica a cada 5s
+                # Modo detecção visual: verifica a cada 10 minutos se botão está disponível
+                if tempo_atual - ultimo_demon >= 600:  # Verifica a cada 10 minutos
                     # Captura screenshot temporário
                     temp_demon = f"temp_demon_{datetime.now().strftime('%H%M%S')}.png"
                     
@@ -1620,7 +1620,7 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
             
             # Status do target
             if em_ciclo_target:
-                status_target = f"🎯 Targetando ({clicks_no_ciclo}/{target_clicks})"
+                status_target = f"🎯 Mirando ({clicks_no_ciclo}/{target_clicks})"
             else:
                 tempo_ate_proximo = int(target_pause - (tempo_atual - fim_ultimo_ciclo))
                 if tempo_ate_proximo > 0:
@@ -1630,11 +1630,13 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
             
             # Tempo até próximo Demon
             if demon_detector:
-                # Modo detecção visual: mostra tempo até próxima verificação (5s)
-                tempo_ate_demon = int(5 - (tempo_atual - ultimo_demon))
+                # Modo detecção visual: mostra tempo até próxima verificação (10min)
+                tempo_ate_demon = int(600 - (tempo_atual - ultimo_demon))
                 if tempo_ate_demon < 0:
                     tempo_ate_demon = 0
-                display_demon = f"😈:{contador_demon}(🔍{tempo_ate_demon}s)"
+                min_demon = tempo_ate_demon // 60
+                seg_demon = tempo_ate_demon % 60
+                display_demon = f"😈:{contador_demon}(🔍{min_demon}:{seg_demon:02d})"
             else:
                 # Modo intervalo de tempo: mostra countdown completo
                 tempo_ate_demon = int(demon_interval - (tempo_atual - ultimo_demon))
