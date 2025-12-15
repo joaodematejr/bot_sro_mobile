@@ -160,7 +160,11 @@
     "raio_busca_pixels": 80,
     "tempo_movimento_segundos": 3.0,
     "intervalo_verificacao": 10,
-    "descricao": "Move automaticamente para áreas com mais mobs (mas não perigosas)"
+    "usar_kiting": true,
+    "kiting_raio_pixels": 40,
+    "kiting_duracao_passo": 0.8,
+    "kiting_num_passos": 8,
+    "descricao": "Move automaticamente para áreas com mais mobs. Kiting circular agrega mobs distantes."
   },
   
   "pasta_imagens_treino": "treino_ml",

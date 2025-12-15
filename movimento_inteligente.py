@@ -39,10 +39,15 @@ class MovimentoInteligente:
         self.max_mobs_seguro = movimento_config.get('max_mobs_seguro', 5)  # NOVO: limite máximo
         self.raio_busca = movimento_config.get('raio_busca_pixels', 80)
         self.tempo_movimento = movimento_config.get('tempo_movimento_segundos', 2.5)
-        self.intervalo_verificacao = movimento_config.get('intervalo_verificacao', 30)
-        
+        self.intervalo_verificacao = movimento_config.get('intervalo_verificacao', 30)        
+        # Configurações de kiting
+        self.usar_kiting = movimento_config.get('usar_kiting', False)
+        self.kiting_raio = movimento_config.get('kiting_raio_pixels', 40)
+        self.kiting_duracao_passo = movimento_config.get('kiting_duracao_passo', 0.8)
+        self.kiting_num_passos = movimento_config.get('kiting_num_passos', 8)        
         # Estado
         self.ultimo_movimento = 0
+        self.ultimo_kiting = 0
         self.posicao_atual_estimada = (self.minimap_w // 2, self.minimap_h // 2)
         self.historico_densidade = []
         
@@ -54,6 +59,8 @@ class MovimentoInteligente:
         print(f"   Minimapa: ({self.minimap_x}, {self.minimap_y}) {self.minimap_w}x{self.minimap_h}")
         print(f"   Joystick: ({self.joystick_x}, {self.joystick_y}) raio={self.joystick_raio}")
         print(f"   Min mobs: {self.min_mobs_para_ficar}, Verificação: {self.intervalo_verificacao}s")
+        if self.usar_kiting:
+            print(f"   🔄 Kiting habilitado: raio={self.kiting_raio}px, {self.kiting_num_passos} passos")
     
     def analisar_densidade_mobs(self, screenshot_path: str, debug: bool = False) -> Dict:
         """
@@ -250,6 +257,50 @@ class MovimentoInteligente:
         
         return True
     
+    def fazer_kiting(self, duracao_total: float = 6.0) -> bool:
+        """
+        Executa movimento circular (kiting) para agregar mobs
+        Move em círculo pequeno ao redor da posição atual
+        
+        Args:
+            duracao_total: tempo total do movimento circular em segundos
+            
+        Returns:
+            True se kiting foi executado
+        """
+        print(f"\n🔄 Iniciando kiting circular para agregar mobs...")
+        
+        # Define 8 direções para fazer um círculo
+        direcoes_circulo = [
+            ('norte', 0, -1),
+            ('nordeste', 0.7, -0.7),
+            ('leste', 1, 0),
+            ('sudeste', 0.7, 0.7),
+            ('sul', 0, 1),
+            ('sudoeste', -0.7, 0.7),
+            ('oeste', -1, 0),
+            ('noroeste', -0.7, -0.7)
+        ]
+        
+        # Executa movimento em cada direção
+        for i, (nome, dx, dy) in enumerate(direcoes_circulo[:self.kiting_num_passos]):
+            # Calcula posição no joystick (usa raio menor para círculo pequeno)
+            offset_x = int(dx * self.kiting_raio)
+            offset_y = int(dy * self.kiting_raio)
+            
+            target_x = self.joystick_x + offset_x
+            target_y = self.joystick_y + offset_y
+            
+            # Move nessa direção por tempo curto
+            self.adb.swipe(self.joystick_x, self.joystick_y, target_x, target_y,
+                          duration=int(self.kiting_duracao_passo * 1000))
+            
+            # Pequena pausa entre passos
+            time.sleep(0.1)
+        
+        print(f"   ✅ Kiting concluído - {self.kiting_num_passos} passos em círculo")
+        return True
+    
     def verificar_e_mover(self, screenshot_path: str, debug: bool = False) -> bool:
         """
         Verifica se precisa mover e executa movimento se necessário
@@ -294,6 +345,17 @@ class MovimentoInteligente:
             self.ultimo_movimento = tempo_atual
             return True
         else:
+            # Se área está boa mas detecta mobs distantes, faz kiting para agregar
+            if self.usar_kiting and tempo_atual - self.ultimo_kiting >= 60:  # Kiting a cada 60s
+                # Verifica se tem mobs na área mas poucos perto
+                densidade_total = sum(analise['densidade_direcao'].values())
+                if densidade_total > 100 and analise['mobs_atual'] < self.min_mobs_para_ficar * 30:
+                    print(f"\n🔄 Detectados mobs distantes ({densidade_total} pixels) - fazendo kiting")
+                    self.fazer_kiting()
+                    self.ultimo_kiting = tempo_atual
+                    self.ultimo_movimento = tempo_atual
+                    return True
+            
             if debug:
                 print(f"   ✅ Área boa, ficando no local")
             self.ultimo_movimento = tempo_atual
