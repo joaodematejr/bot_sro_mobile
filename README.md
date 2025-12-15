@@ -2,6 +2,12 @@
 
 Bot automatizado ultra-avançado para Silkroad Origin Mobile usando controle ADB (Android Debug Bridge). Sistema completo com **Inteligência Artificial**, **Machine Learning**, **Computer Vision**, **Analytics Detalhado**, **Sistema de Recompensas**, **Treinamento com Feedback** e **Mapeamento de Hotspots**.
 
+## 🎥 Demonstração
+
+[![Demonstração do Bot](https://img.shields.io/badge/Video-Demo-red?style=for-the-badge&logo=youtube)](Gravação%20de%20tela%20de%2015-12-2025%2010:13:37.webm)
+
+*Vídeo mostrando o bot em ação com movimento automático inteligente, detecção de skills e farming otimizado.*
+
 ## 📋 Índice
 
 - [Funcionalidades](#-funcionalidades)
