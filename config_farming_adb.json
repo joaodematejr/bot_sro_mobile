@@ -153,6 +153,15 @@
   "joystick_centro_y": 850,
   "joystick_raio": 80,
   
+  "movimento_automatico": true,
+  "movimento_automatico_config": {
+    "min_mobs_area": 2,
+    "raio_busca_pixels": 80,
+    "tempo_movimento_segundos": 2.5,
+    "intervalo_verificacao": 30,
+    "descricao": "Move automaticamente para áreas com mais mobs"
+  },
+  
   "pasta_imagens_treino": "treino_ml",
   "salvar_imagens_treino": true,
   "max_imagens_treino": 10

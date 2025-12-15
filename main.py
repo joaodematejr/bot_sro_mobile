@@ -780,6 +780,15 @@ class DemonDetector:
             return False
 
 
+# Importa MovimentoInteligente
+try:
+    from movimento_inteligente import MovimentoInteligente
+    MOVIMENTO_INTELIGENTE_AVAILABLE = True
+except ImportError:
+    MOVIMENTO_INTELIGENTE_AVAILABLE = False
+    print("⚠️  MovimentoInteligente não disponível")
+
+
 class ExpTracker:
     """Rastreador de EXP com captura de screenshots para treino ML"""
     
@@ -1123,6 +1132,15 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
             usar_deteccao_demon = False
     else:
         print(f"⚠️ Detecção de Demon desabilitada, usando intervalo de {demon_interval//60}min")
+    
+    # Inicializa Movimento Inteligente (novo sistema)
+    movimento_auto = None
+    usar_movimento_auto = config.config.get("movimento_automatico", False)
+    if usar_movimento_auto and MOVIMENTO_INTELIGENTE_AVAILABLE:
+        movimento_auto = MovimentoInteligente(adb, config.config)
+        print(f"🚶 Movimento Automático habilitado")
+    elif usar_movimento_auto and not MOVIMENTO_INTELIGENTE_AVAILABLE:
+        print("⚠️ Movimento Automático solicitado mas módulo não disponível")
     
     # Inicializa módulos de IA
     ai_enabled = config.is_ai_enabled()
@@ -1555,6 +1573,17 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
                         except Exception as e:
                             pass  # Ignora erros de IA para não travar farming
                         
+                        # 5. Movimento Automático Inteligente (novo sistema)
+                        if movimento_auto:
+                            try:
+                                moveu = movimento_auto.verificar_e_mover(temp_screenshot, debug=False)
+                                if moveu:
+                                    contador_movimentos_ia += 1
+                                    print(f"\n🚶 Movido para área com mais mobs")
+                            except Exception as e:
+                                if contador_ia_analises % 10 == 0:  # Log erro só de vez em quando
+                                    print(f"⚠️  Erro no movimento automático: {e}")
+                        
                         # Remove temp
                         try:
                             os.remove(temp_screenshot)
@@ -1625,6 +1654,10 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
                     display += f" | EXP:{current_exp_percentage:.1f}%"
                 if in_combat:
                     display += " | ⚔️"
+            
+            # Adiciona info de Movimento Automático
+            if movimento_auto and contador_movimentos_ia > 0:
+                display += f" | 🚶:{contador_movimentos_ia}"
             
             # Adiciona info de Analytics se habilitado
             if analytics:
