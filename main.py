@@ -11,6 +11,8 @@ import argparse
 import signal
 import json
 import os
+import cv2
+import numpy as np
 from typing import Optional, Dict, Any, List, Tuple
 from datetime import datetime
 from pathlib import Path
@@ -159,7 +161,15 @@ class Config:
                 "y": 552,
                 "descricao": "Botão para ativar habilidade Demon"
             },
+            "regiao_botao_demon": {
+                "x": 1810,
+                "y": 532,
+                "width": 40,
+                "height": 40,
+                "descricao": "Região do botão Demon para detecção visual"
+            },
             "intervalo_demon": 900,
+            "usar_deteccao_demon": True,
             "regiao_exp": {
                 "x": 119,
                 "y": 964,
@@ -665,6 +675,111 @@ class MinimapAnalyzer:
         }
 
 
+class DemonDetector:
+    """Detecta se o botão Demon está ativo (disponível para usar)"""
+    
+    def __init__(self, regiao_demon: Dict[str, int]):
+        """
+        Args:
+            regiao_demon: Dict com x, y, width, height da região do botão
+        """
+        self.regiao = regiao_demon
+        self.debug_folder = Path("debug_demon")
+        self.debug_folder.mkdir(exist_ok=True)
+        
+        # Estratégia: Detectar pelo BRILHO/CONTRASTE
+        # Botão ativo = mais brilhante
+        # Botão em cooldown = escuro/cinza
+        
+        print("🔍 Detector de Demon inicializado (modo: brilho)")
+    
+    def is_demon_available(self, screenshot_path: str, debug: bool = False) -> bool:
+        """
+        Verifica se o botão Demon está VISÍVEL (disponível)
+        
+        Estratégia: Botão APARECE quando disponível, DESAPARECE quando em cooldown
+        Detecta se há pixels visíveis (não pretos) na região
+        
+        Args:
+            screenshot_path: Caminho da screenshot
+            debug: Se True, salva imagens de debug
+            
+        Returns:
+            True se botão estiver VISÍVEL, False se estiver AUSENTE
+        """
+        try:
+            # Carrega imagem
+            img = cv2.imread(screenshot_path)
+            if img is None:
+                if debug:
+                    print(f"  ⚠️ Erro: Não foi possível carregar {screenshot_path}")
+                return False
+            
+            # Recorta região do botão
+            x = self.regiao['x']
+            y = self.regiao['y']
+            w = self.regiao['width']
+            h = self.regiao['height']
+            
+            # Verifica se região está dentro da imagem
+            img_h, img_w = img.shape[:2]
+            if x + w > img_w or y + h > img_h:
+                if debug:
+                    print(f"  ⚠️ Região fora da imagem! Img: {img_w}x{img_h}, Região: ({x},{y}) {w}x{h}")
+                return False
+            
+            roi = img[y:y+h, x:x+w]
+            
+            if debug:
+                cv2.imwrite(str(self.debug_folder / "demon_roi.png"), roi)
+            
+            # Converte para HSV
+            hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
+            
+            # Estratégia: detectar cores ESPECÍFICAS do botão Demon (laranja/dourado brilhante)
+            # Fundo verde/azul da interface não deve ser detectado
+            
+            # Range de cores do botão Demon: laranja/dourado
+            # H: 10-25 (laranja/amarelo-alaranjado)
+            # S: 100-255 (bem saturado)
+            # V: 100-255 (brilhante)
+            lower_demon = np.array([10, 100, 100])
+            upper_demon = np.array([25, 255, 255])
+            
+            # Cria máscara para cores laranja/dourado
+            mask = cv2.inRange(hsv, lower_demon, upper_demon)
+            
+            if debug:
+                cv2.imwrite(str(self.debug_folder / "demon_mask.png"), mask)
+                # Salva também os canais para análise
+                h_ch, s, v = cv2.split(hsv)
+                cv2.imwrite(str(self.debug_folder / "demon_brightness.png"), v)
+                cv2.imwrite(str(self.debug_folder / "demon_saturation.png"), s)
+                cv2.imwrite(str(self.debug_folder / "demon_hue.png"), h_ch)
+            
+            # Conta pixels com cor do botão
+            pixels_visiveis = int(cv2.countNonZero(mask))
+            total_pixels = int(w * h)
+            percentual = (pixels_visiveis / total_pixels) * 100.0
+            
+            # Se mais de 15% dos pixels têm cor laranja/dourado, botão está presente
+            is_available = percentual >= 15
+            
+            if debug:
+                print(f"  🔍 Demon: {percentual:.1f}% pixels laranja/dourado → {'✅ BOTÃO PRESENTE' if is_available else '❌ BOTÃO AUSENTE'}")
+            
+            return is_available
+            
+        except Exception as e:
+            import traceback
+            if debug:
+                print(f"⚠️ Erro ao detectar Demon: {e}")
+                traceback.print_exc()
+            else:
+                print(f"⚠️ Erro ao detectar Demon: {e}")
+            return False
+
+
 class ExpTracker:
     """Rastreador de EXP com captura de screenshots para treino ML"""
     
@@ -995,6 +1110,20 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
         detector_visual = DetectorVisualCorrigido()
         print("🔍 Detector Visual habilitado (minimapa)")
     
+    # Inicializa Detector de Demon
+    demon_detector = None
+    usar_deteccao_demon = config.config.get("usar_deteccao_demon", True)
+    if usar_deteccao_demon:
+        regiao_demon = config.config.get("regiao_botao_demon")
+        if regiao_demon:
+            demon_detector = DemonDetector(regiao_demon)
+            print(f"😈 Detector de Demon habilitado (verifica a cada 5s)")
+        else:
+            print("⚠️ Região do botão Demon não configurada, usando intervalo de tempo")
+            usar_deteccao_demon = False
+    else:
+        print(f"⚠️ Detecção de Demon desabilitada, usando intervalo de {demon_interval//60}min")
+    
     # Inicializa módulos de IA
     ai_enabled = config.is_ai_enabled()
     minimap_vision = None
@@ -1038,7 +1167,10 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
     print(f"🎯 Target em ciclos:")
     print(f"   • {target_clicks} cliques de {target_interval}s cada")
     print(f"   • Pausa de {target_pause}s entre ciclos")
-    print(f"😈 Demon: ({demon_x}, {demon_y}) - a cada {demon_interval//60} minutos")
+    if demon_detector:
+        print(f"😈 Demon: ({demon_x}, {demon_y}) - 🔍 DETECÇÃO VISUAL (quando disponível)")
+    else:
+        print(f"😈 Demon: ({demon_x}, {demon_y}) - a cada {demon_interval//60} minutos")
     print(f"📊 EXP Barra: Região ({exp_region['x']}, {exp_region['y']}) - captura a cada {exp_capture_interval}s")
     print(f"💰 EXP Ganho: Região ({exp_gain_region['x']}, {exp_gain_region['y']}) - captura a cada {exp_gain_interval}s")
     if config.should_save_training_images():
@@ -1168,11 +1300,51 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
                     contador_camera += 1
                     ultimo_camera = tempo_atual
             
-            # Ativa Demon a cada Y minutos
-            if tempo_atual - ultimo_demon >= demon_interval:
-                if adb.tap(demon_x, demon_y):
-                    contador_demon += 1
-                    ultimo_demon = tempo_atual
+            # Ativa Demon - com detecção visual ou intervalo
+            if demon_detector:
+                # Modo detecção visual: verifica a cada 5 segundos se botão está disponível
+                if tempo_atual - ultimo_demon >= 5:  # Verifica a cada 5s
+                    # Captura screenshot temporário
+                    temp_demon = f"temp_demon_{datetime.now().strftime('%H%M%S')}.png"
+                    
+                    if adb.screenshot(temp_demon):
+                        time.sleep(0.2)  # Aumenta espera para garantir arquivo
+                        
+                        if os.path.exists(temp_demon):
+                            # Verifica se Demon está disponível COM DEBUG
+                            is_available = demon_detector.is_demon_available(temp_demon, debug=True)
+                            
+                            # Atualiza ultimo_demon independente do resultado
+                            ultimo_demon = tempo_atual
+                            
+                            if is_available:
+                                # Botão está ativo, clica!
+                                print(f"\n😈 Demon detectado como DISPONÍVEL! Ativando...")
+                                if adb.tap(demon_x, demon_y):
+                                    contador_demon += 1
+                                    print(f"✅ Demon ativado! (#{contador_demon})")
+                                    # Aguarda um pouco após ativar
+                                    time.sleep(1)
+                                else:
+                                    print(f"❌ Falha ao clicar em ({demon_x}, {demon_y})")
+                            else:
+                                print(f"\n⏳ Demon em cooldown (verificando a cada 5s...)")
+                            
+                            # Remove temp
+                            try:
+                                os.remove(temp_demon)
+                            except:
+                                pass
+                        else:
+                            print(f"\n⚠️ Screenshot temporária não encontrada: {temp_demon}")
+                    else:
+                        print(f"\n⚠️ Falha ao capturar screenshot para Demon")
+            else:
+                # Modo intervalo de tempo (antigo)
+                if tempo_atual - ultimo_demon >= demon_interval:
+                    if adb.tap(demon_x, demon_y):
+                        contador_demon += 1
+                        ultimo_demon = tempo_atual
             
             # Captura screenshot de EXP periodicamente
             if tempo_atual - ultimo_exp_capture >= exp_capture_interval:
@@ -1428,12 +1600,21 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
                     status_target = "🎯 Iniciando ciclo..."
             
             # Tempo até próximo Demon
-            tempo_ate_demon = int(demon_interval - (tempo_atual - ultimo_demon))
-            min_demon = tempo_ate_demon // 60
-            seg_demon = tempo_ate_demon % 60
+            if demon_detector:
+                # Modo detecção visual: mostra tempo até próxima verificação (5s)
+                tempo_ate_demon = int(5 - (tempo_atual - ultimo_demon))
+                if tempo_ate_demon < 0:
+                    tempo_ate_demon = 0
+                display_demon = f"😈:{contador_demon}(🔍{tempo_ate_demon}s)"
+            else:
+                # Modo intervalo de tempo: mostra countdown completo
+                tempo_ate_demon = int(demon_interval - (tempo_atual - ultimo_demon))
+                min_demon = tempo_ate_demon // 60
+                seg_demon = tempo_ate_demon % 60
+                display_demon = f"😈:{contador_demon}({min_demon}:{seg_demon:02d})"
             
             # Monta display
-            display = f"\r{status_target} | 🎥:{contador_camera} | 😈:{contador_demon}({min_demon}:{seg_demon:02d}) | 📸:{contador_exp_captures} | 💰:{contador_exp_gain_captures}"
+            display = f"\r{status_target} | 🎥:{contador_camera} | {display_demon} | 📸:{contador_exp_captures} | 💰:{contador_exp_gain_captures}"
             
             # Adiciona info de IA se habilitada
             if ai_enabled:
