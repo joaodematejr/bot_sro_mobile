@@ -29,6 +29,15 @@
   
   "intervalo_demon": 900,
   
+  "usar_deteccao_demon": true,
+  "regiao_botao_demon": {
+    "x": 1780,
+    "y": 502,
+    "width": 100,
+    "height": 100,
+    "descricao": "Região do botão Demon para detecção visual (aparece quando disponível)"
+  },
+  
   "regiao_exp": {
     "x": 119,
     "y": 964,
