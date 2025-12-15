@@ -17,9 +17,9 @@
     "descricao": "Botão para mirar/targetar inimigos próximos"
   },
   
-  "intervalo_target": 2,
-  "target_clicks_por_ciclo": 15,
-  "target_pausa_entre_ciclos": 15,
+  "intervalo_target": 1,
+  "target_clicks_por_ciclo": 20,
+  "target_pausa_entre_ciclos": 10,
   
   "posicao_botao_demon": {
     "x": 1830,
