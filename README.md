@@ -1,6 +1,15 @@
 # 🎮 Bot SRO Mobile - Sistema Completo de Farming Inteligente
 
-Bot automatizado ultra-avançado para Silkroad Origin Mobile usando controle ADB (Android Debug Bridge). Sistema completo com **Inteligência Artificial**, **Machine Learning**, **Computer Vision**, **Analytics Detalhado**, **Sistema de Recompensas**, **Treinamento com Feedback** e **Mapeamento de Hotspots**.
+Bot automatizado ultra-avançado para Silkroad Origin Mobile usando controle ADB (Android Debug Bridge). Sistema completo com **Inteligência Artificial**, **Machine Learning**, **Computer Vision**, **Analytics Detalhado**, **Sistema de Recompensas**, **Auto-Calibração**, **A/B Testing**, **Predição de Eventos**, **Dashboard Web em Tempo Real** e **Notificações Multi-Plataforma**.
+
+## 🌟 Novidades v2.0
+
+- 🎯 **Auto-Calibração Inteligente** - Ajusta parâmetros automaticamente baseado em performance
+- 🧪 **A/B Testing** - Testa e escolhe a melhor configuração automaticamente
+- 🔮 **Predição de Eventos** - Prevê level up, XP/hora e melhor horário para farming
+- 🌐 **Dashboard Web** - Interface moderna com gráficos em tempo real
+- 🔔 **Notificações** - Alertas via Telegram, Discord ou Desktop
+- 🚀 **Otimizador Automático** - Sistema integrado que combina todos os recursos de IA
 
 ## 🎥 Demonstração
 
@@ -13,6 +22,7 @@ Bot automatizado ultra-avançado para Silkroad Origin Mobile usando controle ADB
 - [Funcionalidades](#-funcionalidades)
 - [Sistemas Inteligentes](#-sistemas-inteligentes)
 - [Sistemas Avançados de ML](#-sistemas-avançados-de-ml)
+- [🆕 Novos Sistemas de IA 2.0](#-novos-sistemas-de-ia-20)
 - [Requisitos](#-requisitos)
 - [Instalação](#-instalação)
 - [Configuração](#️-configuração)
@@ -344,6 +354,379 @@ Ferramenta de diagnóstico para qualidade dos dados de treino.
 💡 Recomendação: Use 5-10 clusters (não 3)
 ```
 
+---
+
+## 🆕 Novos Sistemas de IA 2.0
+
+### 🎯 Auto-Calibração Inteligente (`auto_calibracao.py`)
+
+Sistema que **analisa performance e ajusta parâmetros automaticamente** baseado em métricas reais.
+
+#### Funcionalidades
+- ✅ **Análise automática** de sessões de farming
+- ✅ **Detecção de problemas**: Kills baixos, mortes frequentes, tempo ocioso
+- ✅ **Sugestão de ajustes** inteligentes
+- ✅ **Aplicação automática** de configurações otimizadas
+- ✅ **Score de performance** (0-100)
+- ✅ **Histórico** de 50 sessões
+
+#### Parâmetros Ajustáveis
+- `intervalo_target` (1.0-5.0s) - Frequência de busca por alvos
+- `clicks_por_ciclo` (5-30) - Tentativas de ataque
+- `duracao_skill` (0.5-3.0s) - Tempo de execução de skills
+- `raio_mob_proximo` (50-200px) - Distância de detecção
+- `threshold_hp_baixo` (20-60%) - HP para usar potion
+
+#### Metas de Performance
+- Kills/hora: 150+
+- XP/minuto: 1.0%+
+- Taxa de morte: <0.1/hora
+- Tempo ocioso: <15%
+
+#### Uso
+```bash
+# Analisar última sessão
+python3 auto_calibracao.py
+
+# Via código
+from auto_calibracao import AutoCalibracao
+
+calibrador = AutoCalibracao()
+resultado = calibrador.analisar_sessao({
+    'duracao_segundos': 3600,
+    'kills': 120,
+    'xp_ganho': 45,
+    'mortes': 1,
+    'tempo_ocioso': 600
+})
+
+# Aplicar ajustes automaticamente
+calibrador.aplicar_ajustes_automaticos(resultado['ajustes_sugeridos'])
+```
+
+#### Saída Exemplo
+```
+📊 ANÁLISE DA SESSÃO:
+Score: 61.5/100
+
+⚠️  PROBLEMAS DETECTADOS:
+  • kills_baixos: 120.00 (meta: 150)
+  • mortes_frequentes: 1.00 (meta: 0.1)
+  • xp_baixo: 0.75 (meta: 1.0)
+
+💡 AJUSTES SUGERIDOS:
+  • intervalo_target: diminuir
+    Razão: Aumentar frequência de busca por alvos
+  • clicks_por_ciclo: aumentar
+    Razão: Mais clicks = mais tentativas de ataque
+```
+
+### 🧪 Sistema de A/B Testing (`ab_testing.py`)
+
+Testa **múltiplas configurações** e escolhe a melhor automaticamente usando **epsilon-greedy**.
+
+#### Variantes Disponíveis
+- 🛡️ **A_conservador**: Seguro, defensivo (intervalo 3s, 10 clicks, HP 50%)
+- ⚔️ **B_agressivo**: Máximo DPS (intervalo 1.5s, 20 clicks, HP 30%)
+- ⚖️ **C_balanceado**: Equilibrado (intervalo 2s, 15 clicks, HP 40%)
+- 🔬 **D_experimental**: Testes extremos (intervalo 1s, 25 clicks, HP 25%)
+
+#### Estratégia
+- **Epsilon-greedy**: 80% usa melhor, 20% explora outras
+- **Score composto**: 40% kills + 30% XP + 30% sobrevivência
+- **Histórico completo** de todas as variantes
+
+#### Uso
+```bash
+# Ver relatório
+python3 ab_testing.py
+
+# Aplicar variante
+from ab_testing import ABTesting
+
+ab = ABTesting()
+ab.aplicar_variante('B_agressivo')
+
+# Registrar resultado após sessão
+ab.registrar_resultado({
+    'duracao_segundos': 3600,
+    'kills': 180,
+    'xp_ganho': 60,
+    'mortes': 2
+})
+
+# Ver melhor
+melhor = ab.obter_melhor_variante()
+```
+
+#### Saída
+```
+🧪 A/B TESTING - RELATÓRIO DE VARIANTES
+══════════════════════════════════════
+  A_conservador
+    Score: 65.3  |  Kills/h: 135.2  |  Testes: 3
+
+  B_agressivo 🏆
+    Score: 78.5  |  Kills/h: 182.4  |  Testes: 5
+
+  C_balanceado
+    Score: 71.2  |  Kills/h: 158.7  |  Testes: 4
+```
+
+### 🔮 Predição de Eventos (`predicao_eventos.py`)
+
+Sistema que **prevê eventos futuros** usando séries temporais e padrões aprendidos.
+
+#### Predições Disponíveis
+- ⏱️ **Tempo até HP baixo** - Prevê quando HP ficará crítico
+- 🎉 **Horário de Level UP** - Estima quando chegará a 100%
+- 📊 **XP na próxima hora** - Calcula XP/hora esperado
+- ⭐ **Melhor horário** - Detecta padrões por hora do dia
+- ⚠️ **Alertas proativos** - Avisos antecipados
+
+#### Padrões Aprendidos
+- Dano médio por segundo em combate
+- Tempo médio para matar mobs
+- XP médio por kill
+- Performance por horário do dia
+
+#### Uso
+```bash
+# Testar predições
+python3 predicao_eventos.py
+
+# Integrar no bot
+from predicao_eventos import PredicaoEventos
+
+predicao = PredicaoEventos()
+
+# Registrar combate
+predicao.registrar_combate({
+    'hp_inicial': 100,
+    'hp_final': 85,
+    'duracao': 8.5,
+    'xp_ganho': 0.05
+})
+
+# Prever level up
+level_up = predicao.prever_level_up(xp_atual=45.5)
+print(f"Level UP em: {level_up}")
+
+# XP/hora
+xp_hora = predicao.prever_xp_proxima_hora()
+print(f"XP estimado: {xp_hora:.2f}%")
+
+# Alertas
+alertas = predicao.alertas_proativos({
+    'hp': 75,
+    'em_combate': True,
+    'xp_atual': 45.5
+})
+```
+
+#### Saída
+```
+⏰ ANÁLISE DE HORÁRIOS DE FARMING
+══════════════════════════════════════
+🌟 MELHOR HORÁRIO: 14:00 - 15:00
+   XP médio: 0.087% por kill
+
+📉 PIOR HORÁRIO: 03:00 - 04:00
+   XP médio: 0.042% por kill
+
+💡 SUGESTÃO:
+   Farme durante 14:00 - 15:00 para máxima eficiência
+```
+
+### 🌐 Dashboard Web em Tempo Real (`dashboard_web.py`)
+
+Interface web moderna com **atualização automática via WebSocket** e gráficos interativos.
+
+#### Recursos
+- 📊 **Métricas em tempo real** - Uptime, XP, Kills, Score
+- 📈 **Gráficos interativos** - Chart.js com histórico
+- 🔔 **Alertas visuais** - Problemas e conquistas
+- 🎨 **Design moderno** - Gradientes, backdrop-filter, animações
+- 🔄 **Auto-atualização** - WebSocket a cada 5 segundos
+- 📱 **Responsivo** - Acesse de qualquer dispositivo na rede
+
+#### Tecnologias
+- **Backend**: Flask + SocketIO
+- **Frontend**: Chart.js + WebSockets + CSS moderno
+- **Dados**: JSON do analytics_data/
+
+#### Uso
+```bash
+# Instalar dependências
+pip install Flask Flask-SocketIO
+
+# Iniciar dashboard
+python3 dashboard_web.py
+
+# Acessar no navegador
+http://localhost:5000
+
+# Testar com dados simulados (outro terminal)
+python3 testar_dashboard.py 5
+```
+
+#### Visualizações
+- ⏱️ Status online com uptime
+- 💰 XP total e XP/min
+- ⚔️ Kills total e kills/min
+- 📊 Score de eficiência
+- 📈 Gráfico de histórico de XP
+- 📈 Gráfico de histórico de Kills
+- 🔔 Feed de alertas em tempo real
+
+### 🔔 Sistema de Notificações Multi-Plataforma (`sistema_notificacoes.py`)
+
+Envia **alertas importantes** para múltiplos canais automaticamente.
+
+#### Canais Suportados
+- 💬 **Telegram** - Via Bot API (recomendado)
+- 💜 **Discord** - Via Webhooks
+- 🖥️ **Desktop** - Notificações nativas (Linux)
+- 📧 **Email** - SMTP (opcional)
+
+#### Eventos Notificados
+- 🎯 **Milestone de kills** - A cada 100 kills
+- 🎉 **Level UP** - Quando sobe de nível
+- 💀 **Morte** - Quando o personagem morre
+- ❌ **Erros críticos** - Falhas do bot
+- ⏸️ **Bot pausado** - Inatividade longa
+- 📊 **Fim de sessão** - Resumo completo
+
+#### Configuração Telegram
+```python
+from sistema_notificacoes import SistemaNotificacoes
+
+notif = SistemaNotificacoes()
+
+# 1. Fale com @BotFather no Telegram
+# 2. Crie um bot e pegue o token
+# 3. Fale com @userinfobot e pegue seu chat_id
+notif.configurar_telegram("SEU_TOKEN", "SEU_CHAT_ID")
+
+# Testar
+notif.testar_notificacoes()
+```
+
+#### Configuração Discord
+```python
+# 1. Vá em Servidor > Configurações > Integrações > Webhooks
+# 2. Crie webhook e copie a URL
+notif.configurar_discord("SUA_WEBHOOK_URL")
+```
+
+#### Uso no Bot
+```python
+# Kill milestone
+notif.notificar_kill(100)
+
+# Level up
+notif.notificar_level_up(45)
+
+# Morte
+notif.notificar_morte()
+
+# Fim de sessão
+notif.notificar_sessao_completa({
+    'duracao_total': 3600,
+    'kills_total': 150,
+    'xp_total': 45.5,
+    'mortes': 1,
+    'xp_por_minuto': 0.76
+})
+```
+
+#### Filtros Configuráveis
+- **Nível mínimo**: debug, info, warning, error, critical
+- **Tipos de eventos**: kills, level_up, morte, erro
+- **Canais ativos**: Liga/desliga cada canal
+
+### 🚀 Otimizador Automático (`otimizador_automatico.py`)
+
+Sistema **integrado** que combina Auto-Calibração + A/B Testing + Predição.
+
+#### Modos de Operação
+- 🛡️ **Conservador**: Só ajusta se score < 60 (mais seguro)
+- ⚙️ **Automático**: Ajusta se score < 70 (recomendado)
+- ⚔️ **Agressivo**: Sempre ajusta quando possível (experimental)
+
+#### Funcionalidades
+- ✅ Análise automática de performance
+- ✅ Detecção inteligente de problemas
+- ✅ Aplicação automática de ajustes
+- ✅ Histórico de otimizações
+- ✅ Relatórios detalhados
+- ✅ Integração com todos os sistemas
+
+#### Uso Rápido
+```bash
+# Modo interativo (recomendado para testes)
+python3 otimizador_automatico.py interativo
+
+# Exemplo básico
+python3 otimizador_automatico.py exemplo
+
+# Ver código de integração
+python3 otimizador_automatico.py integracao
+```
+
+#### Integração no Bot
+```python
+from otimizador_automatico import OtimizadorAutomatico
+
+# Criar otimizador (modo automático)
+otimizador = OtimizadorAutomatico(modo='automatico')
+
+# A cada 1 hora de farming
+resultado = otimizador.analisar_e_otimizar({
+    'duracao_segundos': 3600,
+    'kills': 120,
+    'xp_ganho': 45,
+    'mortes': 1,
+    'tempo_ocioso': 600
+}, aplicar=True)
+
+# Ver relatório
+print(otimizador.relatorio_completo())
+```
+
+#### Saída Completa
+```
+🔍 ANALISANDO PERFORMANCE...
+══════════════════════════════════════════════════════════════════
+
+📊 SCORE GERAL: 61.5/100
+⚠️  REGULAR
+
+⚠️  PROBLEMAS DETECTADOS (4):
+  • kills_baixos: 120.00 (meta: 150)
+  • mortes_frequentes: 1.00 (meta: 0.1)
+  • tempo_ocioso_alto: 0.17 (meta: 0.15)
+  • xp_baixo: 0.75 (meta: 1.0)
+
+💡 AJUSTES SUGERIDOS (4):
+  • intervalo_target: diminuir
+    ↳ Aumentar frequência de busca por alvos
+  • clicks_por_ciclo: aumentar
+    ↳ Mais clicks = mais tentativas de ataque
+  • threshold_hp_baixo: aumentar
+    ↳ Usar potion mais cedo para evitar mortes
+  • raio_mob_proximo: aumentar
+    ↳ Detectar mobs mais distantes
+
+⚙️  APLICANDO AJUSTES AUTOMATICAMENTE...
+   ✅ 4 ajuste(s) aplicado(s):
+
+   • intervalo_target:
+     2.0 → 1.8
+     Razão: Aumentar frequência de busca por alvos
+```
+
+---
 
 ## 📦 Requisitos
 
@@ -355,12 +738,26 @@ Ferramenta de diagnóstico para qualidade dos dados de treino.
 
 ### Dependências Python
 ```bash
-numpy>=1.23.0
+# Machine Learning & Computer Vision
+numpy>=1.24.0
 pillow>=10.0.0
 scikit-learn>=1.3.0
 opencv-python>=4.8.0
+opencv-contrib-python>=4.8.0
 imagehash>=4.3.0
 pytesseract>=0.3.10
+scipy>=1.11.0
+joblib>=1.3.0
+pandas>=2.0.0
+
+# Web Dashboard & Notificações (Novos)
+Flask>=2.3.0
+Flask-SocketIO>=5.3.0
+python-socketio>=5.9.0
+requests>=2.31.0
+
+# Utilities
+python-dateutil>=2.8.2
 ```
 
 ### Ferramentas do Sistema
