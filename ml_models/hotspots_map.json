@@ -375,13 +375,121 @@
           "mortes_por_hora": 0.0,
           "media_mobs": 0.0,
           "score": 90.11347088253528
+        },
+        {
+          "timestamp": "2025-12-15T14:41:04.239520",
+          "duracao_min": 27.107244700000003,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 5,
+          "kills_por_min": 0.1844525349343233,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 1.1067152096059398
+        },
+        {
+          "timestamp": "2025-12-15T14:47:12.333081",
+          "duracao_min": 5.496172866666667,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 5,
+          "kills_por_min": 0.9097239335982554,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 5.458343601589532
+        },
+        {
+          "timestamp": "2025-12-15T14:58:59.760553",
+          "duracao_min": 6.118643866666667,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 5,
+          "kills_por_min": 0.8171745420973349,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 4.903047252584009
+        },
+        {
+          "timestamp": "2025-12-15T22:10:45.447197",
+          "duracao_min": 4.722457966666667,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 5,
+          "kills_por_min": 1.058770673088539,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 6.352624038531233
+        },
+        {
+          "timestamp": "2025-12-15T22:14:00.421403",
+          "duracao_min": 3.161186266666667,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 5,
+          "kills_por_min": 1.5816847152358036,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 9.490108291414822
+        },
+        {
+          "timestamp": "2025-12-15T22:18:19.815995",
+          "duracao_min": 4.2709257,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 5,
+          "kills_por_min": 1.1707063880788184,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 7.02423832847291
+        },
+        {
+          "timestamp": "2025-12-15T22:34:43.673717",
+          "duracao_min": 16.260240933333332,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 5,
+          "kills_por_min": 0.30749851865663624,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 1.8449911119398172
+        },
+        {
+          "timestamp": "2025-12-15T22:37:21.585879",
+          "duracao_min": 2.48993705,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 5,
+          "kills_por_min": 2.0080828951077296,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 12.048497370646379
+        },
+        {
+          "timestamp": "2025-12-15T22:43:07.083564",
+          "duracao_min": 5.673030549999999,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 5,
+          "kills_por_min": 0.8813631366748061,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 5.288178820048837
         }
       ],
       "xp_por_hora_medio": 0.0,
-      "kills_por_min_medio": 2.3918403935706776,
+      "kills_por_min_medio": 2.0766627384540812,
       "mortes_por_hora_medio": 0.0,
       "media_mobs": 0.0,
-      "score": 14.351042361424064,
+      "score": 12.459976430724485,
       "rank": 2
     },
     "auto_5,5": {
@@ -435,15 +543,15 @@
   },
   "grid": {
     "5,5": {
-      "visits": 7885,
+      "visits": 8321,
       "xp_gained": 0.0,
-      "kills": 106,
+      "kills": 151,
       "deaths": 0,
       "avg_mobs": 0.0,
-      "total_time": 1401.2262124
+      "total_time": 1476.5260522999997
     }
   },
-  "ultima_atualizacao": "2025-12-15T14:13:55.094046",
+  "ultima_atualizacao": "2025-12-15T22:43:07.083624",
   "total_regioes": 2,
   "total_celulas": 1
 }

@@ -284,19 +284,24 @@ class MovimentoInteligente:
         
         # Executa movimento em cada direção
         for i, (nome, dx, dy) in enumerate(direcoes_circulo[:self.kiting_num_passos]):
-            # Calcula posição no joystick (usa raio menor para círculo pequeno)
-            offset_x = int(dx * self.kiting_raio)
-            offset_y = int(dy * self.kiting_raio)
+            # Calcula posição no joystick 
+            # kiting_raio é a porcentagem do joystick_raio (40/80 = 50% do raio total)
+            raio_efetivo = (self.kiting_raio / 80.0) * self.joystick_raio
+            offset_x = int(dx * raio_efetivo)
+            offset_y = int(dy * raio_efetivo)
             
             target_x = self.joystick_x + offset_x
             target_y = self.joystick_y + offset_y
             
-            # Move nessa direção por tempo curto
+            print(f"   → {nome}: ({self.joystick_x},{self.joystick_y}) → ({target_x},{target_y})")
+            
+            # Move nessa direção mantendo pressionado por tempo suficiente
+            # Duração de 9 segundos para o personagem realmente se mover (igual aos testes)
             self.adb.swipe(self.joystick_x, self.joystick_y, target_x, target_y,
                           duration=int(self.kiting_duracao_passo * 1000))
             
-            # Pequena pausa entre passos
-            time.sleep(0.1)
+            # Aguarda o movimento completar antes do próximo passo
+            time.sleep(self.kiting_duracao_passo + 0.5)
         
         print(f"   ✅ Kiting concluído - {self.kiting_num_passos} passos em círculo")
         return True
@@ -345,12 +350,21 @@ class MovimentoInteligente:
             self.ultimo_movimento = tempo_atual
             return True
         else:
-            # Se área está boa mas detecta mobs distantes, faz kiting para agregar
-            if self.usar_kiting and tempo_atual - self.ultimo_kiting >= 60:  # Kiting a cada 60s
-                # Verifica se tem mobs na área mas poucos perto
+            # KITING PREVENTIVO: faz movimento circular periodicamente para agregar mobs
+            if self.usar_kiting and tempo_atual - self.ultimo_kiting >= 45:  # Kiting a cada 45s
                 densidade_total = sum(analise['densidade_direcao'].values())
-                if densidade_total > 100 and analise['mobs_atual'] < self.min_mobs_para_ficar * 30:
-                    print(f"\n🔄 Detectados mobs distantes ({densidade_total} pixels) - fazendo kiting")
+                
+                # Modo 1: Detectou mobs distantes (densidade > 50)
+                if densidade_total > 50 and analise['mobs_atual'] < self.min_mobs_para_ficar * 30:
+                    print(f"\n🔄 Detectados {densidade_total} pixels de mobs distantes - fazendo kiting")
+                    self.fazer_kiting()
+                    self.ultimo_kiting = tempo_atual
+                    self.ultimo_movimento = tempo_atual
+                    return True
+                
+                # Modo 2: PREVENTIVO - faz kiting mesmo sem detectar (atrai mobs invisíveis no radar)
+                elif densidade_total == 0 or analise['mobs_atual'] < self.min_mobs_para_ficar * 20:
+                    print(f"\n🔄 Kiting preventivo - agregando mobs ao redor")
                     self.fazer_kiting()
                     self.ultimo_kiting = tempo_atual
                     self.ultimo_movimento = tempo_atual

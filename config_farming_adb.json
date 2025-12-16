@@ -18,8 +18,8 @@
   },
   
   "intervalo_target": 1,
-  "target_clicks_por_ciclo": 20,
-  "target_pausa_entre_ciclos": 10,
+  "target_clicks_por_ciclo": 22,
+  "target_pausa_entre_ciclos": 8,
   
   "posicao_botao_demon": {
     "x": 1830,
@@ -149,9 +149,9 @@
     "target_colors": ["vermelho", "azul", "amarelo"]
   },
   
-  "joystick_centro_x": 150,
-  "joystick_centro_y": 850,
-  "joystick_raio": 80,
+  "joystick_centro_x": 246,
+  "joystick_centro_y": 792,
+  "joystick_raio": 100,
   
   "movimento_automatico": true,
   "movimento_automatico_config": {
@@ -161,8 +161,8 @@
     "tempo_movimento_segundos": 3.0,
     "intervalo_verificacao": 10,
     "usar_kiting": true,
-    "kiting_raio_pixels": 40,
-    "kiting_duracao_passo": 0.8,
+    "kiting_raio_pixels": 60,
+    "kiting_duracao_passo": 9.0,
     "kiting_num_passos": 8,
     "descricao": "Move automaticamente para áreas com mais mobs. Kiting circular agrega mobs distantes."
   },
