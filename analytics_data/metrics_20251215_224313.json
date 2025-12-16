@@ -1,0 +1,116 @@
+{
+  "session": {
+    "id": "20251215_224313",
+    "start": "2025-12-15T22:43:13.634303",
+    "end": "2025-12-15T23:29:24.627225",
+    "duration": "0:46:10"
+  },
+  "statistics": {
+    "session": {
+      "id": "20251215_224313",
+      "start": "2025-12-15T22:43:13.634303",
+      "elapsed": "0:46:10",
+      "elapsed_minutes": 46.18
+    },
+    "xp": {
+      "current": 0.0,
+      "initial": null,
+      "gained": 0,
+      "xp_per_minute": 0.0,
+      "time_to_level": "N/A",
+      "total_readings": 0,
+      "xp_gains_detected": 5,
+      "avg_xp_per_kill": 52.6
+    },
+    "combat": {
+      "total_combats": 5,
+      "kills": 5,
+      "deaths": 0,
+      "kills_per_minute": 0.11,
+      "avg_combat_duration": 2.0,
+      "kill_rate": 100.0,
+      "combat_per_minute": 0.11
+    },
+    "resources": {
+      "potions_used": {
+        "hp": 0,
+        "mp": 0,
+        "vigor": 0
+      },
+      "total_potions": 0,
+      "skills_used": {},
+      "total_skills": 0
+    },
+    "loot": {
+      "items_collected": {},
+      "total_items": 0,
+      "unique_items": 0
+    },
+    "ai": {
+      "detections": 0,
+      "movements": 0,
+      "enemies_spotted": 0,
+      "avg_enemies_per_detection": 0
+    }
+  },
+  "detailed_data": {
+    "xp_history": [],
+    "xp_gains": [
+      {
+        "timestamp": "2025-12-14T07:48:41.543185",
+        "amount": 24.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-15T00:58:40.403821",
+        "amount": 55.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-15T04:47:44.913133",
+        "amount": 28.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-15T05:14:54.264901",
+        "amount": 78.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-15T05:31:46.843079",
+        "amount": 78.0,
+        "source": "combat"
+      }
+    ],
+    "combat_history": [
+      {
+        "timestamp": "2025-12-14T07:48:41.543215",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-15T00:58:40.403836",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-15T04:47:44.913144",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-15T05:14:54.264917",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-15T05:31:46.843091",
+        "duration": 2.0,
+        "killed": true
+      }
+    ],
+    "loot_collected": [],
+    "enemies_detected": [],
+    "actions_log": []
+  }
+}

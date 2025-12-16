@@ -1,0 +1,18 @@
+{
+  "otimizacoes": [
+    {
+      "timestamp": "2025-12-16T00:02:37.439096",
+      "score": 61.5,
+      "problemas": 4,
+      "ajustes_aplicados": 4,
+      "metricas": {
+        "duracao_segundos": 3600,
+        "kills": 120,
+        "xp_ganho": 45.0,
+        "mortes": 1,
+        "tempo_ocioso": 600
+      }
+    }
+  ],
+  "ultima_atualizacao": "2025-12-16T00:02:37.439116"
+}
