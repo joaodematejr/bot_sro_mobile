@@ -4,7 +4,7 @@ Dashboard Web em Tempo Real
 Monitora bot via navegador com atualização automática
 """
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, make_response
 from flask_socketio import SocketIO
 import json
 import threading
@@ -15,6 +15,8 @@ import numpy as np
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'bot_sro_secret'
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # Desabilita cache
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 class DashboardMonitor:
@@ -67,11 +69,16 @@ class DashboardMonitor:
             for arquivo in arquivos:
                 with open(arquivo, 'r') as f:
                     data = json.load(f)
+                    stats = data.get('statistics', {})
+                    xp_data = stats.get('xp', {})
+                    combat_data = stats.get('combat', {})
+                    session_data = stats.get('session', {})
+                    
                     historico.append({
-                        'timestamp': data.get('timestamp'),
-                        'xp_total': data.get('xp_total', 0),
-                        'kills_total': data.get('kills_total', 0),
-                        'xp_por_minuto': data.get('xp_por_minuto', 0)
+                        'timestamp': session_data.get('start', ''),
+                        'xp_total': xp_data.get('current', 0),
+                        'kills_total': combat_data.get('kills', 0),
+                        'xp_por_minuto': xp_data.get('xp_per_minute', 0)
                     })
             
             return historico
@@ -117,9 +124,14 @@ class DashboardMonitor:
         if not metricas:
             return
         
+        # Extrai estatísticas corretamente
+        stats = metricas.get('statistics', {})
+        xp_data = stats.get('xp', {})
+        combat_data = stats.get('combat', {})
+        
         # Alerta de XP baixo
-        xp_min = metricas.get('xp_por_minuto', 0)
-        if xp_min < 0.5:
+        xp_min = xp_data.get('xp_per_minute', 0)
+        if xp_min > 0 and xp_min < 0.5:
             alertas.append({
                 'tipo': 'warning',
                 'mensagem': f'XP/min baixo: {xp_min:.2f}%/min',
@@ -127,7 +139,7 @@ class DashboardMonitor:
             })
         
         # Alerta de mortes
-        mortes = metricas.get('mortes', 0)
+        mortes = combat_data.get('deaths', 0)
         if mortes > 3:
             alertas.append({
                 'tipo': 'danger',
@@ -136,14 +148,13 @@ class DashboardMonitor:
             })
         
         # Alerta de kills altos
-        kills = metricas.get('kills_total', 0)
-        duracao = metricas.get('duracao_total', 1)
-        kills_hora = (kills / duracao) * 3600
+        kills = combat_data.get('kills', 0)
+        kills_min = combat_data.get('kills_per_minute', 0)
         
-        if kills_hora > 150:
+        if kills_min > 2.5:
             alertas.append({
                 'tipo': 'success',
-                'mensagem': f'Excelente farming: {kills_hora:.0f} kills/hora!',
+                'mensagem': f'Excelente farming: {kills_min:.2f} kills/min!',
                 'timestamp': datetime.now().isoformat()
             })
         
@@ -177,7 +188,11 @@ monitor = DashboardMonitor()
 @app.route('/')
 def index():
     """Página principal"""
-    return render_template('dashboard.html')
+    response = make_response(render_template('dashboard_sro.html'))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 
 @app.route('/api/metricas')
@@ -190,10 +205,12 @@ def api_metricas():
 def api_status():
     """Status do bot"""
     metricas = monitor.dados_cache.get('metricas_atuais', {})
+    stats = metricas.get('statistics', {})
+    session_data = stats.get('session', {})
     
     return jsonify({
         'online': bool(metricas),
-        'uptime': metricas.get('duracao_total', 0),
+        'uptime': session_data.get('elapsed', '0:00:00'),
         'ultima_atualizacao': datetime.now().isoformat()
     })
 
