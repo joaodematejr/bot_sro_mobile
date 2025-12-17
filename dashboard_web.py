@@ -23,8 +23,9 @@ class DashboardMonitor:
     """Monitora dados do bot em tempo real"""
     
     def __init__(self):
-        self.analytics_folder = Path("analytics_data")
-        self.ml_folder = Path("ml_models")
+        base = Path(__file__).parent.resolve()
+        self.analytics_folder = (base / "analytics_data").resolve()
+        self.ml_folder = (base / "ml_models").resolve()
         
         self.dados_cache = {
             'metricas_atuais': {},
@@ -39,17 +40,21 @@ class DashboardMonitor:
     def carregar_ultima_metrica(self) -> dict:
         """Carrega última métrica salva"""
         if not self.analytics_folder.exists():
+            print(f"⚠️ Pasta de analytics não encontrada: {self.analytics_folder}")
             return {}
         
         try:
             # Lista arquivos de métricas
             arquivos = sorted(self.analytics_folder.glob("metrics_*.json"))
+            print(f"🔎 Encontrados {len(arquivos)} arquivos de métricas em {self.analytics_folder}")
             
             if not arquivos:
+                print("⚠️ Nenhum arquivo de métricas encontrado")
                 return {}
             
             # Pega o mais recente
             ultimo = arquivos[-1]
+            print(f"📄 Último arquivo: {ultimo}")
             
             with open(ultimo, 'r') as f:
                 return json.load(f)
@@ -64,6 +69,8 @@ class DashboardMonitor:
         
         try:
             arquivos = sorted(self.analytics_folder.glob("metrics_*.json"))[-limite:]
+            if not arquivos:
+                return []
             
             historico = []
             for arquivo in arquivos:
@@ -81,6 +88,7 @@ class DashboardMonitor:
                         'xp_por_minuto': xp_data.get('xp_per_minute', 0)
                     })
             
+            print(f"🧾 Histórico carregado: {len(historico)} entradas")
             return historico
         except Exception as e:
             print(f"⚠️ Erro ao carregar histórico: {e}")
@@ -90,6 +98,8 @@ class DashboardMonitor:
         """Atualiza dados do cache"""
         # Métricas atuais
         self.dados_cache['metricas_atuais'] = self.carregar_ultima_metrica()
+        if not self.dados_cache['metricas_atuais']:
+            print("⚠️ Métricas atuais vazias")
         
         # Histórico
         historico = self.carregar_historico()
@@ -102,6 +112,9 @@ class DashboardMonitor:
                 {'x': h['timestamp'], 'y': h['kills_total']}
                 for h in historico
             ]
+        else:
+            self.dados_cache['historico_xp'] = []
+            self.dados_cache['historico_kills'] = []
 
         # Resumo plano para facilitar o front-end
         try:
@@ -114,9 +127,34 @@ class DashboardMonitor:
             loot = stats.get('loot', {})
             ai = stats.get('ai', {})
 
+            # Derivar XP quando zero/usando detailed_data
+            xp_total = xp.get('current')
+            xp_por_minuto = xp.get('xp_per_minute')
+            try:
+                det = metricas.get('detailed_data', {})
+                gains = det.get('xp_gains', [])
+                if (xp_total is None or (isinstance(xp_total, (int, float)) and xp_total == 0)) and gains:
+                    xp_total = float(sum(float(g.get('amount', 0) or 0) for g in gains))
+                if (xp_por_minuto is None or (isinstance(xp_por_minuto, (int, float)) and xp_por_minuto == 0)):
+                    elapsed_str = session.get('elapsed')
+                    elapsed_secs = session.get('duration_seconds')
+                    mins = None
+                    if isinstance(elapsed_secs, (int, float)) and elapsed_secs > 0:
+                        mins = elapsed_secs / 60.0
+                    elif isinstance(elapsed_str, str) and ':' in elapsed_str:
+                        try:
+                            h, m, s = [int(x) for x in elapsed_str.split(':')]
+                            mins = (h*3600 + m*60 + s) / 60.0
+                        except Exception:
+                            mins = None
+                    if mins and mins > 0 and isinstance(xp_total, (int, float)):
+                        xp_por_minuto = float(xp_total) / mins
+            except Exception as e:
+                print(f"⚠️ Falha ao derivar XP: {e}")
+
             resumo = {
-                'xp_total': xp.get('current'),
-                'xp_por_minuto': xp.get('xp_per_minute'),
+                'xp_total': xp_total,
+                'xp_por_minuto': xp_por_minuto,
                 'kills_total': combat.get('kills'),
                 'kills_por_minuto': combat.get('kills_per_minute'),
                 'duracao_total': session.get('elapsed'),
@@ -224,7 +262,7 @@ monitor = DashboardMonitor()
 @app.route('/')
 def index():
     """Página principal"""
-    response = make_response(render_template('dashboard_sro.html'))
+    response = make_response(render_template('dashboard.html'))
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
@@ -235,6 +273,15 @@ def index():
 def api_metricas():
     """API REST para métricas"""
     return jsonify(monitor.dados_cache)
+
+@app.route('/api/raw')
+def api_raw():
+    """Retorna diretamente o último arquivo JSON de métricas"""
+    try:
+        data = monitor.carregar_ultima_metrica()
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/api/status')

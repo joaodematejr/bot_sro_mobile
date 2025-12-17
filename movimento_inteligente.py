@@ -51,6 +51,17 @@ class MovimentoInteligente:
         self.posicao_atual_estimada = (self.minimap_w // 2, self.minimap_h // 2)
         self.historico_densidade = []
         
+        # Faixas HSV para inimigos (vermelho) a partir do config
+        cores_cfg = config.get('cores_minimap', {})
+        inimigos_cfg = (cores_cfg.get('inimigos') or {})
+        hsv_min_cfg = inimigos_cfg.get('hsv_min', [0, 100, 100])
+        hsv_max_cfg = inimigos_cfg.get('hsv_max', [10, 255, 255])
+        # Sempre considera a segunda faixa (wrap do vermelho)
+        self.red_ranges = [
+            (np.array(hsv_min_cfg, dtype=np.uint8), np.array(hsv_max_cfg, dtype=np.uint8)),
+            (np.array([170, 100, 100], dtype=np.uint8), np.array([180, 255, 255], dtype=np.uint8))
+        ]
+
         # Debug
         self.debug_folder = Path("debug_movimento")
         self.debug_folder.mkdir(exist_ok=True)
@@ -83,15 +94,16 @@ class MovimentoInteligente:
         # Converte para HSV
         hsv = cv2.cvtColor(minimap, cv2.COLOR_BGR2HSV)
         
-        # Detecta mobs (vermelho)
-        lower_red1 = np.array([0, 100, 100])
-        upper_red1 = np.array([10, 255, 255])
-        lower_red2 = np.array([170, 100, 100])
-        upper_red2 = np.array([180, 255, 255])
-        
-        mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
-        mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
-        mask_mobs = cv2.bitwise_or(mask1, mask2)
+        # Detecta mobs (vermelho) com faixas configuráveis
+        masks = []
+        for lo, hi in self.red_ranges:
+            masks.append(cv2.inRange(hsv, lo, hi))
+        mask_mobs = masks[0]
+        for m in masks[1:]:
+            mask_mobs = cv2.bitwise_or(mask_mobs, m)
+        # Dá uma leve dilatação para capturar círculos finos
+        kernel = np.ones((3, 3), np.uint8)
+        mask_mobs = cv2.dilate(mask_mobs, kernel, iterations=1)
         
         # Centro do minimapa (posição do player)
         centro_x = self.minimap_w // 2

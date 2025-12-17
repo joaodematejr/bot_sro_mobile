@@ -1576,7 +1576,10 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
                         # 5. Movimento Automático Inteligente (novo sistema)
                         if movimento_auto:
                             try:
-                                moveu = movimento_auto.verificar_e_mover(temp_screenshot, debug=False)
+                                # Debug de movimento controlável por config
+                                mov_cfg = config.config.get('movimento_automatico_config', {}) if hasattr(config, 'config') else {}
+                                debug_mov = bool(mov_cfg.get('debug', False))
+                                moveu = movimento_auto.verificar_e_mover(temp_screenshot, debug=debug_mov)
                                 if moveu:
                                     contador_movimentos_ia += 1
                                     print(f"\n🚶 Movido para área com mais mobs")
