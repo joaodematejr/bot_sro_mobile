@@ -102,6 +102,42 @@ class DashboardMonitor:
                 {'x': h['timestamp'], 'y': h['kills_total']}
                 for h in historico
             ]
+
+        # Resumo plano para facilitar o front-end
+        try:
+            metricas = self.dados_cache.get('metricas_atuais', {})
+            stats = metricas.get('statistics', {})
+            xp = stats.get('xp', {})
+            combat = stats.get('combat', {})
+            session = stats.get('session', {})
+            resources = stats.get('resources', {})
+            loot = stats.get('loot', {})
+            ai = stats.get('ai', {})
+
+            resumo = {
+                'xp_total': xp.get('current'),
+                'xp_por_minuto': xp.get('xp_per_minute'),
+                'kills_total': combat.get('kills'),
+                'kills_por_minuto': combat.get('kills_per_minute'),
+                'duracao_total': session.get('elapsed'),
+                'deaths': combat.get('deaths'),
+                'kill_rate': combat.get('kill_rate'),
+                'potions': {
+                    'hp': resources.get('potions_used', {}).get('hp'),
+                    'mp': resources.get('potions_used', {}).get('mp'),
+                    'vigor': resources.get('potions_used', {}).get('vigor'),
+                    'total': resources.get('total_potions')
+                },
+                'skills_total': resources.get('total_skills'),
+                'loot_total': loot.get('total_items'),
+                'loot_unique': loot.get('unique_items'),
+                'ai_detections': ai.get('detections'),
+                'ai_movements': ai.get('movements'),
+                'ai_enemies': ai.get('enemies_spotted')
+            }
+            self.dados_cache['resumo'] = resumo
+        except Exception as e:
+            print(f"⚠️ Erro ao montar resumo: {e}")
         
         # Modelo ML
         try:
@@ -219,6 +255,11 @@ def api_status():
 def handle_connect():
     """Cliente conectou"""
     print('🔌 Cliente conectado ao dashboard')
+    # Garante que o cliente receba dados já atualizados
+    try:
+        monitor.atualizar_dados()
+    except Exception as e:
+        print(f"⚠️ Erro ao atualizar no connect: {e}")
     socketio.emit('atualizacao', monitor.dados_cache)
 
 
@@ -365,6 +406,8 @@ def criar_html_dashboard():
                 <h2>⚔️ Combate</h2>
                 <div class="metric" id="kills">0</div>
                 <div class="metric-label"><span id="kills-min">0</span> kills/min</div>
+                <div class="metric-label">Mortes: <span id="deaths">0</span></div>
+                <div class="metric-label">Taxa de kill: <span id="kill-rate">0</span>%</div>
             </div>
             
             <!-- Eficiência -->
@@ -372,6 +415,31 @@ def criar_html_dashboard():
                 <h2>📊 Eficiência</h2>
                 <div class="metric" id="score">0</div>
                 <div class="metric-label">Score geral</div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Recursos -->
+            <div class="card">
+                <h2>🧪 Recursos</h2>
+                <div class="metric-label">Poções usadas: HP <span id="pot-hp">0</span>, MP <span id="pot-mp">0</span>, Vigor <span id="pot-vigor">0</span></div>
+                <div class="metric-label">Total de poções: <span id="pot-total">0</span></div>
+                <div class="metric-label">Skills usadas: <span id="skills-total">0</span></div>
+            </div>
+
+            <!-- Loot -->
+            <div class="card">
+                <h2>🎁 Loot</h2>
+                <div class="metric-label">Itens coletados: <span id="loot-total">0</span></div>
+                <div class="metric-label">Itens únicos: <span id="loot-unique">0</span></div>
+            </div>
+
+            <!-- IA -->
+            <div class="card">
+                <h2>🧠 IA</h2>
+                <div class="metric-label">Detecções: <span id="ai-detections">0</span></div>
+                <div class="metric-label">Movimentos: <span id="ai-movements">0</span></div>
+                <div class="metric-label">Inimigos vistos: <span id="ai-enemies">0</span></div>
             </div>
         </div>
         
@@ -389,6 +457,18 @@ def criar_html_dashboard():
                 <div class="chart-container">
                     <canvas id="chart-kills"></canvas>
                 </div>
+            </div>
+        </div>
+
+        <!-- Listas Detalhadas -->
+        <div class="grid">
+            <div class="card">
+                <h2>📜 Ganhos de XP (recentes)</h2>
+                <div id="lista-xp-gains" class="metric-label">Nenhum registro</div>
+            </div>
+            <div class="card">
+                <h2>🗡️ Combates (recentes)</h2>
+                <div id="lista-combates" class="metric-label">Nenhum registro</div>
             </div>
         </div>
         
@@ -459,6 +539,7 @@ def criar_html_dashboard():
             const xp = stats.xp || {};
             const combat = stats.combat || {};
             const session = stats.session || {};
+            const resumo = dados.resumo || {};
 
             // Atualiza métricas (usando estrutura aninhada)
             if (session.elapsed) {
@@ -491,6 +572,9 @@ def criar_html_dashboard():
             if (xp.current !== undefined) {
                 const val = Number(xp.current) || 0;
                 document.getElementById('xp-total').textContent = val.toFixed(2) + '%';
+            } else if (resumo.xp_total !== undefined) {
+                const val = Number(resumo.xp_total) || 0;
+                document.getElementById('xp-total').textContent = val.toFixed(2) + '%';
             } else if (dados.historico_xp && dados.historico_xp.length) {
                 const ultimo = dados.historico_xp[dados.historico_xp.length-1];
                 const val = Number(ultimo.y) || 0;
@@ -499,6 +583,9 @@ def criar_html_dashboard():
 
             if (xp.xp_per_minute !== undefined) {
                 const val = Number(xp.xp_per_minute) || 0;
+                document.getElementById('xp-min').textContent = val.toFixed(2);
+            } else if (resumo.xp_por_minuto !== undefined) {
+                const val = Number(resumo.xp_por_minuto) || 0;
                 document.getElementById('xp-min').textContent = val.toFixed(2);
             } else if (dados.historico_xp && dados.historico_xp.length > 1) {
                 const a = dados.historico_xp;
@@ -512,6 +599,8 @@ def criar_html_dashboard():
 
             if (combat.kills !== undefined) {
                 document.getElementById('kills').textContent = Number(combat.kills) || 0;
+            } else if (resumo.kills_total !== undefined) {
+                document.getElementById('kills').textContent = Number(resumo.kills_total) || 0;
             } else if (dados.historico_kills && dados.historico_kills.length) {
                 const ultimo = dados.historico_kills[dados.historico_kills.length-1];
                 document.getElementById('kills').textContent = Number(ultimo.y) || 0;
@@ -519,6 +608,9 @@ def criar_html_dashboard():
 
             if (combat.kills_per_minute !== undefined) {
                 const val = Number(combat.kills_per_minute) || 0;
+                document.getElementById('kills-min').textContent = val.toFixed(1);
+            } else if (resumo.kills_por_minuto !== undefined) {
+                const val = Number(resumo.kills_por_minuto) || 0;
                 document.getElementById('kills-min').textContent = val.toFixed(1);
             } else if (dados.historico_kills && dados.historico_kills.length > 1) {
                 const b = dados.historico_kills;
@@ -528,6 +620,64 @@ def criar_html_dashboard():
                 const mins = Math.max(1, (t1 - t0) / 60000);
                 const val = dv / mins;
                 document.getElementById('kills-min').textContent = val.toFixed(1);
+            }
+
+            // Campos adicionais de combate
+            if (combat.deaths !== undefined) {
+                document.getElementById('deaths').textContent = Number(combat.deaths) || 0;
+            } else if (resumo.deaths !== undefined) {
+                document.getElementById('deaths').textContent = Number(resumo.deaths) || 0;
+            }
+            if (combat.kill_rate !== undefined) {
+                document.getElementById('kill-rate').textContent = (Number(combat.kill_rate) || 0).toFixed(0);
+            } else if (resumo.kill_rate !== undefined) {
+                document.getElementById('kill-rate').textContent = (Number(resumo.kill_rate) || 0).toFixed(0);
+            }
+
+            // Recursos
+            const resources = stats.resources || {};
+            const potions = resources.potions_used || {};
+            if (potions.hp !== undefined) document.getElementById('pot-hp').textContent = Number(potions.hp) || 0;
+            if (potions.mp !== undefined) document.getElementById('pot-mp').textContent = Number(potions.mp) || 0;
+            if (potions.vigor !== undefined) document.getElementById('pot-vigor').textContent = Number(potions.vigor) || 0;
+            if (resources.total_potions !== undefined) document.getElementById('pot-total').textContent = Number(resources.total_potions) || 0;
+            if (resumo.potions && resumo.potions.total !== undefined) document.getElementById('pot-total').textContent = Number(resumo.potions.total) || 0;
+            if (resources.total_skills !== undefined) document.getElementById('skills-total').textContent = Number(resources.total_skills) || 0;
+            if (resumo.skills_total !== undefined) document.getElementById('skills-total').textContent = Number(resumo.skills_total) || 0;
+
+            // Loot
+            const loot = stats.loot || {};
+            if (loot.total_items !== undefined) document.getElementById('loot-total').textContent = Number(loot.total_items) || 0;
+            if (loot.unique_items !== undefined) document.getElementById('loot-unique').textContent = Number(loot.unique_items) || 0;
+            if (resumo.loot_total !== undefined) document.getElementById('loot-total').textContent = Number(resumo.loot_total) || 0;
+            if (resumo.loot_unique !== undefined) document.getElementById('loot-unique').textContent = Number(resumo.loot_unique) || 0;
+
+            // AI
+            const ai = stats.ai || {};
+            if (ai.detections !== undefined) document.getElementById('ai-detections').textContent = Number(ai.detections) || 0;
+            if (ai.movements !== undefined) document.getElementById('ai-movements').textContent = Number(ai.movements) || 0;
+            if (ai.enemies_spotted !== undefined) document.getElementById('ai-enemies').textContent = Number(ai.enemies_spotted) || 0;
+            if (resumo.ai_detections !== undefined) document.getElementById('ai-detections').textContent = Number(resumo.ai_detections) || 0;
+            if (resumo.ai_movements !== undefined) document.getElementById('ai-movements').textContent = Number(resumo.ai_movements) || 0;
+            if (resumo.ai_enemies !== undefined) document.getElementById('ai-enemies').textContent = Number(resumo.ai_enemies) || 0;
+
+            // Listas detalhadas
+            const det = metricas.detailed_data || {};
+            const listXP = Array.isArray(det.xp_gains) ? det.xp_gains.slice(-10) : [];
+            const listComb = Array.isArray(det.combat_history) ? det.combat_history.slice(-10) : [];
+
+            if (listXP.length) {
+                document.getElementById('lista-xp-gains').innerHTML = listXP.map(g => {
+                    const ts = new Date(g.timestamp).toLocaleString();
+                    return `<div>+${g.amount} XP <span style="opacity:.7">(${g.source})</span> — ${ts}</div>`;
+                }).join('');
+            }
+            if (listComb.length) {
+                document.getElementById('lista-combates').innerHTML = listComb.map(c => {
+                    const ts = new Date(c.timestamp).toLocaleString();
+                    const res = c.killed ? 'kill' : 'falha';
+                    return `<div>${res} <span style="opacity:.7">(${c.duration}s)</span> — ${ts}</div>`;
+                }).join('');
             }
             
             // Atualiza gráficos
