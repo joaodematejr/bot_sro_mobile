@@ -370,34 +370,51 @@ class MovimentoInteligente:
                 for dir, dens in sorted(analise['densidade_direcao'].items(), key=lambda x: x[1], reverse=True):
                     print(f"      {dir:10s}: {dens:4d} pixels")
         
+        # Failsafe: se ficou parado tempo demais, força kiting
+        if tempo_atual - self.ultimo_movimento_real > self.tempo_max_parado:
+            print(f"\n⚠️ Failsafe: parado há mais de {self.tempo_max_parado}s, forçando movimento 360°")
+            self.fazer_kiting()
+            self.ultimo_kiting = tempo_atual
+            self.ultimo_movimento = tempo_atual
+            self.ultimo_movimento_real = tempo_atual
+            return True
+
         # Move se necessário
         if analise['precisa_mover'] and analise['melhor_direcao']:
             # Aumenta a duração se for fuga
             duracao = self.tempo_movimento * (1.4 if analise.get('em_perigo') else 1.0)
             self.mover_para_direcao(analise['melhor_direcao'], duracao)
             self.ultimo_movimento = tempo_atual
+            self.ultimo_movimento_real = tempo_atual
             return True
         else:
+            # NOVO: Se não houver mobs próximos, faz kiting 360° imediatamente
+            if analise['mobs_atual'] == 0:
+                print(f"\n🔄 Nenhum inimigo próximo - fazendo 360° com o joystick para buscar mobs")
+                self.fazer_kiting()
+                self.ultimo_kiting = tempo_atual
+                self.ultimo_movimento = tempo_atual
+                self.ultimo_movimento_real = tempo_atual
+                return True
             # KITING PREVENTIVO: faz movimento circular periodicamente para agregar mobs
             if self.usar_kiting and tempo_atual - self.ultimo_kiting >= 45:  # Kiting a cada 45s
-                densidade_total = sum(analise['densidade_direcao'].values())
-                
+                densidade_total = sum([v for v in analise['densidade_direcao'].values() if v > 0])
                 # Modo 1: Detectou mobs distantes (densidade > 50)
                 if densidade_total > 50 and analise['mobs_atual'] < self.min_mobs_para_ficar * 30:
                     print(f"\n🔄 Detectados {densidade_total} pixels de mobs distantes - fazendo kiting")
                     self.fazer_kiting()
                     self.ultimo_kiting = tempo_atual
                     self.ultimo_movimento = tempo_atual
+                    self.ultimo_movimento_real = tempo_atual
                     return True
-                
                 # Modo 2: PREVENTIVO - faz kiting mesmo sem detectar (atrai mobs invisíveis no radar)
                 elif densidade_total == 0 or analise['mobs_atual'] < self.min_mobs_para_ficar * 20:
                     print(f"\n🔄 Kiting preventivo - agregando mobs ao redor")
                     self.fazer_kiting()
                     self.ultimo_kiting = tempo_atual
                     self.ultimo_movimento = tempo_atual
+                    self.ultimo_movimento_real = tempo_atual
                     return True
-            
             if debug:
                 print(f"   ✅ Área boa, ficando no local")
             self.ultimo_movimento = tempo_atual
