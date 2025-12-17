@@ -257,6 +257,8 @@
   "joystick_raio": 100,
   "movimento_automatico": true,
   "movimento_automatico_config": {
+    "area_limitada_centro": [100, 100],
+    "area_limitada_raio": 80,
     "min_mobs_area": 2,
     "max_mobs_seguro": 4,
     "raio_busca_pixels": 140,

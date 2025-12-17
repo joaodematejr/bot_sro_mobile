@@ -663,13 +663,49 @@
           "mortes_por_hora": 0.0,
           "media_mobs": 0.0,
           "score": 5.553851870783086
+        },
+        {
+          "timestamp": "2025-12-17T13:59:25.016284",
+          "duracao_min": 27.740310933333333,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 8,
+          "kills_por_min": 0.28838898090313164,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 1.73033388541879
+        },
+        {
+          "timestamp": "2025-12-17T14:15:57.593301",
+          "duracao_min": 15.267862383333332,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 8,
+          "kills_por_min": 0.5239764283396307,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 3.143858570037784
+        },
+        {
+          "timestamp": "2025-12-17T14:25:26.569773",
+          "duracao_min": 9.422335916666666,
+          "xp_ganho": 0.0,
+          "xp_por_hora": 0.0,
+          "kills": 8,
+          "kills_por_min": 0.8490463586475651,
+          "mortes": 0,
+          "mortes_por_hora": 0.0,
+          "media_mobs": 0.0,
+          "score": 5.09427815188539
         }
       ],
       "xp_por_hora_medio": 0.0,
-      "kills_por_min_medio": 1.7749488067205008,
+      "kills_por_min_medio": 1.7117861403020327,
       "mortes_por_hora_medio": 0.0,
       "media_mobs": 0.0,
-      "score": 10.649692840323006,
+      "score": 10.270716841812195,
       "rank": 2
     },
     "auto_5,5": {
@@ -723,15 +759,15 @@
   },
   "grid": {
     "5,5": {
-      "visits": 20962,
+      "visits": 21026,
       "xp_gained": 0.0,
-      "kills": 254,
+      "kills": 278,
       "deaths": 0,
       "avg_mobs": 0.0,
-      "total_time": 3751.6778762999993
+      "total_time": 3804.1083855333327
     }
   },
-  "ultima_atualizacao": "2025-12-17T13:09:05.855980",
+  "ultima_atualizacao": "2025-12-17T14:25:26.569836",
   "total_regioes": 2,
   "total_celulas": 1
 }

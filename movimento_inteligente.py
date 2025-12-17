@@ -62,6 +62,11 @@ class MovimentoInteligente:
         # Usar raio de 100 para cobrir toda a área visível útil
         self.raio_perto = movimento_config.get('raio_mobs_perto', 100)
 
+        # Limite de área permitida no minimapa
+        area_cfg = config.get('movimento_automatico_config', {})
+        self.area_limitada_centro = tuple(area_cfg.get('area_limitada_centro', [self.minimap_w // 2, self.minimap_h // 2]))
+        self.area_limitada_raio = area_cfg.get('area_limitada_raio', 80)
+
         # Debug
         self.debug_folder = Path("debug_movimento")
         self.debug_folder.mkdir(exist_ok=True)
@@ -131,24 +136,25 @@ class MovimentoInteligente:
         for nome, (dx, dy) in direcoes.items():
             # Define região circular na direção
             angulo = math.atan2(dy, dx)
-            
+            # Calcula destino do movimento nessa direção (ponto médio do setor)
+            r_dest = self.raio_busca
+            x_dest = int(centro_x + r_dest * math.cos(angulo))
+            y_dest = int(centro_y + r_dest * math.sin(angulo))
+            # Verifica se destino está dentro da área permitida
+            dist_centro = math.sqrt((x_dest - self.area_limitada_centro[0])**2 + (y_dest - self.area_limitada_centro[1])**2)
+            if dist_centro > self.area_limitada_raio:
+                densidade_por_direcao[nome] = -1  # Ignora esta direção
+                continue
             # Cria máscara circular nessa direção
             mask_direcao = np.zeros_like(mask_mobs)
-            
-            # Preenche setor circular - começa mais perto do centro (20px) até o raio_busca
-            # O minimapa tem 200x200, centro em 100x100, mobs podem estar até ~140px
-            for r in range(20, self.raio_busca):  # De 20 a raio_busca pixels do centro
+            for r in range(20, self.raio_busca):
                 for theta in np.linspace(angulo - np.pi/4, angulo + np.pi/4, 20):
                     x = int(centro_x + r * np.cos(theta))
                     y = int(centro_y + r * np.sin(theta))
-                    
                     if 0 <= x < self.minimap_w and 0 <= y < self.minimap_h:
                         cv2.circle(mask_direcao, (x, y), 5, 255, -1)
-            
-            # Conta mobs nessa direção
             mobs_direcao = cv2.bitwise_and(mask_mobs, mask_direcao)
             pixels_vermelho = cv2.countNonZero(mobs_direcao)
-            
             densidade_por_direcao[nome] = pixels_vermelho
             
             # Melhor direção: mais mobs, mas NÃO mais que o limite seguro
