@@ -332,7 +332,31 @@ class Config:
         }
 
 class ADBConnection:
-    """Gerenciador de conexão ADB"""
+    def swipe(self, x1: int, y1: int, x2: int, y2: int, duration: int = 300) -> bool:
+            """
+            Executa um swipe (arrasto) na tela do dispositivo
+            Args:
+                x1, y1: Ponto inicial
+                x2, y2: Ponto final
+                duration: Duração em ms
+            Returns:
+                True se o comando foi executado com sucesso
+            """
+            try:
+                # Timeout dinâmico: duração do swipe + 2s de margem (mínimo 5s)
+                timeout = max(5, int(duration / 1000) + 2)
+                subprocess.run(
+                    ["adb", "-s", self.device_address, "shell", "input", "swipe", str(x1), str(y1), str(x2), str(y2), str(duration)],
+                    capture_output=True,
+                    timeout=timeout
+                )
+                return True
+            except Exception as e:
+                print(f"✗ Erro ao executar swipe: {e}")
+                return False
+    """
+    Gerenciador de conexão ADB
+    """
     
     def __init__(self, device_address: str = None):
         if device_address is None:

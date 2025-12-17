@@ -1,1881 +1,6 @@
 {
   "historico": [
     {
-      "timestamp": "2025-12-17T09:12:11.073416",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:12:21.036841",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:12:31.133255",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:12:41.197395",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:12:51.210608",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:13:01.195513",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:13:11.328705",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:13:21.400785",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:13:31.468454",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:13:41.690798",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:13:51.924086",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:14:01.909045",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:14:11.929822",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:14:21.953107",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:14:33.363801",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:14:42.863757",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:14:52.716280",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:15:02.975853",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:15:13.042405",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:15:23.030426",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:15:33.123128",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:15:43.099648",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:15:53.310523",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:16:03.220185",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:16:13.411930",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:16:23.569494",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:16:33.640377",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:16:45.606484",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:16:54.952588",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:17:04.954279",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:17:17.209576",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:17:27.297111",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:17:36.811896",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:17:47.541202",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:17:57.481679",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:18:07.535434",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:18:17.535204",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:18:27.722584",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:18:37.913322",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:23:47.561961",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:23:57.505651",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:24:07.672190",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:24:17.868151",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:24:29.767607",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:24:39.172546",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:24:51.484739",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:25:00.593511",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:25:10.590913",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:25:22.547716",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:25:32.524998",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:25:41.909395",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:25:54.389576",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:26:03.537216",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:26:13.348793",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:26:23.485934",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:26:33.568434",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:26:43.684205",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:26:53.704690",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:27:03.788648",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:27:15.818838",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:27:24.923586",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:27:34.918280",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:27:46.899046",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:27:56.398053",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:28:06.495617",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:28:16.451515",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:28:26.530445",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:28:36.536490",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:28:46.600851",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:28:56.581485",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:29:08.179849",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:29:17.532408",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:29:27.581750",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:29:39.561969",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:29:48.747038",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:29:58.789481",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:30:08.742312",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:30:18.898301",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:30:28.897727",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:30:39.069184",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:30:48.984702",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:30:59.141210",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:31:09.379921",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:31:19.609480",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:31:29.766569",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:31:39.399965",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:31:49.398181",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:31:59.564854",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:32:11.549854",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:32:20.753984",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:32:30.832660",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:32:41.311507",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:32:51.383886",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:33:01.334752",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:33:11.355166",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:33:21.432755",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:33:31.591706",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:33:41.602713",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:33:51.616909",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:34:01.741111",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:34:11.720767",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:34:22.194716",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:34:32.245627",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:34:42.189914",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:34:52.261508",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:35:02.397402",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:35:12.677987",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:35:22.613835",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:35:32.631705",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:35:42.675405",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:35:52.719171",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:36:02.835174",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:36:12.783151",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:36:22.891235",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:36:32.874111",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:36:43.022993",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:36:52.922228",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:37:03.103133",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:37:13.159429",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:37:23.246081",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:37:33.212924",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:37:43.398125",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:37:53.422433",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:38:03.616500",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
-      "timestamp": "2025-12-17T09:38:13.719072",
-      "estado_anterior": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      },
-      "acao": "target",
-      "recompensa": -3.0,
-      "novo_estado": {
-        "hp": 100,
-        "mobs": 0,
-        "xp": 0
-      }
-    },
-    {
       "timestamp": "2025-12-17T09:38:23.748225",
       "estado_anterior": {
         "hp": 100,
@@ -14999,15 +13124,1890 @@
         "mobs": 0,
         "xp": 0
       }
+    },
+    {
+      "timestamp": "2025-12-17T12:07:52.581388",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:08:02.728073",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:08:12.683858",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:08:24.218957",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:08:34.960691",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:08:43.863130",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:08:54.499227",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:09:04.437746",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:09:14.473510",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:09:24.689768",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:09:35.032111",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:09:46.965670",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:09:56.245419",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:10:06.345926",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:10:18.258651",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:10:27.561916",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:10:37.411356",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:10:47.503064",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:10:57.675342",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:11:07.703999",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:11:17.865210",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:11:27.966452",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:11:39.601668",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:11:48.707218",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:11:58.860036",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:12:10.907834",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:12:20.132799",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:12:30.143774",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:12:42.309441",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:12:51.553438",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:13:01.642120",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:13:13.714534",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:13:22.987205",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:13:33.077969",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:13:45.002822",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:13:54.227018",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:14:04.242547",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:14:16.224629",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:14:25.724097",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:14:36.512531",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:14:48.521004",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:14:58.528904",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:15:07.676214",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:15:18.236004",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:15:28.063786",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:15:39.126391",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:15:49.732633",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:15:59.098307",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:16:11.022607",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:16:19.847057",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:16:29.842933",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:16:39.928408",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:16:49.883565",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:17:00.106963",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:17:10.241647",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:17:20.353623",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:17:30.284511",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:17:40.363109",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:17:52.428323",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:18:01.564544",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:18:11.551379",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:18:22.107040",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:18:31.977482",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:18:41.980157",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:18:52.080519",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:19:02.127928",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:19:13.677298",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:19:23.134107",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:19:33.204542",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:19:45.913396",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:19:54.878037",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:20:05.025934",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:20:16.603313",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:20:25.771819",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:20:35.794140",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:20:46.418178",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:20:56.571223",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:21:06.527004",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:21:16.591373",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:21:26.680899",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:21:37.027844",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:21:47.018172",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:21:57.025127",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:22:07.030123",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:22:17.167961",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:22:27.448239",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:22:37.445823",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:22:47.496042",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:22:57.644071",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:23:07.561597",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:23:17.802176",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:23:27.700809",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:23:37.774116",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:23:47.929670",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:23:57.874426",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:24:09.487067",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:24:18.902525",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:24:28.966107",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:24:39.077000",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:31:33.091972",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:32:44.170853",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:35:17.803178",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:35:25.815394",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:35:36.057741",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:35:46.673038",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:35:57.284145",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:38:30.452981",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:41:03.438612",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T12:43:38.073552",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:00:48.720638",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:00:58.962432",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:03:30.724810",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:03:38.899269",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:03:48.696258",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:03:58.745053",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:04:09.069287",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:04:19.138662",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:04:30.896434",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:07:02.789379",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:07:10.686120",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:07:20.740753",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:07:30.923541",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:07:42.639651",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:07:51.382478",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-17T13:08:01.671761",
+      "estado_anterior": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      },
+      "acao": "target",
+      "recompensa": -3.0,
+      "novo_estado": {
+        "hp": 100,
+        "mobs": 0,
+        "xp": 0
+      }
     }
   ],
   "metricas_totais": {
-    "total_registros": 1961,
+    "total_registros": 1016,
     "recompensa_media": -3.0,
-    "recompensa_total": -5883.0,
+    "recompensa_total": -3048.0,
     "recompensa_maxima": -3.0,
     "recompensa_minima": -3.0,
     "desvio_padrao": 0.0
   },
-  "ultima_atualizacao": "2025-12-17T12:07:24.612883"
+  "ultima_atualizacao": "2025-12-17T13:09:50.809983"
 }
