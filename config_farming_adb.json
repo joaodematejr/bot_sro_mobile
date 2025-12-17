@@ -259,14 +259,16 @@
   "movimento_automatico_config": {
     "min_mobs_area": 2,
     "max_mobs_seguro": 4,
-    "raio_busca_pixels": 80,
+    "raio_busca_pixels": 140,
+    "raio_mobs_perto": 100,
     "tempo_movimento_segundos": 3.0,
     "intervalo_verificacao": 10,
     "usar_kiting": true,
     "kiting_raio_pixels": 60,
     "kiting_duracao_passo": 9.0,
     "kiting_num_passos": 8,
-    "descricao": "Move automaticamente para \u00e1reas com mais mobs. Kiting circular agrega mobs distantes."
+    "debug": true,
+    "descricao": "Move automaticamente para áreas com mais mobs. Kiting circular agrega mobs distantes."
   },
   "pasta_imagens_treino": "treino_ml",
   "salvar_imagens_treino": true,

@@ -51,16 +51,16 @@ class MovimentoInteligente:
         self.posicao_atual_estimada = (self.minimap_w // 2, self.minimap_h // 2)
         self.historico_densidade = []
         
-        # Faixas HSV para inimigos (vermelho) a partir do config
-        cores_cfg = config.get('cores_minimap', {})
-        inimigos_cfg = (cores_cfg.get('inimigos') or {})
-        hsv_min_cfg = inimigos_cfg.get('hsv_min', [0, 100, 100])
-        hsv_max_cfg = inimigos_cfg.get('hsv_max', [10, 255, 255])
-        # Sempre considera a segunda faixa (wrap do vermelho)
+        # Faixas HSV para inimigos (vermelho) - ranges amplos baseados em diagnóstico
+        # O vermelho no minimapa pode ter saturação/valor mais baixos
         self.red_ranges = [
-            (np.array(hsv_min_cfg, dtype=np.uint8), np.array(hsv_max_cfg, dtype=np.uint8)),
-            (np.array([170, 100, 100], dtype=np.uint8), np.array([180, 255, 255], dtype=np.uint8))
+            (np.array([0, 30, 30], dtype=np.uint8), np.array([15, 255, 255], dtype=np.uint8)),
+            (np.array([165, 30, 30], dtype=np.uint8), np.array([180, 255, 255], dtype=np.uint8))
         ]
+        # Raio para considerar mobs "perto" do player
+        # O minimapa tem 200x200, centro em 100x100, mobs podem estar até ~140px do centro
+        # Usar raio de 100 para cobrir toda a área visível útil
+        self.raio_perto = movimento_config.get('raio_mobs_perto', 100)
 
         # Debug
         self.debug_folder = Path("debug_movimento")
@@ -135,8 +135,9 @@ class MovimentoInteligente:
             # Cria máscara circular nessa direção
             mask_direcao = np.zeros_like(mask_mobs)
             
-            # Preenche setor circular
-            for r in range(30, self.raio_busca):  # De 30 a raio_busca pixels do centro
+            # Preenche setor circular - começa mais perto do centro (20px) até o raio_busca
+            # O minimapa tem 200x200, centro em 100x100, mobs podem estar até ~140px
+            for r in range(20, self.raio_busca):  # De 20 a raio_busca pixels do centro
                 for theta in np.linspace(angulo - np.pi/4, angulo + np.pi/4, 20):
                     x = int(centro_x + r * np.cos(theta))
                     y = int(centro_y + r * np.sin(theta))
@@ -151,7 +152,8 @@ class MovimentoInteligente:
             densidade_por_direcao[nome] = pixels_vermelho
             
             # Melhor direção: mais mobs, mas NÃO mais que o limite seguro
-            if pixels_vermelho > max_densidade and pixels_vermelho <= self.max_mobs_seguro * 50:
+            # Cada mob tem aproximadamente 15 pixels no minimapa
+            if pixels_vermelho > max_densidade and pixels_vermelho <= self.max_mobs_seguro * 15:
                 max_densidade = pixels_vermelho
                 melhor_direcao = nome
             
@@ -164,18 +166,26 @@ class MovimentoInteligente:
                 # Salva máscara de cada direção
                 cv2.imwrite(str(self.debug_folder / f"direcao_{nome}.png"), mobs_direcao)
         
-        # Conta mobs próximos ao player (raio de 30 pixels)
+        # Conta mobs próximos ao player (raio configurável)
         mask_perto = np.zeros_like(mask_mobs)
-        cv2.circle(mask_perto, (centro_x, centro_y), 30, 255, -1)
+        cv2.circle(mask_perto, (centro_x, centro_y), self.raio_perto, 255, -1)
         mobs_perto = cv2.bitwise_and(mask_mobs, mask_perto)
         mobs_atual = cv2.countNonZero(mobs_perto)
         
+        # Debug: conta total de mobs no minimapa inteiro
+        mobs_total = cv2.countNonZero(mask_mobs)
+        if debug:
+            print(f"   🔴 Mobs total no minimapa: {mobs_total} px, perto (raio {self.raio_perto}): {mobs_atual} px")
+        
         # ========= LÓGICA DE SEGURANÇA =========
+        # Cada mob tem aproximadamente 10-20 pixels no minimapa
+        PIXELS_POR_MOB = 15  # Média de pixels por mob
+        
         # 1. PERIGO: Se tem MUITOS mobs perto → FUGIR
-        em_perigo = mobs_atual > self.max_mobs_seguro * 50
+        em_perigo = mobs_atual > self.max_mobs_seguro * PIXELS_POR_MOB
         
         # 2. POUCOS: Se tem poucos mobs → BUSCAR área melhor
-        poucos_mobs = mobs_atual < self.min_mobs_para_ficar * 50
+        poucos_mobs = mobs_atual < self.min_mobs_para_ficar * PIXELS_POR_MOB
         
         # 3. DECISÃO:
         if em_perigo:
