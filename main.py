@@ -1235,6 +1235,11 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
     ultimo_exp_gain_capture = 0
     ultimo_ia_analise = 0
     ultimo_movimento_ia = 0
+    # Controle do ciclo de clique duplo customizado
+    intervalo_farmer = 720  # 12 minutos em segundos
+    ultimo_ciclo_farmer = -intervalo_farmer  # força execução imediata ao iniciar
+    pos_farmer_1 = (1744, 599)
+    pos_farmer_2 = (1634, 590)
     
     # Controle de ciclos de target
     em_ciclo_target = False
@@ -1335,6 +1340,20 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
     try:
         while True:
             tempo_atual = time.time() - tempo_inicio
+
+            # Clique duplo customizado a cada 12 minutos
+            if tempo_atual - ultimo_ciclo_farmer >= intervalo_farmer:
+                print(f"\n🔁 Executando ciclo de clique duplo de farming especial...")
+                if adb.tap(*pos_farmer_1):
+                    print(f"  ✓ Clique em {pos_farmer_1}")
+                else:
+                    print(f"  ✗ Falha ao clicar em {pos_farmer_1}")
+                time.sleep(2)
+                if adb.tap(*pos_farmer_2):
+                    print(f"  ✓ Clique em {pos_farmer_2}")
+                else:
+                    print(f"  ✗ Falha ao clicar em {pos_farmer_2}")
+                ultimo_ciclo_farmer = tempo_atual
             
             # Reseta câmera a cada X segundos
             if tempo_atual - ultimo_camera >= camera_interval:
