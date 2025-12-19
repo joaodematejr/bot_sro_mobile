@@ -1,0 +1,12 @@
+{
+  "name": "bot-sro-gui",
+  "version": "1.0.0",
+  "description": "Interface gráfica para configurar e iniciar o bot SRO Mobile",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^28.0.0"
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "session": {
+    "id": "20251218_122543",
+    "start": "2025-12-18T12:25:43.775282",
+    "end": "2025-12-18T12:45:20.782682",
+    "duration": "0:19:37"
+  },
+  "statistics": {
+    "session": {
+      "id": "20251218_122543",
+      "start": "2025-12-18T12:25:43.775282",
+      "elapsed": "0:19:37",
+      "elapsed_minutes": 19.62
+    },
+    "xp": {
+      "current": 0.0,
+      "initial": null,
+      "gained": 0,
+      "xp_per_minute": 0.0,
+      "time_to_level": "N/A",
+      "total_readings": 0,
+      "xp_gains_detected": 9,
+      "avg_xp_per_kill": 50.5556
+    },
+    "combat": {
+      "total_combats": 9,
+      "kills": 9,
+      "deaths": 0,
+      "kills_per_minute": 0.46,
+      "avg_combat_duration": 2.0,
+      "kill_rate": 100.0,
+      "combat_per_minute": 0.46
+    },
+    "resources": {
+      "potions_used": {
+        "hp": 0,
+        "mp": 0,
+        "vigor": 0
+      },
+      "total_potions": 0,
+      "skills_used": {},
+      "total_skills": 0
+    },
+    "loot": {
+      "items_collected": {},
+      "total_items": 0,
+      "unique_items": 0
+    },
+    "ai": {
+      "detections": 0,
+      "movements": 0,
+      "enemies_spotted": 0,
+      "avg_enemies_per_detection": 0
+    }
+  },
+  "detailed_data": {
+    "xp_history": [],
+    "xp_gains": [
+      {
+        "timestamp": "2025-12-14T07:48:41.543185",
+        "amount": 24.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-15T00:58:40.403821",
+        "amount": 55.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-15T04:47:44.913133",
+        "amount": 28.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-15T05:14:54.264901",
+        "amount": 78.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-15T05:31:46.843079",
+        "amount": 78.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-16T06:18:59.698131",
+        "amount": 23.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-16T13:43:56.232756",
+        "amount": 53.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-16T15:47:46.736603",
+        "amount": 54.0,
+        "source": "combat"
+      },
+      {
+        "timestamp": "2025-12-17T18:40:44.598064",
+        "amount": 62.0,
+        "source": "combat"
+      }
+    ],
+    "combat_history": [
+      {
+        "timestamp": "2025-12-14T07:48:41.543215",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-15T00:58:40.403836",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-15T04:47:44.913144",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-15T05:14:54.264917",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-15T05:31:46.843091",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-16T06:18:59.698144",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-16T13:43:56.232768",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-16T15:47:46.736615",
+        "duration": 2.0,
+        "killed": true
+      },
+      {
+        "timestamp": "2025-12-17T18:40:44.598075",
+        "duration": 2.0,
+        "killed": true
+      }
+    ],
+    "loot_collected": [],
+    "enemies_detected": [],
+    "actions_log": []
+  }
+}
