@@ -1,4 +1,48 @@
-# Funções para coletar dados reais do bot (implemente conforme sua lógica)
+def contar_mobs_proximos_yolo():
+    """
+    Detecta inimigos próximos usando YOLO (Ultralytics) no print inteiro.
+    Requer: pip install ultralytics
+    """
+    try:
+        from ultralytics import YOLO
+    except ImportError:
+        print("Ultralytics YOLO não está instalado. Instale com: pip install ultralytics")
+        return 0
+
+    lista_prints = glob.glob(os.path.join('prints', '*.png'))
+    if not lista_prints:
+        return 0
+    img_path = max(lista_prints, key=os.path.getctime)
+
+    # Carrega modelo YOLOv8 ou YOLOv5 (pode ser yolov8n.pt, yolov5s.pt, etc)
+    model_path = 'yolov5s.pt'  # ou yolov8n.pt, yolov8s.pt, etc
+    try:
+        model = YOLO(model_path)
+    except Exception as e:
+        print(f"Erro ao carregar modelo YOLO: {e}")
+        return 0
+
+    results = model(img_path)
+    # Salva imagem com as detecções desenhadas
+    save_dir = 'prints_yolo'
+    os.makedirs(save_dir, exist_ok=True)
+    for i, r in enumerate(results):
+        # O método .plot() retorna uma imagem numpy com as detecções desenhadas
+        im_bgr = r.plot()
+        # Salva a imagem com sufixo _yolo.png
+        base = os.path.basename(img_path)
+        save_path = os.path.join(save_dir, base.replace('.png', f'_yolo.png'))
+        import cv2
+        cv2.imwrite(save_path, im_bgr)
+        print(f"[YOLO] Imagem com detecções salva em: {save_path}")
+    num_mobs = 0
+    for r in results:
+        for c in r.boxes.cls:
+            if int(c) == 0:  # 0 = 'person' no COCO
+                num_mobs += 1
+    print(f"[YOLO] Mobs detectados na tela: {num_mobs}")
+    return num_mobs
+
 def coletar_coordenadas_personagem():
     # Tira print e faz crop da área de localização
     lista_prints = glob.glob(os.path.join('prints', '*.png'))
@@ -13,38 +57,6 @@ def coletar_coordenadas_personagem():
         x, y = int(match.group(1)), int(match.group(2))
         return x, y
     return None, None
-
-def contar_mobs_proximos():
-    # Detecção real de mobs próximos usando OpenCV e pytesseract
-    lista_prints = glob.glob(os.path.join('prints', '*.png'))
-    if not lista_prints:
-        return 0
-    caminho_print = max(lista_prints, key=os.path.getctime)
-    # Crop da área do minimapa usando os mesmos parâmetros do crop_image('imagem_treinamento.png', 'mini_map.png', x=130, y=150, w=200, h=200)
-    crop_path = 'minimap_mobs_tmp.png'
-    crop_image(caminho_print, crop_path, x=130, y=150, w=200, h=200)
-    img = cv2.imread(crop_path)
-    if img is None:
-        return 0
-    # Converter para HSV para facilitar a detecção de vermelho
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    # Faixas de vermelho em HSV (pode ser ajustado)
-    lower_red1 = (0, 70, 50)
-    upper_red1 = (10, 255, 255)
-    lower_red2 = (170, 70, 50)
-    upper_red2 = (180, 255, 255)
-    mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
-    mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
-    mask = cv2.bitwise_or(mask1, mask2)
-    # Encontrar contornos dos pontos vermelhos
-    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    mobs_detectados = 0
-    for cnt in contours:
-        area = cv2.contourArea(cnt)
-        if 5 < area < 200:  # Limite para ignorar ruído e grandes áreas
-            mobs_detectados += 1
-    print(f"[DEBUG] Mobs detectados no minimapa: {mobs_detectados}")
-    return mobs_detectados
 
 def coletar_xp_percentual():
     lista_prints = glob.glob(os.path.join('prints', '*.png'))
@@ -242,7 +254,7 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
             # Exemplo de coleta de features (substitua pelos valores reais do seu bot)
             # Coleta real dos dados do bot
             x, y_coord = coletar_coordenadas_personagem()
-            mobs_nearby = contar_mobs_proximos()
+            mobs_nearby = contar_mobs_proximos_yolo()
             xp_percent = coletar_xp_percentual()
             features = [x, y_coord, mobs_nearby, xp_percent]
             target = mobs_nearby     # Exemplo: pode ser densidade de inimigos, XP ganho, etc.
