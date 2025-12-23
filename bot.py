@@ -1,7 +1,111 @@
+# Funções para coletar dados reais do bot (implemente conforme sua lógica)
+def coletar_coordenadas_personagem():
+    # Tira print e faz crop da área de localização
+    lista_prints = glob.glob(os.path.join('prints', '*.png'))
+    if not lista_prints:
+        return None, None
+    caminho_print = max(lista_prints, key=os.path.getctime)
+    crop_path = 'localizacao_tmp.png'
+    crop_image(caminho_print, crop_path, x=180, y=180, w=100, h=25)
+    localizacao = detect_location_string(crop_path)
+    match = re.search(r"\(?\s*(\d+)\s*,\s*(\d+)\s*\)?", localizacao)
+    if match:
+        x, y = int(match.group(1)), int(match.group(2))
+        return x, y
+    return None, None
+
+def contar_mobs_proximos():
+    # Detecção real de mobs próximos usando OpenCV e pytesseract
+    lista_prints = glob.glob(os.path.join('prints', '*.png'))
+    if not lista_prints:
+        return 0
+    caminho_print = max(lista_prints, key=os.path.getctime)
+    # Crop da área do minimapa usando os mesmos parâmetros do crop_image('imagem_treinamento.png', 'mini_map.png', x=130, y=150, w=200, h=200)
+    crop_path = 'minimap_mobs_tmp.png'
+    crop_image(caminho_print, crop_path, x=130, y=150, w=200, h=200)
+    img = cv2.imread(crop_path)
+    if img is None:
+        return 0
+    # Converter para HSV para facilitar a detecção de vermelho
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    # Faixas de vermelho em HSV (pode ser ajustado)
+    lower_red1 = (0, 70, 50)
+    upper_red1 = (10, 255, 255)
+    lower_red2 = (170, 70, 50)
+    upper_red2 = (180, 255, 255)
+    mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
+    mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
+    mask = cv2.bitwise_or(mask1, mask2)
+    # Encontrar contornos dos pontos vermelhos
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    mobs_detectados = 0
+    for cnt in contours:
+        area = cv2.contourArea(cnt)
+        if 5 < area < 200:  # Limite para ignorar ruído e grandes áreas
+            mobs_detectados += 1
+    print(f"[DEBUG] Mobs detectados no minimapa: {mobs_detectados}")
+    return mobs_detectados
+
+def coletar_xp_percentual():
+    lista_prints = glob.glob(os.path.join('prints', '*.png'))
+    if not lista_prints:
+        return None
+    caminho_print = max(lista_prints, key=os.path.getctime)
+    crop_image(caminho_print, 'xp.png', x=30, y=900, w=140, h=125)
+    img = cv2.imread('xp.png')
+    if img is None:
+        return None
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    custom_config = r'--oem 3 --psm 6'
+    text = pytesseract.image_to_string(gray, config=custom_config)
+    print("Texto detectado XP:", text)
+    match = re.search(r"([0-9]+\.[0-9]+)%", text)
+    if match:
+        return float(match.group(1))
+    return None
+def exibir_estatisticas():
+    print("\n===== Estatísticas do Bot =====")
+    try:
+        historico = carregar_historico_sessoes()
+        total_sessoes = len(historico)
+        total_amostras = sum(len(sessao.get('amostras', [])) for sessao in historico)
+        total_eventos = sum(len(sessao.get('eventos', [])) for sessao in historico)
+        ultima_sessao = max((sessao.get('inicio') for sessao in historico if 'inicio' in sessao), default=None)
+        print(f"Total de sessões salvas: {total_sessoes}")
+        print(f"Total de amostras coletadas: {total_amostras}")
+        print(f"Total de eventos registrados: {total_eventos}")
+        if ultima_sessao:
+            print(f"Data/hora da última sessão: {ultima_sessao}")
+        else:
+            print("Nenhuma sessão registrada ainda.")
+    except Exception as e:
+        print(f"Erro ao obter estatísticas: {e}")
+    print("================================\n")
+def exibir_relatorio_otimizacao_ml():
+    print("\n===== Relatório de Otimização ML =====")
+    try:
+        monitoramento = MonitoramentoTreinamento()
+        monitoramento.resumo()
+        print("\nCaminhos dos modelos salvos:")
+        from ml_utils import MODELOS_PATHS
+        for nome, path in MODELOS_PATHS.items():
+            existe = os.path.exists(path)
+            print(f"  - {nome}: {path} {'(existe)' if existe else '(não encontrado)'}")
+        # Tenta exibir curva de aprendizado
+        curva_path = 'curva_aprendizado.png'
+        if os.path.exists(curva_path):
+            print(f"\nCurva de aprendizado disponível em: {curva_path}")
+        else:
+            print("\nCurva de aprendizado ainda não gerada.")
+    except Exception as e:
+        print(f"Erro ao gerar relatório: {e}")
+    print("========================================\n")
 
 # ===============================
 # Imports organizados
 # ===============================
+import cv2
+import pytesseract
 import os
 import sys
 import time
@@ -136,51 +240,55 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
             mostrar_localizacao_personagem(adb, config, mostrar_mapa_calor=True, grid_size=3)
             # ====== ML: Coleta de features e auto-treinamento ======
             # Exemplo de coleta de features (substitua pelos valores reais do seu bot)
-            # x, y: coordenadas do personagem (exemplo: 2036, 1321)
-            # mobs_nearby: número de inimigos próximos (exemplo: 5)
-            # xp_percent: porcentagem de XP atual (exemplo: 44.64)
-            x, y_coord = 2036, 1321  # Substitua pela leitura real
-            mobs_nearby = 5          # Substitua pela detecção real
-            xp_percent = 44.64       # Substitua pela leitura real
+            # Coleta real dos dados do bot
+            x, y_coord = coletar_coordenadas_personagem()
+            mobs_nearby = contar_mobs_proximos()
+            xp_percent = coletar_xp_percentual()
             features = [x, y_coord, mobs_nearby, xp_percent]
             target = mobs_nearby     # Exemplo: pode ser densidade de inimigos, XP ganho, etc.
-            X.append(features)
-            y.append(target)
-            contador_amostras += 1
-            # Salva amostra na sessão
-            dados_sessao['amostras'].append({
-                'timestamp': datetime.now(),
-                'features': features,
-                'target': target
-            })
-            # Monitoramento ML: registrar amostra
-            monitoramento_ml.registrar_amostra(features, target)
+            # Verifica se todos os valores são válidos
+            if None not in features and all(isinstance(f, (int, float)) for f in features):
+                X.append(features)
+                y.append(target)
+                contador_amostras += 1
+                # Salva amostra na sessão
+                dados_sessao['amostras'].append({
+                    'timestamp': datetime.now(),
+                    'features': features,
+                    'target': target
+                })
+                # Monitoramento ML: registrar amostra
+                monitoramento_ml.registrar_amostra(features, target)
+            else:
+                print(f"[ML] Amostra ignorada por dados inválidos: {features}")
             # Auto-save a cada 10 amostras
             if contador_amostras % 10 == 0:
                 auto_save_sessao(session_id, dados_sessao)
-            # Normalização
-            X_scaled = scaler.fit_transform(X)
-            # Auto-treinamento de todos os modelos
-            auto_treinar_modelos(modelos, X_scaled, y, contador_amostras)
-            # Treinamento contínuo: todos os modelos são atualizados a cada ciclo
-            for nome, modelo in modelos.items():
+            # Só executa pipeline ML se houver amostras válidas
+            if len(X) > 0:
+                # Normalização
+                X_scaled = scaler.fit_transform(X)
+                # Auto-treinamento de todos os modelos
+                auto_treinar_modelos(modelos, X_scaled, y, contador_amostras)
+                # Treinamento contínuo: todos os modelos são atualizados a cada ciclo
+                for nome, modelo in modelos.items():
+                    if contador_amostras >= 5:
+                        modelo.fit(X_scaled, y)
+                # Predição e clustering usando o modelo principal
                 if contador_amostras >= 5:
-                    modelo.fit(X_scaled, y)
-            # Predição e clustering usando o modelo principal
-            if contador_amostras >= 5:
-                pred = modelos['sklearn'].predict([X_scaled[-1]])
-                print(f"[ML] Predição de densidade de inimigos: {pred[0]:.2f}")
-                # Identificação de hotspot (cluster)
-                clusters, kmeans = identificar_hotspots(X_scaled, n_clusters=2)
-                print(f"[ML] Cluster do local atual: {clusters[-1]}")
-                # Monitoramento de treinamento ML
-                monitoramento_ml.registrar_amostra(features=X_scaled[-1], target=y[-1], pred=pred[0])
-                # Exibir resumo do monitoramento a cada milestone
-                if len(monitoramento_ml.timeline) in monitoramento_ml.milestones:
-                    monitoramento_ml.resumo()
-                    monitoramento_ml.plotar_curva_aprendizado()
-            else:
-                print("[ML] Aguardando mais amostras para treinar o modelo...")
+                    pred = modelos['sklearn'].predict([X_scaled[-1]])
+                    print(f"[ML] Predição de densidade de inimigos: {pred[0]:.2f}")
+                    # Identificação de hotspot (cluster)
+                    clusters, kmeans = identificar_hotspots(X_scaled, n_clusters=2)
+                    print(f"[ML] Cluster do local atual: {clusters[-1]}")
+                    # Monitoramento de treinamento ML
+                    monitoramento_ml.registrar_amostra(features=X_scaled[-1], target=y[-1], pred=pred[0])
+                    # Exibir resumo do monitoramento a cada milestone
+                    if len(monitoramento_ml.timeline) in monitoramento_ml.milestones:
+                        monitoramento_ml.resumo()
+                        monitoramento_ml.plotar_curva_aprendizado()
+                else:
+                    print("[ML] Aguardando mais amostras para treinar o modelo...")
             contador_camera += 1
             if sucesso:
                 print(f"🎥 Reset de câmera realizado com sucesso.")
@@ -248,13 +356,11 @@ def run_interactive_menu():
             pass
 
         elif escolha == "3":
-            print("\n📊 Estatísticas")
-            print("⚠️  Funcionalidade em desenvolvimento")
+            exibir_estatisticas()
             input("\nPressione ENTER para voltar ao menu...")
 
         elif escolha == "4":
-            print("\n🤖 Relatório de Otimização ML")
-            print("⚠️  Funcionalidade em desenvolvimento")
+            exibir_relatorio_otimizacao_ml()
             input("\nPressione ENTER para voltar ao menu...")
 
         elif escolha == "5":

@@ -24,10 +24,12 @@ def carregar_historico_sessoes():
 
 def exportar_json_ultima_sessao(session_id):
     path = os.path.join(SESSOES_PATH, f'sessao_{session_id}.json')
+    export_dir = 'sessoes_exports'
+    os.makedirs(export_dir, exist_ok=True)
     if os.path.exists(path):
         with open(path) as f:
             dados = json.load(f)
-        export_path = f'export_sessao_{session_id}.json'
+        export_path = os.path.join(export_dir, f'export_sessao_{session_id}.json')
         with open(export_path, 'w') as f:
             json.dump(dados, f, indent=2, default=str)
         print(f"Sessão exportada para {export_path}")
