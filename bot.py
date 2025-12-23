@@ -35,6 +35,12 @@ def contar_mobs_proximos_yolo():
         import cv2
         cv2.imwrite(save_path, im_bgr)
         print(f"[YOLO] Imagem com detecções salva em: {save_path}")
+    # Rotaciona prints_yolo para manter apenas os 50 mais recentes
+    try:
+        from prints_utils import rotacionar_prints_yolo
+        rotacionar_prints_yolo(max_prints=50, pasta=save_dir)
+    except Exception as e:
+        print(f"[YOLO] Erro ao rotacionar prints_yolo: {e}")
     num_mobs = 0
     for r in results:
         for c in r.boxes.cls:
@@ -133,7 +139,7 @@ from utils_imagem import crop_image, detect_location_string
 from minimap_analysis import detectar_setor_com_mais_vermelhos
 from menu_utils import menu
 from adb_utils import ativar_pointer_location, desativar_pointer_location
-from prints_utils import tirar_print
+from prints_utils import tirar_print, rotacionar_prints_yolo
 
 # ===============================
 # Integração Machine Learning (Scikit-learn)
