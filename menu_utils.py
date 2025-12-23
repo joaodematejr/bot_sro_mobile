@@ -1,0 +1,15 @@
+def menu():
+    print("\n" + "="*60)
+    print("   🚀 BOT ULTRA ADB - SILKROAD ORIGIN")
+    print("="*60)
+    print("\nOpções:")
+    print("  1. Iniciar farming (infinito)")
+    print("  2. Configurações")
+    print("  3. Ver estatísticas")
+    print("  4. Relatório de Otimização ML")
+    print("  5. Ativar pointer_location (mostrar coordenadas)")
+    print("  6. Desativar pointer_location")
+    print("  7. Sair")
+    print()
+    escolha = input("Escolha uma opção: ")
+    return escolha

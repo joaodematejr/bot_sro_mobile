@@ -1,14 +1,90 @@
-from prints_utils import tirar_print
-import argparse
+
+# ===============================
+# Imports organizados
+# ===============================
+import os
 import sys
-
-import subprocess
-
+import time
+import glob
+import re
+import argparse
+from datetime import datetime
 import ADBConnection
 import Config
+from session_utils import gerar_session_id, auto_save_sessao, carregar_historico_sessoes, exportar_json_ultima_sessao
+from ml_utils import MonitoramentoTreinamento, carregar_modelos, scaler, auto_treinar_modelos, identificar_hotspots
+from utils_imagem import crop_image, detect_location_string
+from minimap_analysis import detectar_setor_com_mais_vermelhos
+from menu_utils import menu
+from adb_utils import ativar_pointer_location, desativar_pointer_location
+from prints_utils import tirar_print
 
+# ===============================
+# Integração Machine Learning (Scikit-learn)
+# ===============================
+# 🎓 RandomForest Regressor - Predição de densidade de inimigos
+# 🗺️ KMeans Clustering - Identificação de hotspots de farming
+# 📊 StandardScaler - Normalização de features para melhor acurácia
+# 💾 Auto-Treinamento - Treina automaticamente a cada 100 amostras
+# 📈 Múltiplos Modelos - 4 formatos salvos (sklearn, ultra, ultra_adb, avancado)
+# 🔄 Treinamento Contínuo - Melhora ao longo do tempo
+
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+import joblib
+import os
+import matplotlib.pyplot as plt
+
+
+def mostrar_localizacao_personagem(adb, config, mostrar_mapa_calor=False, grid_size=3):
+
+    import re
+    # Busca a imagem mais recente na pasta prints
+    lista_prints = glob.glob(os.path.join('prints', '*.png'))
+    if lista_prints:
+        caminho_print = max(lista_prints, key=os.path.getctime)
+        crop_path = 'localizacao.png'
+        crop_image(caminho_print, crop_path, x=180, y=180, w=100, h=25)
+        localizacao = detect_location_string(crop_path)
+        match = re.search(r"\(?\s*(\d+)\s*,\s*(\d+)\s*\)?", localizacao)
+        if match:
+            x, y = match.group(1), match.group(2)
+            print(f"📍 Localização do personagem:")
+            print(f"   X: {x}")
+            print(f"   Y: {y}")
+        else:
+            print(f"Localização detectada (OCR): {localizacao}")
+        # --- NOVO: Análise de mapa de calor do mini mapa ---
+        if mostrar_mapa_calor:
+            mini_map_path = 'mini_map.png'
+            crop_image(caminho_print, mini_map_path, x=130, y=150, w=200, h=200)
+            hotspot, grid = detectar_setor_com_mais_vermelhos(mini_map_path, grid_size=grid_size, debug=True)
+            if hotspot is not None:
+                linha, coluna = hotspot
+                print(f"\n🗺️ Setor mais denso do minimapa:")
+                print(f"   Linha: {linha}")
+                print(f"   Coluna: {coluna}")
+            else:
+                print("\n[MiniMap] Não foi possível detectar o setor mais denso.")
+    else:
+        print("Erro: nenhuma imagem encontrada na pasta prints.")
 
 def start_infinite_farming(adb: ADBConnection, config: Config):
+        # ====== Sessão ======
+    session_id = gerar_session_id()
+    dados_sessao = {
+        'session_id': session_id,
+        'inicio': datetime.now(),
+        'amostras': [],
+        'eventos': [],
+    }
+    modelos = carregar_modelos()
+    contador_amostras = 0
+    X, y = [], []
+    monitoramento_ml = MonitoramentoTreinamento()
+    # Exemplo: mobs_nearby e xp_percent podem ser extraídos via visão computacional ou lógica do bot
+    # Aqui, valores fictícios para demonstração
     import time
     camera_x, camera_y = config.get_camera_position()
     camera_interval = config.get_camera_interval()
@@ -57,6 +133,54 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
 
             sucesso = adb.tap(camera_x, camera_y)
             tirar_print(adb, config)
+            mostrar_localizacao_personagem(adb, config, mostrar_mapa_calor=True, grid_size=3)
+            # ====== ML: Coleta de features e auto-treinamento ======
+            # Exemplo de coleta de features (substitua pelos valores reais do seu bot)
+            # x, y: coordenadas do personagem (exemplo: 2036, 1321)
+            # mobs_nearby: número de inimigos próximos (exemplo: 5)
+            # xp_percent: porcentagem de XP atual (exemplo: 44.64)
+            x, y_coord = 2036, 1321  # Substitua pela leitura real
+            mobs_nearby = 5          # Substitua pela detecção real
+            xp_percent = 44.64       # Substitua pela leitura real
+            features = [x, y_coord, mobs_nearby, xp_percent]
+            target = mobs_nearby     # Exemplo: pode ser densidade de inimigos, XP ganho, etc.
+            X.append(features)
+            y.append(target)
+            contador_amostras += 1
+            # Salva amostra na sessão
+            dados_sessao['amostras'].append({
+                'timestamp': datetime.now(),
+                'features': features,
+                'target': target
+            })
+            # Monitoramento ML: registrar amostra
+            monitoramento_ml.registrar_amostra(features, target)
+            # Auto-save a cada 10 amostras
+            if contador_amostras % 10 == 0:
+                auto_save_sessao(session_id, dados_sessao)
+            # Normalização
+            X_scaled = scaler.fit_transform(X)
+            # Auto-treinamento de todos os modelos
+            auto_treinar_modelos(modelos, X_scaled, y, contador_amostras)
+            # Treinamento contínuo: todos os modelos são atualizados a cada ciclo
+            for nome, modelo in modelos.items():
+                if contador_amostras >= 5:
+                    modelo.fit(X_scaled, y)
+            # Predição e clustering usando o modelo principal
+            if contador_amostras >= 5:
+                pred = modelos['sklearn'].predict([X_scaled[-1]])
+                print(f"[ML] Predição de densidade de inimigos: {pred[0]:.2f}")
+                # Identificação de hotspot (cluster)
+                clusters, kmeans = identificar_hotspots(X_scaled, n_clusters=2)
+                print(f"[ML] Cluster do local atual: {clusters[-1]}")
+                # Monitoramento de treinamento ML
+                monitoramento_ml.registrar_amostra(features=X_scaled[-1], target=y[-1], pred=pred[0])
+                # Exibir resumo do monitoramento a cada milestone
+                if len(monitoramento_ml.timeline) in monitoramento_ml.milestones:
+                    monitoramento_ml.resumo()
+                    monitoramento_ml.plotar_curva_aprendizado()
+            else:
+                print("[ML] Aguardando mais amostras para treinar o modelo...")
             contador_camera += 1
             if sucesso:
                 print(f"🎥 Reset de câmera realizado com sucesso.")
@@ -65,6 +189,12 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
             time.sleep(camera_interval)
     except KeyboardInterrupt:
         print("\n⏹️  Farming infinito interrompido pelo usuário.")
+        # Salva sessão ao finalizar
+        auto_save_sessao(session_id, dados_sessao)
+        exportar_json_ultima_sessao(session_id)
+        # Exibir resumo e curva de aprendizado ao finalizar
+        monitoramento_ml.resumo()
+        monitoramento_ml.plotar_curva_aprendizado()
 
 def menu():
     """Menu principal"""
@@ -145,28 +275,12 @@ def run_interactive_menu():
             print("\n❌ Opção inválida!")
             input("\nPressione ENTER para continuar...")
 def ativar_pointer_location(adb):
-    try:
-        result = subprocess.run([
-            "adb", "-s", adb.device_address, "shell", "settings", "put", "system", "pointer_location", "1"
-        ], capture_output=True, text=True, timeout=5)
-        if result.returncode == 0:
-            print("✓ pointer_location ativado com sucesso!")
-        else:
-            print(f"✗ Falha ao ativar pointer_location: {result.stderr}")
-    except Exception as e:
-        print(f"✗ Erro ao ativar pointer_location: {e}")
+    # Função agora importada de adb_utils.py
+    pass
 
 def desativar_pointer_location(adb):
-    try:
-        result = subprocess.run([
-            "adb", "-s", adb.device_address, "shell", "settings", "put", "system", "pointer_location", "0"
-        ], capture_output=True, text=True, timeout=5)
-        if result.returncode == 0:
-            print("✓ pointer_location desativado com sucesso!")
-        else:
-            print(f"✗ Falha ao desativar pointer_location: {result.stderr}")
-    except Exception as e:
-        print(f"✗ Erro ao desativar pointer_location: {e}")
+    # Função agora importada de adb_utils.py
+    pass
 
 
 def main():

@@ -7,7 +7,7 @@
     "y": 144,
     "descricao": "Botão para resetar câmera (voltar para trás do personagem)"
   },
-  "intervalo_reset_camera": 1,
+  "intervalo_reset_camera": 10,
   "posicao_botao_target": {
     "x": 1726,
     "y": 797,
