@@ -14,8 +14,8 @@ def contar_mobs_proximos_yolo():
         return 0
     img_path = max(lista_prints, key=os.path.getctime)
 
-    # Carrega modelo YOLOv8 ou YOLOv5 (pode ser yolov8n.pt, yolov5s.pt, etc)
-    model_path = 'yolov5s.pt'  # ou yolov8n.pt, yolov8s.pt, etc
+    # Carrega modelo YOLOv8 ou YOLOv5 (pode ser yolov8n.pt, yolov5su.pt, etc)
+    model_path = 'yolov5su.pt'  # ou yolov8n.pt, yolov8s.pt, etc
     try:
         model = YOLO(model_path)
     except Exception as e:
