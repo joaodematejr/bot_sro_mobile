@@ -1,0 +1,4 @@
+train: /home/joaodematejr/Documentos/github/bot_sro_mobile/dataset_yolo/images/train
+val: /home/joaodematejr/Documentos/github/bot_sro_mobile/dataset_yolo/images/train
+nc: 1
+names: ['mob']

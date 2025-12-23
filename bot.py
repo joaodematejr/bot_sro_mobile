@@ -335,6 +335,9 @@ def menu():
     print("  5. Ativar pointer_location (mostrar coordenadas)")
     print("  6. Desativar pointer_location")
     print("  7. Sair")
+    print("  8. Treinar modelo YOLO (dataset_yolo)")
+    print("  9. Avaliar modelo YOLO (dataset_yolo)")
+    print(" 10. Visualizar detecções YOLO (prints_yolo)")
     print()
     escolha = input("Escolha uma opção: ")
     return escolha
@@ -363,6 +366,7 @@ def run_interactive_menu():
             print("\n❌ É necessário conectar ao dispositivo para usar o bot.")
             sys.exit(1)
     
+    import subprocess
     while True:
         escolha = menu()
 
@@ -394,6 +398,21 @@ def run_interactive_menu():
         elif escolha == "7":
             print("\n👋 Encerrando bot...")
             sys.exit(0)
+
+        elif escolha == "8":
+            print("\n🚀 Treinando modelo YOLO com dataset_yolo...")
+            subprocess.run(["python3", "train_yolo.py"])
+            input("\nPressione ENTER para voltar ao menu...")
+
+        elif escolha == "9":
+            print("\n📊 Avaliando modelo YOLO com dataset_yolo...")
+            subprocess.run(["python3", "eval_yolo.py"])
+            input("\nPressione ENTER para voltar ao menu...")
+
+        elif escolha == "10":
+            print("\n🖼️ Gerando visualizações das detecções YOLO em prints_yolo...")
+            subprocess.run(["python3", "visualize_yolo.py"])
+            input("\nPressione ENTER para voltar ao menu...")
 
         else:
             print("\n❌ Opção inválida!")
