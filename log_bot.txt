@@ -50,3 +50,31 @@ Texto detectado XP: NP d/as)2
 [YOLO] Mobs detectados na tela: 1
 Texto detectado XP: EXP 97.81%
 
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000116_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: 1 (ORC)
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000128_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EXP 87.8%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000140_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: (VASA
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000151_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EXP 57.32%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000203_yolo.png
+[YOLO] Mobs detectados na tela: 5
+Texto detectado XP: ENP 57.82%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000215_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EXP 57632:
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000227_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: NP Odes
+
