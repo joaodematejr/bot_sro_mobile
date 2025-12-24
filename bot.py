@@ -1,3 +1,11 @@
+import builtins
+
+# Função para printar no terminal e salvar no log
+def print_log(*args, **kwargs):
+    msg = " ".join(str(a) for a in args)
+    builtins.print(*args, **kwargs)
+    with open("log_bot.txt", "a", encoding="utf-8") as f:
+        f.write(msg + "\n")
 def contar_mobs_proximos_yolo():
     """
     Detecta inimigos próximos usando YOLO (Ultralytics) no print inteiro.
@@ -6,7 +14,7 @@ def contar_mobs_proximos_yolo():
     try:
         from ultralytics import YOLO
     except ImportError:
-        print("Ultralytics YOLO não está instalado. Instale com: pip install ultralytics")
+        print_log("Ultralytics YOLO não está instalado. Instale com: pip install ultralytics")
         return 0
 
     lista_prints = glob.glob(os.path.join('prints', '*.png'))
@@ -19,7 +27,7 @@ def contar_mobs_proximos_yolo():
     try:
         model = YOLO(model_path)
     except Exception as e:
-        print(f"Erro ao carregar modelo YOLO: {e}")
+        print_log(f"Erro ao carregar modelo YOLO: {e}")
         return 0
 
     results = model(img_path)
@@ -34,19 +42,19 @@ def contar_mobs_proximos_yolo():
         save_path = os.path.join(save_dir, base.replace('.png', f'_yolo.png'))
         import cv2
         cv2.imwrite(save_path, im_bgr)
-        print(f"[YOLO] Imagem com detecções salva em: {save_path}")
+        print_log(f"[YOLO] Imagem com detecções salva em: {save_path}")
     # Rotaciona prints_yolo para manter apenas os 50 mais recentes
     try:
         from prints_utils import rotacionar_prints_yolo
         rotacionar_prints_yolo(max_prints=50, pasta=save_dir)
     except Exception as e:
-        print(f"[YOLO] Erro ao rotacionar prints_yolo: {e}")
+        print_log(f"[YOLO] Erro ao rotacionar prints_yolo: {e}")
     num_mobs = 0
     for r in results:
         for c in r.boxes.cls:
             if int(c) == 0:  # 0 = 'person' no COCO
                 num_mobs += 1
-    print(f"[YOLO] Mobs detectados na tela: {num_mobs}")
+    print_log(f"[YOLO] Mobs detectados na tela: {num_mobs}")
     return num_mobs
 
 def coletar_coordenadas_personagem():
@@ -76,48 +84,48 @@ def coletar_xp_percentual():
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     custom_config = r'--oem 3 --psm 6'
     text = pytesseract.image_to_string(gray, config=custom_config)
-    print("Texto detectado XP:", text)
+    print_log("Texto detectado XP:", text)
     match = re.search(r"([0-9]+\.[0-9]+)%", text)
     if match:
         return float(match.group(1))
     return None
 def exibir_estatisticas():
-    print("\n===== Estatísticas do Bot =====")
+    print_log("\n===== Estatísticas do Bot =====")
     try:
         historico = carregar_historico_sessoes()
         total_sessoes = len(historico)
         total_amostras = sum(len(sessao.get('amostras', [])) for sessao in historico)
         total_eventos = sum(len(sessao.get('eventos', [])) for sessao in historico)
         ultima_sessao = max((sessao.get('inicio') for sessao in historico if 'inicio' in sessao), default=None)
-        print(f"Total de sessões salvas: {total_sessoes}")
-        print(f"Total de amostras coletadas: {total_amostras}")
-        print(f"Total de eventos registrados: {total_eventos}")
+        print_log(f"Total de sessões salvas: {total_sessoes}")
+        print_log(f"Total de amostras coletadas: {total_amostras}")
+        print_log(f"Total de eventos registrados: {total_eventos}")
         if ultima_sessao:
-            print(f"Data/hora da última sessão: {ultima_sessao}")
+            print_log(f"Data/hora da última sessão: {ultima_sessao}")
         else:
-            print("Nenhuma sessão registrada ainda.")
+            print_log("Nenhuma sessão registrada ainda.")
     except Exception as e:
-        print(f"Erro ao obter estatísticas: {e}")
-    print("================================\n")
+        print_log(f"Erro ao obter estatísticas: {e}")
+    print_log("================================\n")
 def exibir_relatorio_otimizacao_ml():
-    print("\n===== Relatório de Otimização ML =====")
+    print_log("\n===== Relatório de Otimização ML =====")
     try:
         monitoramento = MonitoramentoTreinamento()
         monitoramento.resumo()
-        print("\nCaminhos dos modelos salvos:")
+        print_log("\nCaminhos dos modelos salvos:")
         from ml_utils import MODELOS_PATHS
         for nome, path in MODELOS_PATHS.items():
             existe = os.path.exists(path)
-            print(f"  - {nome}: {path} {'(existe)' if existe else '(não encontrado)'}")
+            print_log(f"  - {nome}: {path} {'(existe)' if existe else '(não encontrado)'}")
         # Tenta exibir curva de aprendizado
         curva_path = 'curva_aprendizado.png'
         if os.path.exists(curva_path):
-            print(f"\nCurva de aprendizado disponível em: {curva_path}")
+            print_log(f"\nCurva de aprendizado disponível em: {curva_path}")
         else:
-            print("\nCurva de aprendizado ainda não gerada.")
+            print_log("\nCurva de aprendizado ainda não gerada.")
     except Exception as e:
-        print(f"Erro ao gerar relatório: {e}")
-    print("========================================\n")
+        print_log(f"Erro ao gerar relatório: {e}")
+    print_log("========================================\n")
 
 # ===============================
 # Imports organizados
@@ -338,6 +346,7 @@ def menu():
     print("  8. Treinar modelo YOLO (dataset_yolo)")
     print("  9. Avaliar modelo YOLO (dataset_yolo)")
     print(" 10. Visualizar detecções YOLO (prints_yolo)")
+    print(" 11. Visualização ao vivo (prints_yolo + logs)")
     print()
     escolha = input("Escolha uma opção: ")
     return escolha
@@ -414,6 +423,10 @@ def run_interactive_menu():
             subprocess.run(["python3", "visualize_yolo.py"])
             input("\nPressione ENTER para voltar ao menu...")
 
+        elif escolha == "11":
+            print("\n🖼️ Modo janela: última print_yolo + logs ao vivo...")
+            subprocess.run(["python3", "bot_visual.py"])
+            input("\nPressione ENTER para voltar ao menu...")
         else:
             print("\n❌ Opção inválida!")
             input("\nPressione ENTER para continuar...")
