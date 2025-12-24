@@ -589,3 +589,15 @@ Texto detectado XP: EXP 87.80%
 [YOLO] Mobs detectados na tela: 4
 Texto detectado XP: [Np //ewieh
 
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002956_yolo.png
+[YOLO] Mobs detectados na tela: 5
+Texto detectado XP: EXP) S7F53;
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_003009_yolo.png
+[YOLO] Mobs detectados na tela: 4
+Texto detectado XP: ENP 87.88%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_003023_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: St VLR,
+
