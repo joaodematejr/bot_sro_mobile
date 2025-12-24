@@ -29,9 +29,15 @@ if not image_paths:
     print("Nenhuma imagem encontrada para visualização.")
     sys.exit(0)
 
+
+# Forçar nomes das classes para 'mobs'
+forced_names = ['mobs']
+
 for img_path in image_paths:
     results = model(img_path)
     for r in results:
+        # Sobrescreve os nomes das classes antes de salvar
+        r.names = {i: name for i, name in enumerate(forced_names)}
         r.save(filename=str(PRINTS_DIR / img_path.name))
         print(f"Salvo: {PRINTS_DIR / img_path.name}")
 
