@@ -78,3 +78,514 @@ Texto detectado XP: EXP 57632:
 [YOLO] Mobs detectados na tela: 3
 Texto detectado XP: NP Odes
 
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000239_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: Np dar
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000251_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: SP b7.02%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000304_yolo.png
+[YOLO] Mobs detectados na tela: 5
+Texto detectado XP: 57.82%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000316_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: NP dase
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000328_yolo.png
+[YOLO] Mobs detectados na tela: 4
+Texto detectado XP: EXP 57.8%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000340_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP 87.88
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000352_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: EXP 57733;
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000404_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP 57.33%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000416_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EXP 57.88%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000429_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: MNES Yah oe
+ee
+Se Soa
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000441_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: =
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000454_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: Pas
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000506_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP S78
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000519_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: [NP i/esh
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000532_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: Oa
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000544_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EP W/eseh
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000557_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: Sell
+we
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000609_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP 57.36%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000622_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: EXP 763.6.)
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000635_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: [NP Di/eskor
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000648_yolo.png
+[YOLO] Mobs detectados na tela: 4
+Texto detectado XP: EXP! 57-36;
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000700_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: NP y/slo2
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000713_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: NP Odas02
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000726_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: ENP Odes
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000739_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: NP Odes
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000752_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: 57.80%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000804_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: ENP B7.87%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000817_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: (MP 57.37%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000830_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: a SAS
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000843_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: 12 CRY ARIE)
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000856_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP 57.38%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000909_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: 1 CYC
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000921_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: 1 (OR /asth)
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000934_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: 1 (OR /astshc)
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000947_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: [Mp wi/astsiro
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_000959_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: FexMP SUE
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001012_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: ENP Odes)
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001025_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: IP Odass)20
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001037_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: NP Oda)
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001053_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: [Ip wi/askeleo
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001106_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EXP 57°40:%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001118_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: 1 (yee (Oi
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001131_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: 1 (Vee (Oza
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001144_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP 57.40%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001157_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: Cee (Oia
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001209_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: tp oi/eh0s
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001223_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: EXP! 57740;
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001236_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP) 57°40%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001249_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: tp oeAhleo
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001303_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: EXP) 57-4)
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001315_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: tp toW/eAhil2o
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001328_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: 1 CoA Hts
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001341_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: 1 CVA
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001354_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: eod/eshls
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001407_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: poets
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001420_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: SCRA ah
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001433_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: ovechls
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001446_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: NP ee
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001500_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: oe
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001513_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: NP W/L
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001526_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP 57.42%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001539_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: EXP 57.42%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001552_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: Ip oA
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001605_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EXP 57.44%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001618_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: Roa eh
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001630_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: o/eA eh
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001644_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP 57.44%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001657_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: EXP 57.44%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001713_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: SIAL
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001729_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP) 57.44:
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001742_yolo.png
+[YOLO] Mobs detectados na tela: 7
+Texto detectado XP: Ip tower
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001755_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: ovate
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001808_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: IP oi/eAhoy
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001820_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: tp Rovere
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001833_yolo.png
+[YOLO] Mobs detectados na tela: 4
+Texto detectado XP: SCA ay
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001846_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: EXP) 57-46;
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001859_yolo.png
+[YOLO] Mobs detectados na tela: 5
+Texto detectado XP: towel
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001912_yolo.png
+[YOLO] Mobs detectados na tela: 8
+Texto detectado XP: Ip tovetond
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001925_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP! 57746;
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001937_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: EXP 57.47%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_001950_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: EXP 57.47%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002003_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: °C
+[ep ome
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002016_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EP ove
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002029_yolo.png
+[YOLO] Mobs detectados na tela: 5
+Texto detectado XP: Poet
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002041_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: NP oueae
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002054_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: EXP! S7R471%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002107_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: [2p yew eo
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002120_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: MP Odeo 2
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002132_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP) S/F oyih’s
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002145_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP 57.51%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002158_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: EXP 57.51%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002211_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: a RW/eoea
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002224_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: OR /e ea)
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002237_yolo.png
+[YOLO] Mobs detectados na tela: 11
+Texto detectado XP: EXP 87.81
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002249_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: EXP 97.82
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002302_yolo.png
+[YOLO] Mobs detectados na tela: 6
+Texto detectado XP: EXP S702
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002315_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: EXP 97.82
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002328_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: EXBRS/A52:
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002341_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EXPE SAS 226
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002353_yolo.png
+[YOLO] Mobs detectados na tela: 3
+Texto detectado XP: OciEm
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002406_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EXPY S77 9.20%5
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002419_yolo.png
+[YOLO] Mobs detectados na tela: 5
+Texto detectado XP: ENP Siew
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002432_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EXP) 572536
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002446_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP 57.53%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002500_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: ify fy Fe yy
+Pog kif
+My SPO
+(PIES
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002513_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: 1 CEVA KE.
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002527_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: 12 VER 0,
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002540_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: [ENP deere
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002554_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: EAP 57.88%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002607_yolo.png
+[YOLO] Mobs detectados na tela: 4
+Texto detectado XP: EAP 57.88%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002621_yolo.png
+[YOLO] Mobs detectados na tela: 7
+Texto detectado XP: [NP Odor
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002634_yolo.png
+[YOLO] Mobs detectados na tela: 6
+Texto detectado XP: ENP 57.58%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002648_yolo.png
+[YOLO] Mobs detectados na tela: 4
+Texto detectado XP: EXP) 57753
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002701_yolo.png
+[YOLO] Mobs detectados na tela: 4
+Texto detectado XP: 58%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002714_yolo.png
+[YOLO] Mobs detectados na tela: 4
+Texto detectado XP: EXP! S7853"%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002727_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: ENP S700
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002740_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EXP 572936
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002754_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EXP S780
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002807_yolo.png
+[YOLO] Mobs detectados na tela: 5
+Texto detectado XP: EXP! 5/2536
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002821_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: EMP 57.58%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002834_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: EXP) S7A536
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002847_yolo.png
+[YOLO] Mobs detectados na tela: 1
+Texto detectado XP: [ENP @d/ewI
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002900_yolo.png
+[YOLO] Mobs detectados na tela: 2
+Texto detectado XP: [Ap ti/ewiero
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002916_yolo.png
+[YOLO] Mobs detectados na tela: 0
+Texto detectado XP: [Np i/ewiek
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002930_yolo.png
+[YOLO] Mobs detectados na tela: 5
+Texto detectado XP: EXP 87.80%
+
+[YOLO] Imagem com detecções salva em: prints_yolo/print_20251224_002943_yolo.png
+[YOLO] Mobs detectados na tela: 4
+Texto detectado XP: [Np //ewieh
+

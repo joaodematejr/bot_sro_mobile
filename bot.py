@@ -263,7 +263,39 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
 
             sucesso = adb.tap(camera_x, camera_y)
             tirar_print(adb, config)
-            mostrar_localizacao_personagem(adb, config, mostrar_mapa_calor=True, grid_size=3)
+            # --- NOVO: Detecta setor mais denso e move personagem ---
+            lista_prints = glob.glob(os.path.join('prints', '*.png'))
+            if lista_prints:
+                caminho_print = max(lista_prints, key=os.path.getctime)
+                mini_map_path = 'mini_map.png'
+                crop_image(caminho_print, mini_map_path, x=130, y=150, w=200, h=200)
+                grid_size = 3
+                hotspot, grid = detectar_setor_com_mais_vermelhos(mini_map_path, grid_size=grid_size, debug=True)
+                if hotspot is not None:
+                    linha, coluna = hotspot
+                    # Calcula o centro do setor alvo no minimapa
+                    setor_w = 200 // grid_size
+                    setor_h = 200 // grid_size
+                    centro_x = 130 + coluna * setor_w + setor_w // 2
+                    centro_y = 150 + linha * setor_h + setor_h // 2
+                    print(f"\n🗺️ Movendo para setor mais denso: linha={linha}, coluna={coluna} (x={centro_x}, y={centro_y})")
+                    # Realiza swipe do joystick até o setor alvo (exemplo: swipe curto)
+                    # Ajuste os valores conforme necessário para o seu jogo
+                    joystick_x, joystick_y = config.get('joystick_centro_x', 288), config.get('joystick_centro_y', 868)
+                    # Calcula direção aproximada (pode ser melhorado para pathfinding)
+                    delta_x = centro_x - 230  # 230: centro do minimapa na tela (ajuste se necessário)
+                    delta_y = centro_y - 250  # 250: centro do minimapa na tela (ajuste se necessário)
+                    # Normaliza o vetor para um swipe curto
+                    fator = 40  # quanto maior, mais longo o swipe
+                    destino_x = int(joystick_x + (delta_x / 100) * fator)
+                    destino_y = int(joystick_y + (delta_y / 100) * fator)
+                    print(f"[BOT] Swipe do joystick: ({joystick_x},{joystick_y}) -> ({destino_x},{destino_y})")
+                    adb.swipe(joystick_x, joystick_y, destino_x, destino_y, duration=500)
+                else:
+                    print("[BOT] Não foi possível detectar o setor mais denso do minimapa.")
+            else:
+                print("[BOT] Nenhuma imagem encontrada para análise do minimapa.")
+            # Fim da movimentação automática
             # ====== ML: Coleta de features e auto-treinamento ======
             # Exemplo de coleta de features (substitua pelos valores reais do seu bot)
             # Coleta real dos dados do bot
