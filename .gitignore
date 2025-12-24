@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+venv*/
+.env
+
+# VSCode
+.vscode/
+
+# Dados e modelos
+*.pt
+*.pth
+*.h5
+*.onnx
+*.ckpt
+*.weights
+
+# Logs e resultados
+runs/
+prints_yolo/
+prints/
+*.log
+*.out
+*.err
+
+# Dataset temporário e caches
+*.cache
+*.npz
+*.npy
+*.csv
+*.json
+
+# Exportações e sessões
+sessoes_exports/
+sessoes/
+
+# Imagens e labels geradas
+*.jpg
+*.png
+*.jpeg
+
+# Arquivos de configuração pessoais
+config_farming_adb.json
+ml_training_history.json
+
+# Outros
+.DS_Store
+Thumbs.db
+
+# Não versionar arquivos de ambiente
+/home/joaodematejr/Documentos/github/bot_sro_mobile/venv_labelimg/
