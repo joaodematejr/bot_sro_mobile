@@ -44,6 +44,8 @@ class MonitoramentoTreinamento:
                 self.milestones_atingidos.add(m)
 
     def plotar_curva_aprendizado(self, path='curva_aprendizado.png'):
+        import matplotlib
+        matplotlib.use('Agg')  # Força backend sem GUI
         import matplotlib.pyplot as plt
         if not self.acuracias:
             print("Nenhum treino registrado para plotar curva de aprendizado.")

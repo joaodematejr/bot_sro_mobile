@@ -1,4 +1,22 @@
+
 import builtins
+import argparse
+import Config
+import ADBConnection
+from session_utils import gerar_session_id, auto_save_sessao, exportar_json_ultima_sessao
+from datetime import datetime
+from ml_utils import carregar_modelos, MonitoramentoTreinamento
+import time
+import os
+import glob
+import pytesseract
+import re
+import cv2
+
+from prints_utils import tirar_print
+from utils_imagem import crop_image, detect_location_string
+from minimap_analysis import detectar_setor_com_mais_vermelhos
+import sys
 
 # Função para printar no terminal e salvar no log
 def print_log(*args, **kwargs):
@@ -40,22 +58,11 @@ def contar_mobs_proximos_yolo():
         # Salva a imagem com sufixo _yolo.png
         base = os.path.basename(img_path)
         save_path = os.path.join(save_dir, base.replace('.png', f'_yolo.png'))
-        import cv2
-        cv2.imwrite(save_path, im_bgr)
-        print_log(f"[YOLO] Imagem com detecções salva em: {save_path}")
-    # Rotaciona prints_yolo para manter apenas os 50 mais recentes
-    try:
-        from prints_utils import rotacionar_prints_yolo
-        rotacionar_prints_yolo(max_prints=50, pasta=save_dir)
-    except Exception as e:
-        print_log(f"[YOLO] Erro ao rotacionar prints_yolo: {e}")
-    num_mobs = 0
-    for r in results:
-        for c in r.boxes.cls:
-            if int(c) == 0:  # 0 = 'person' no COCO
-                num_mobs += 1
-    print_log(f"[YOLO] Mobs detectados na tela: {num_mobs}")
-    return num_mobs
+
+
+# ...existing code...
+
+import threading
 
 def coletar_coordenadas_personagem():
     # Tira print e faz crop da área de localização
@@ -89,119 +96,9 @@ def coletar_xp_percentual():
     if match:
         return float(match.group(1))
     return None
-def exibir_estatisticas():
-    print_log("\n===== Estatísticas do Bot =====")
-    try:
-        historico = carregar_historico_sessoes()
-        total_sessoes = len(historico)
-        total_amostras = sum(len(sessao.get('amostras', [])) for sessao in historico)
-        total_eventos = sum(len(sessao.get('eventos', [])) for sessao in historico)
-        ultima_sessao = max((sessao.get('inicio') for sessao in historico if 'inicio' in sessao), default=None)
-        print_log(f"Total de sessões salvas: {total_sessoes}")
-        print_log(f"Total de amostras coletadas: {total_amostras}")
-        print_log(f"Total de eventos registrados: {total_eventos}")
-        if ultima_sessao:
-            print_log(f"Data/hora da última sessão: {ultima_sessao}")
-        else:
-            print_log("Nenhuma sessão registrada ainda.")
-    except Exception as e:
-        print_log(f"Erro ao obter estatísticas: {e}")
-    print_log("================================\n")
-def exibir_relatorio_otimizacao_ml():
-    print_log("\n===== Relatório de Otimização ML =====")
-    try:
-        monitoramento = MonitoramentoTreinamento()
-        monitoramento.resumo()
-        print_log("\nCaminhos dos modelos salvos:")
-        from ml_utils import MODELOS_PATHS
-        for nome, path in MODELOS_PATHS.items():
-            existe = os.path.exists(path)
-            print_log(f"  - {nome}: {path} {'(existe)' if existe else '(não encontrado)'}")
-        # Tenta exibir curva de aprendizado
-        curva_path = 'curva_aprendizado.png'
-        if os.path.exists(curva_path):
-            print_log(f"\nCurva de aprendizado disponível em: {curva_path}")
-        else:
-            print_log("\nCurva de aprendizado ainda não gerada.")
-    except Exception as e:
-        print_log(f"Erro ao gerar relatório: {e}")
-    print_log("========================================\n")
-
-# ===============================
-# Imports organizados
-# ===============================
-import cv2
-import pytesseract
-import os
-import sys
-import time
-import glob
-import re
-import argparse
-from datetime import datetime
-import ADBConnection
-import Config
-from session_utils import gerar_session_id, auto_save_sessao, carregar_historico_sessoes, exportar_json_ultima_sessao
-from ml_utils import MonitoramentoTreinamento, carregar_modelos, scaler, auto_treinar_modelos, identificar_hotspots
-from utils_imagem import crop_image, detect_location_string
-from minimap_analysis import detectar_setor_com_mais_vermelhos
-from menu_utils import menu
-from adb_utils import ativar_pointer_location, desativar_pointer_location
-from prints_utils import tirar_print, rotacionar_prints_yolo
-
-# ===============================
-# Integração Machine Learning (Scikit-learn)
-# ===============================
-# 🎓 RandomForest Regressor - Predição de densidade de inimigos
-# 🗺️ KMeans Clustering - Identificação de hotspots de farming
-# 📊 StandardScaler - Normalização de features para melhor acurácia
-# 💾 Auto-Treinamento - Treina automaticamente a cada 100 amostras
-# 📈 Múltiplos Modelos - 4 formatos salvos (sklearn, ultra, ultra_adb, avancado)
-# 🔄 Treinamento Contínuo - Melhora ao longo do tempo
-
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-import joblib
-import os
-import matplotlib.pyplot as plt
-
-
-def mostrar_localizacao_personagem(adb, config, mostrar_mapa_calor=False, grid_size=3):
-
-    import re
-    # Busca a imagem mais recente na pasta prints
-    lista_prints = glob.glob(os.path.join('prints', '*.png'))
-    if lista_prints:
-        caminho_print = max(lista_prints, key=os.path.getctime)
-        crop_path = 'localizacao.png'
-        crop_image(caminho_print, crop_path, x=180, y=180, w=100, h=25)
-        localizacao = detect_location_string(crop_path)
-        match = re.search(r"\(?\s*(\d+)\s*,\s*(\d+)\s*\)?", localizacao)
-        if match:
-            x, y = match.group(1), match.group(2)
-            print(f"📍 Localização do personagem:")
-            print(f"   X: {x}")
-            print(f"   Y: {y}")
-        else:
-            print(f"Localização detectada (OCR): {localizacao}")
-        # --- NOVO: Análise de mapa de calor do mini mapa ---
-        if mostrar_mapa_calor:
-            mini_map_path = 'mini_map.png'
-            crop_image(caminho_print, mini_map_path, x=130, y=150, w=200, h=200)
-            hotspot, grid = detectar_setor_com_mais_vermelhos(mini_map_path, grid_size=grid_size, debug=True)
-            if hotspot is not None:
-                linha, coluna = hotspot
-                print(f"\n🗺️ Setor mais denso do minimapa:")
-                print(f"   Linha: {linha}")
-                print(f"   Coluna: {coluna}")
-            else:
-                print("\n[MiniMap] Não foi possível detectar o setor mais denso.")
-    else:
-        print("Erro: nenhuma imagem encontrada na pasta prints.")
 
 def start_infinite_farming(adb: ADBConnection, config: Config):
-        # ====== Sessão ======
+    # ====== Sessão ======
     session_id = gerar_session_id()
     dados_sessao = {
         'session_id': session_id,
@@ -213,9 +110,6 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
     contador_amostras = 0
     X, y = [], []
     monitoramento_ml = MonitoramentoTreinamento()
-    # Exemplo: mobs_nearby e xp_percent podem ser extraídos via visão computacional ou lógica do bot
-    # Aqui, valores fictícios para demonstração
-    import time
     camera_x, camera_y = config.get_camera_position()
     camera_interval = config.get_camera_interval()
     intervalo_troca_arma = config.get("intervalo_troca_arma", 720)  # padrão 12 min
@@ -227,6 +121,17 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
     print("   🚀 FARMING INFINITO INICIADO")
     print("="*60)
     print(f"\n🎥 Reset de câmera: ({camera_x}, {camera_y}) - a cada {camera_interval}s")
+
+    stop_event = threading.Event()
+
+    def clique_fixo_thread():
+        while not stop_event.is_set():
+            print("🖱️ Clique automático em (1726, 797)")
+            adb.tap(1726, 797)
+            stop_event.wait(3)
+
+    thread_fixo = threading.Thread(target=clique_fixo_thread, daemon=True)
+    thread_fixo.start()
 
     contador_camera = 0
     try:
@@ -246,6 +151,7 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
 
         while True:
             agora = time.time()
+
             # A cada X minutos, clicar novamente nos botões de troca de arma
             if agora - tempo_ultimo_click >= intervalo_troca_arma:
                 print("🔄 Trocando de arma para Debuff...")
@@ -272,25 +178,152 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
                 grid_size = 3
                 hotspot, grid = detectar_setor_com_mais_vermelhos(mini_map_path, grid_size=grid_size, debug=True)
                 if hotspot is not None:
-                    linha, coluna = hotspot
+                    pass
+                else:
+                    print("[BOT] Não foi possível detectar o setor mais denso do minimapa.")
+            else:
+                print("[BOT] Nenhuma imagem encontrada para análise do minimapa.")
+            # Fim da movimentação automática
+            # ====== ML: Coleta de features e auto-treinamento ======
+            x, y_coord = coletar_coordenadas_personagem()
+            mobs_nearby = contar_mobs_proximos_yolo()
+            xp_percent = coletar_xp_percentual()
+            features = [x, y_coord, mobs_nearby, xp_percent]
+            target = mobs_nearby     # Exemplo: pode ser densidade de inimigos, XP ganho, etc.
+            if None not in features and all(isinstance(f, (int, float)) for f in features):
+                X.append(features)
+                y.append(target)
+                contador_amostras += 1
+                dados_sessao['amostras'].append({
+                    'timestamp': datetime.now(),
+                    'features': features,
+                    'target': target
+                })
+                monitoramento_ml.registrar_amostra(features, target)
+            else:
+                print(f"[ML] Amostra ignorada por dados inválidos: {features}")
+            if contador_amostras % 10 == 0:
+                auto_save_sessao(session_id, dados_sessao)
+            if len(X) > 0:
+                X_scaled = scaler.fit_transform(X)
+                auto_treinar_modelos(modelos, X_scaled, y, contador_amostras)
+                for nome, modelo in modelos.items():
+                    if contador_amostras >= 5:
+                        modelo.fit(X_scaled, y)
+                if contador_amostras >= 5:
+                    pred = modelos['sklearn'].predict([X_scaled[-1]])
+                    print(f"[ML] Predição de densidade de inimigos: {pred[0]:.2f}")
+                    clusters, kmeans = identificar_hotspots(X_scaled, n_clusters=2)
+                    print(f"[ML] Cluster do local atual: {clusters[-1]}")
+                    monitoramento_ml.registrar_amostra(features=X_scaled[-1], target=y[-1], pred=pred[0])
+                    if len(monitoramento_ml.timeline) in monitoramento_ml.milestones:
+                        monitoramento_ml.resumo()
+                        monitoramento_ml.plotar_curva_aprendizado()
+                else:
+                    print("[ML] Aguardando mais amostras para treinar o modelo...")
+            contador_camera += 1
+            if sucesso:
+                print(f"🎥 Reset de câmera realizado com sucesso.")
+            else:
+                print(f"🎥 Falha ao resetar câmera!")
+            time.sleep(camera_interval)
+    except KeyboardInterrupt:
+        print("\n⏹️  Farming infinito interrompido pelo usuário.")
+        stop_event.set()
+        auto_save_sessao(session_id, dados_sessao)
+        exportar_json_ultima_sessao(session_id)
+        monitoramento_ml.resumo()
+        monitoramento_ml.plotar_curva_aprendizado()
+    contador_amostras = 0
+    X, y = [], []
+    monitoramento_ml = MonitoramentoTreinamento()
+    # Exemplo: mobs_nearby e xp_percent podem ser extraídos via visão computacional ou lógica do bot
+    # Aqui, valores fictícios para demonstração
+    # import time removido (já importado globalmente)
+    camera_x, camera_y = config.get_camera_position()
+    camera_interval = config.get_camera_interval()
+    intervalo_troca_arma = config.get("intervalo_troca_arma", 720)  # padrão 12 min
+    intervalo_berserk = config.get("intervalo_berserk", 240)        # padrão 4 min
+    delay_troca_arma_1 = config.get("delay_troca_arma_1", 2)
+    delay_troca_arma_2 = config.get("delay_troca_arma_2", 0.5)
+
+    print("\n" + "="*60)
+    print("   🚀 FARMING INFINITO INICIADO")
+    print("="*60)
+    print(f"\n🎥 Reset de câmera: ({camera_x}, {camera_y}) - a cada {camera_interval}s")
+
+    contador_camera = 0
+    try:
+        # Clicar nos botões ao iniciar
+        print("🔄 Trocando de arma para Debuff...")
+        adb.tap(1735, 600)
+        time.sleep(delay_troca_arma_1)
+        adb.tap(1636, 568)
+        time.sleep(delay_troca_arma_2)
+
+        tempo_ultimo_click = time.time()
+        tempo_ultimo_click_4min = time.time()
+        tempo_ultimo_click_fixo = time.time()
+
+        # Clique inicial em (1831, 534) ao iniciar o farming
+        print("🦾 Verificando se possui Berserk (1831, 534)...")
+        adb.tap(1831, 534)
+
+        while True:
+            agora = time.time()
+
+            # A cada X minutos, clicar novamente nos botões de troca de arma
+            if agora - tempo_ultimo_click >= intervalo_troca_arma:
+                print("🔄 Trocando de arma para Debuff...")
+                adb.tap(1735, 600)
+                time.sleep(delay_troca_arma_1)
+                adb.tap(1636, 568)
+                time.sleep(delay_troca_arma_2)
+                tempo_ultimo_click = agora
+
+            # A cada Y minutos, clicar no botão (1831, 534)
+            if agora - tempo_ultimo_click_4min >= intervalo_berserk:
+                print("🦾 Verificando se possui Berserk (1831, 534)...")
+                adb.tap(1831, 534)
+                tempo_ultimo_click_4min = agora
+
+            # Clique fixo a cada 3 segundos em (1726, 797)
+            if agora - tempo_ultimo_click_fixo >= 1:
+                print("🖱️ Clique automático em (1726, 797)")
+                adb.tap(1726, 797)
+                tempo_ultimo_click_fixo = agora
+
+            sucesso = adb.tap(camera_x, camera_y)
+            tirar_print(adb, config)
+            # --- NOVO: Detecta setor mais denso e move personagem ---
+            lista_prints = glob.glob(os.path.join('prints', '*.png'))
+            if lista_prints:
+                caminho_print = max(lista_prints, key=os.path.getctime)
+                mini_map_path = 'mini_map.png'
+                crop_image(caminho_print, mini_map_path, x=130, y=150, w=200, h=200)
+                grid_size = 3
+                hotspot, grid = detectar_setor_com_mais_vermelhos(mini_map_path, grid_size=grid_size, debug=True)
+                if hotspot is not None:
+                    # linha, coluna = hotspot
                     # Calcula o centro do setor alvo no minimapa
-                    setor_w = 200 // grid_size
-                    setor_h = 200 // grid_size
-                    centro_x = 130 + coluna * setor_w + setor_w // 2
-                    centro_y = 150 + linha * setor_h + setor_h // 2
-                    print(f"\n🗺️ Movendo para setor mais denso: linha={linha}, coluna={coluna} (x={centro_x}, y={centro_y})")
+                    # setor_w = 200 // grid_size
+                    # setor_h = 200 // grid_size
+                    # centro_x = 130 + coluna * setor_w + setor_w // 2
+                    # centro_y = 150 + linha * setor_h + setor_h // 2
+                    # print(f"\n🗺️ Movendo para setor mais denso: linha={linha}, coluna={coluna} (x={centro_x}, y={centro_y})")
                     # Realiza swipe do joystick até o setor alvo (exemplo: swipe curto)
                     # Ajuste os valores conforme necessário para o seu jogo
-                    joystick_x, joystick_y = config.get('joystick_centro_x', 288), config.get('joystick_centro_y', 868)
+                    # joystick_x, joystick_y = config.get('joystick_centro_x', 288), config.get('joystick_centro_y', 868)
                     # Calcula direção aproximada (pode ser melhorado para pathfinding)
-                    delta_x = centro_x - 230  # 230: centro do minimapa na tela (ajuste se necessário)
-                    delta_y = centro_y - 250  # 250: centro do minimapa na tela (ajuste se necessário)
+                    # delta_x = centro_x - 230  # 230: centro do minimapa na tela (ajuste se necessário)
+                    # delta_y = centro_y - 250  # 250: centro do minimapa na tela (ajuste se necessário)
                     # Normaliza o vetor para um swipe curto
-                    fator = 40  # quanto maior, mais longo o swipe
-                    destino_x = int(joystick_x + (delta_x / 100) * fator)
-                    destino_y = int(joystick_y + (delta_y / 100) * fator)
-                    print(f"[BOT] Swipe do joystick: ({joystick_x},{joystick_y}) -> ({destino_x},{destino_y})")
-                    adb.swipe(joystick_x, joystick_y, destino_x, destino_y, duration=500)
+                    # fator = 40  # quanto maior, mais longo o swipe
+                    # destino_x = int(joystick_x + (delta_x / 100) * fator)
+                    # destino_y = int(joystick_y + (delta_y / 100) * fator)
+                    # print(f"[BOT] Swipe do joystick: ({joystick_x},{joystick_y}) -> ({destino_x},{destino_y})")
+                    # adb.swipe(joystick_x, joystick_y, destino_x, destino_y, duration=500)
+                    pass
                 else:
                     print("[BOT] Não foi possível detectar o setor mais denso do minimapa.")
             else:
@@ -379,6 +412,9 @@ def menu():
     print("  9. Avaliar modelo YOLO (dataset_yolo)")
     print(" 10. Visualizar detecções YOLO (prints_yolo)")
     print(" 11. Visualização ao vivo (prints_yolo + logs)")
+    print(" 12. Treinar modelo Scikit-learn (ML)")
+    print(" 13. Atualizar curva de aprendizado (ML)")
+    print(" 14. Clicar repetidamente em (1726, 797) a cada 3s")
     print()
     escolha = input("Escolha uma opção: ")
     return escolha
@@ -458,6 +494,53 @@ def run_interactive_menu():
         elif escolha == "11":
             print("\n🖼️ Modo janela: última print_yolo + logs ao vivo...")
             subprocess.run(["python3", "bot_visual.py"])
+            input("\nPressione ENTER para voltar ao menu...")
+
+        elif escolha == "12":
+            print("\n🔬 Treinando modelo Scikit-learn (ML)...")
+            try:
+                # Treinamento básico do modelo Scikit-learn
+                from ml_utils import auto_treinar_modelos, carregar_modelos, scaler
+                historico = carregar_historico_sessoes()
+                X, y = [], []
+                total_sessoes = len(historico)
+                total_amostras = 0
+                total_eventos = 0
+                for sessao in historico:
+                    total_amostras += len(sessao.get('amostras', []))
+                    total_eventos += len(sessao.get('eventos', []))
+                    for amostra in sessao.get('amostras', []):
+                        features = amostra.get('features')
+                        target = amostra.get('target')
+                        if features is not None and target is not None:
+                            X.append(features)
+                            y.append(target)
+                if len(X) > 0:
+                    X_scaled = scaler.fit_transform(X)
+                    modelos = carregar_modelos()
+                    auto_treinar_modelos(modelos, X_scaled, y, len(X))
+                    print("\n✅ Treinamento do modelo Scikit-learn concluído!")
+                    print(f"Sessões usadas: {total_sessoes}")
+                    print(f"Amostras usadas: {len(X)} (total registradas: {total_amostras})")
+                    print(f"Eventos registrados: {total_eventos}")
+                else:
+                    print("\n⚠️ Não há amostras suficientes para treinar o modelo.")
+            except Exception as e:
+                print(f"\n❌ Erro ao treinar modelo Scikit-learn: {e}")
+            input("\nPressione ENTER para voltar ao menu...")
+
+        elif escolha == "13":
+            print("\n📈 Atualizando curva de aprendizado (ML)...")
+            try:
+                monitoramento = MonitoramentoTreinamento()
+                monitoramento.plotar_curva_aprendizado()
+                print("\n✅ curva_aprendizado.png atualizada!")
+            except Exception as e:
+                print(f"\n❌ Erro ao atualizar curva de aprendizado: {e}")
+            input("\nPressione ENTER para voltar ao menu...")
+        elif escolha == "14":
+            print("\n🖱️ Iniciando cliques automáticos em (1726, 797) a cada 3 segundos...")
+            clicar_repetidamente(adb, x=1726, y=797, intervalo=3)
             input("\nPressione ENTER para voltar ao menu...")
         else:
             print("\n❌ Opção inválida!")
