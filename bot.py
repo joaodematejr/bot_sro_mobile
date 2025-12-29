@@ -1,33 +1,42 @@
 
-import builtins
+# ===================== IMPORTS =====================
+import os
+import sys
+import glob
+import re
+import time
+import threading
 import argparse
+import subprocess
+import builtins
+from datetime import datetime
+import cv2
+import pytesseract
+# Imports de módulos do projeto
 import Config
 import ADBConnection
 from session_utils import gerar_session_id, auto_save_sessao, exportar_json_ultima_sessao
-from datetime import datetime
-from ml_utils import carregar_modelos, MonitoramentoTreinamento
-import time
-import os
-import glob
-import pytesseract
-import re
-import cv2
-
+from ml_utils import carregar_modelos, MonitoramentoTreinamento, auto_treinar_modelos, scaler, identificar_hotspots
 from prints_utils import tirar_print
 from utils_imagem import crop_image, detect_location_string
 from minimap_analysis import detectar_setor_com_mais_vermelhos
-import sys
 
-# Função para printar no terminal e salvar no log
+# ===================== FUNÇÕES UTILITÁRIAS =====================
+
+
 def print_log(*args, **kwargs):
+    """
+    Imprime mensagem no terminal e salva no arquivo de log.
+    """
     msg = " ".join(str(a) for a in args)
     builtins.print(*args, **kwargs)
     with open("log_bot.txt", "a", encoding="utf-8") as f:
         f.write(msg + "\n")
+
 def contar_mobs_proximos_yolo():
     """
-    Detecta inimigos próximos usando YOLO (Ultralytics) no print inteiro.
-    Requer: pip install ultralytics
+    Detecta inimigos próximos usando YOLO (Ultralytics) no print mais recente.
+    Retorna o número de detecções.
     """
     try:
         from ultralytics import YOLO
@@ -40,7 +49,6 @@ def contar_mobs_proximos_yolo():
         return 0
     img_path = max(lista_prints, key=os.path.getctime)
 
-    # Carrega modelo YOLOv8 ou YOLOv5 (pode ser yolov8n.pt, yolov5su.pt, etc)
     model_path = 'runs/detect/train/weights/best.pt'  # modelo customizado treinado
     try:
         model = YOLO(model_path)
@@ -49,15 +57,69 @@ def contar_mobs_proximos_yolo():
         return 0
 
     results = model(img_path)
-    # Salva imagem com as detecções desenhadas
     save_dir = 'prints_yolo'
     os.makedirs(save_dir, exist_ok=True)
-    for i, r in enumerate(results):
-        # O método .plot() retorna uma imagem numpy com as detecções desenhadas
+    for r in results:
         im_bgr = r.plot()
-        # Salva a imagem com sufixo _yolo.png
         base = os.path.basename(img_path)
         save_path = os.path.join(save_dir, base.replace('.png', f'_yolo.png'))
+        cv2.imwrite(save_path, im_bgr)
+    return len(results[0].boxes) if results and hasattr(results[0], 'boxes') else 0
+
+def coletar_coordenadas_personagem():
+    """
+    Coleta as coordenadas do personagem a partir do print da tela.
+    """
+    lista_prints = glob.glob(os.path.join('prints', '*.png'))
+    if not lista_prints:
+        return None, None
+    caminho_print = max(lista_prints, key=os.path.getctime)
+    crop_path = 'localizacao_tmp.png'
+    crop_image(caminho_print, crop_path, x=180, y=180, w=100, h=25)
+    localizacao = detect_location_string(crop_path)
+    match = re.search(r"\(?\s*(\d+)\s*,\s*(\d+)\s*\)?", localizacao)
+    if match:
+        x, y = int(match.group(1)), int(match.group(2))
+        return x, y
+    return None, None
+
+def coletar_xp_percentual():
+    """
+    Coleta o percentual de XP a partir do print da tela.
+    """
+    lista_prints = glob.glob(os.path.join('prints', '*.png'))
+    if not lista_prints:
+        return None
+    caminho_print = max(lista_prints, key=os.path.getctime)
+    crop_image(caminho_print, 'xp.png', x=30, y=900, w=140, h=125)
+    img = cv2.imread('xp.png')
+    if img is None:
+        return None
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    custom_config = r'--oem 3 --psm 6'
+    text = pytesseract.image_to_string(gray, config=custom_config)
+    print_log("Texto detectado XP:", text)
+    match = re.search(r"([0-9]+\.[0-9]+)%", text)
+    if match:
+        return float(match.group(1))
+    return None
+
+    def exibir_estatisticas():
+        """Stub: Exibe estatísticas do bot."""
+        print("[Stub] Estatísticas não implementadas.")
+
+    def exibir_relatorio_otimizacao_ml():
+        """Stub: Exibe relatório de otimização de ML."""
+        print("[Stub] Relatório de otimização ML não implementado.")
+
+    def carregar_historico_sessoes():
+        """Stub: Carrega histórico de sessões para ML."""
+        print("[Stub] Carregar histórico de sessões não implementado.")
+        return []
+
+    def clicar_repetidamente(adb, x=1726, y=797, intervalo=3):
+        """Stub: Clica repetidamente em uma coordenada."""
+        print(f"[Stub] Clicando repetidamente em ({x}, {y}) a cada {intervalo}s. (Função não implementada)")
 
 
 # ...existing code...
@@ -106,6 +168,7 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
         'amostras': [],
         'eventos': [],
     }
+    # Executa o loop principal de farming infinito, coleta dados, executa ações e treina modelos ML.
     modelos = carregar_modelos()
     contador_amostras = 0
     X, y = [], []
@@ -417,6 +480,7 @@ def menu():
     print(" 14. Clicar repetidamente em (1726, 797) a cada 3s")
     print()
     escolha = input("Escolha uma opção: ")
+    # Exibe o menu principal e retorna a escolha do usuário.
     return escolha
 
 
@@ -442,6 +506,7 @@ def run_interactive_menu():
         else:
             print("\n❌ É necessário conectar ao dispositivo para usar o bot.")
             sys.exit(1)
+    # Gerencia a interação do usuário com o bot, permitindo a execução de várias funções.
     
     import subprocess
     while True:
@@ -570,6 +635,7 @@ Exemplos de uso:
   python main.py info                       # Mostra informações do dispositivo
         """
     )
+        # Interpreta argumentos de linha de comando e executa o fluxo adequado.
     
     parser.add_argument(
         "command",
