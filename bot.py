@@ -17,7 +17,7 @@ import Config
 import ADBConnection
 from session_utils import gerar_session_id, auto_save_sessao, exportar_json_ultima_sessao
 from ml_utils import carregar_modelos, MonitoramentoTreinamento, auto_treinar_modelos, scaler, identificar_hotspots
-from prints_utils import tirar_print
+# from prints_utils import tirar_print  # DESATIVADO: causava travamento no Waydroid
 from utils_imagem import crop_image, detect_location_string
 from minimap_analysis import detectar_setor_com_mais_vermelhos
 
@@ -64,7 +64,25 @@ def contar_mobs_proximos_yolo():
         base = os.path.basename(img_path)
         save_path = os.path.join(save_dir, base.replace('.png', f'_yolo.png'))
         cv2.imwrite(save_path, im_bgr)
+    
+    # Limpar prints_yolo para manter apenas 15 arquivos
+    _limpar_prints_yolo(15)
+    
     return len(results[0].boxes) if results and hasattr(results[0], 'boxes') else 0
+
+def _limpar_prints_yolo(max_prints=15):
+    """Mantém apenas os max_prints arquivos mais recentes em prints_yolo."""
+    save_dir = 'prints_yolo'
+    if not os.path.exists(save_dir):
+        return
+    arquivos = sorted([f for f in os.listdir(save_dir) if f.endswith('.png')], 
+                     key=lambda x: os.path.getctime(os.path.join(save_dir, x)))
+    while len(arquivos) > max_prints:
+        arquivo_remover = arquivos.pop(0)
+        try:
+            os.remove(os.path.join(save_dir, arquivo_remover))
+        except Exception:
+            pass
 
 def coletar_coordenadas_personagem():
     """
@@ -231,7 +249,7 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
                 tempo_ultimo_click_4min = agora
 
             sucesso = adb.tap(camera_x, camera_y)
-            tirar_print(adb, config)
+            # tirar_print(adb, config)  # DESATIVADO: causava travamento no Waydroid
             # --- NOVO: Detecta setor mais denso e move personagem ---
             lista_prints = glob.glob(os.path.join('prints', '*.png'))
             if lista_prints:
@@ -357,7 +375,7 @@ def start_infinite_farming(adb: ADBConnection, config: Config):
                 tempo_ultimo_click_fixo = agora
 
             sucesso = adb.tap(camera_x, camera_y)
-            tirar_print(adb, config)
+            # tirar_print(adb, config)  # DESATIVADO: causava travamento no Waydroid
             # --- NOVO: Detecta setor mais denso e move personagem ---
             lista_prints = glob.glob(os.path.join('prints', '*.png'))
             if lista_prints:
