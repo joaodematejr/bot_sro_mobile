@@ -15,8 +15,9 @@ import pytesseract
 # Imports de módulos do projeto
 import Config
 import ADBConnection
-from session_utils import gerar_session_id, auto_save_sessao, exportar_json_ultima_sessao
+from session_utils import gerar_session_id, auto_save_sessao, exportar_json_ultima_sessao, carregar_historico_sessoes
 from ml_utils import carregar_modelos, MonitoramentoTreinamento, auto_treinar_modelos, scaler, identificar_hotspots
+from adb_utils import ativar_pointer_location, desativar_pointer_location, clicar_repetidamente
 # from prints_utils import tirar_print  # DESATIVADO: causava travamento no Waydroid
 from utils_imagem import crop_image, detect_location_string
 from minimap_analysis import detectar_setor_com_mais_vermelhos
@@ -122,27 +123,29 @@ def coletar_xp_percentual():
         return float(match.group(1))
     return None
 
-    def exibir_estatisticas():
-        """Stub: Exibe estatísticas do bot."""
-        print("[Stub] Estatísticas não implementadas.")
+def exibir_estatisticas():
+    """Exibe estatísticas do bot."""
+    print("\n=== ESTATÍSTICAS DO BOT ===")
+    try:
+        historico = carregar_historico_sessoes()
+        if not historico:
+            print("Nenhuma sessão encontrada.")
+            return
+        
+        total_sessoes = len(historico)
+        print(f"Total de sessões: {total_sessoes}")
+        
+        total_mobs = sum(len(s.get('amostras', [])) for s in historico)
+        total_eventos = sum(len(s.get('eventos', [])) for s in historico)
+        print(f"Total de mobs detectados: {total_mobs}")
+        print(f"Total de eventos: {total_eventos}")
+    except Exception as e:
+        print(f"Erro ao exibir estatísticas: {e}")
 
-    def exibir_relatorio_otimizacao_ml():
-        """Stub: Exibe relatório de otimização de ML."""
-        print("[Stub] Relatório de otimização ML não implementado.")
-
-    def carregar_historico_sessoes():
-        """Stub: Carrega histórico de sessões para ML."""
-        print("[Stub] Carregar histórico de sessões não implementado.")
-        return []
-
-    def clicar_repetidamente(adb, x=1726, y=797, intervalo=3):
-        """Stub: Clica repetidamente em uma coordenada."""
-        print(f"[Stub] Clicando repetidamente em ({x}, {y}) a cada {intervalo}s. (Função não implementada)")
-
-
-# ...existing code...
-
-import threading
+def exibir_relatorio_otimizacao_ml():
+    """Exibe relatório de otimização de ML."""
+    print("\n=== RELATÓRIO DE OTIMIZAÇÃO ML ===")
+    print("[INFO] Relatório de otimização ML ainda não implementado.")
 
 def coletar_coordenadas_personagem():
     # Tira print e faz crop da área de localização
@@ -628,13 +631,6 @@ def run_interactive_menu():
         else:
             print("\n❌ Opção inválida!")
             input("\nPressione ENTER para continuar...")
-def ativar_pointer_location(adb):
-    # Função agora importada de adb_utils.py
-    pass
-
-def desativar_pointer_location(adb):
-    # Função agora importada de adb_utils.py
-    pass
 
 
 def main():
