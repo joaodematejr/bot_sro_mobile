@@ -366,6 +366,64 @@ class SimpleBotADB:
             print("\n⚠ Sequência Lure completada com alguns erros")
         
         return success
+    
+    def lure_with_joystick_steps(self, joystick_config: dict, step_duration: int = 500, step_interval: float = 0.3, steps_per_direction: int = 8) -> bool:
+        """
+        Executa sequência de movimentos para Lure com passos intervalados: frente -> esquerda -> trás -> direita
+        Cria efeito de caminhada com pausas entre os passos
+        
+        Args:
+            joystick_config: Dicionário com configurações do joystick
+            step_duration: Duração de cada passo em milissegundos (padrão: 500ms)
+            step_interval: Intervalo entre passos em segundos (padrão: 0.3s)
+            steps_per_direction: Quantidade de passos por direção (padrão: 8)
+            
+        Returns:
+            True se todos os movimentos foram executados com sucesso
+        """
+        if not self.connected:
+            print("✗ Dispositivo não conectado")
+            return False
+        
+        center_x = joystick_config.get('center_x', 248)
+        center_y = joystick_config.get('center_y', 789)
+        
+        # Lê configurações do JSON ou usa padrões
+        step_duration = joystick_config.get('step_duration', step_duration)
+        step_interval = joystick_config.get('step_interval', step_interval)
+        steps_per_direction = joystick_config.get('steps_per_direction', steps_per_direction)
+        
+        forward = joystick_config.get('forward', {})
+        left = joystick_config.get('left', {})
+        backward = joystick_config.get('backward', {})
+        right = joystick_config.get('right', {})
+        
+        print("\n🎯 Iniciando sequência Lure com passos intervalados...")
+        print(f"   Duração do passo: {step_duration}ms | Intervalo: {step_interval}s | Passos/direção: {steps_per_direction}\n")
+        
+        success = True
+        directions = [
+            ("frente", forward.get('x', 246), forward.get('y', 697)),
+            ("esquerda", left.get('x', 334), left.get('y', 787)),
+            ("trás", backward.get('x', 243), backward.get('y', 869)),
+            ("direita", right.get('x', 162), right.get('y', 787))
+        ]
+        
+        for direction_name, end_x, end_y in directions:
+            print(f"➜ Caminhando para {direction_name}...")
+            for step in range(steps_per_direction):
+                if not self.move_joystick(center_x, center_y, end_x, end_y, step_duration, f"{direction_name} (passo {step+1}/{steps_per_direction})"):
+                    success = False
+                if step < steps_per_direction - 1:  # Não espera após o último passo
+                    time.sleep(step_interval)
+            time.sleep(0.5)  # Pausa entre mudanças de direção
+        
+        if success:
+            print("\n✓ Sequência Lure com passos completada!")
+        else:
+            print("\n⚠ Sequência Lure com passos completada com alguns erros")
+        
+        return success
 
 
 def load_config(config_file: str = "bot_config.json") -> dict:
@@ -580,7 +638,7 @@ def main():
                 print(f"✗ Erro ao salvar configuração: {e}")
             
         elif opcao == "5":
-            # Executa sequência de Lure com movimentos do joystick em loop
+            # Executa sequência de Lure com movimentos do joystick em loop COM INTERVALOS
             config = load_config()
             joystick_config = config.get("joystick", {})
             
@@ -593,21 +651,24 @@ def main():
                     'center_y': 789,
                     'forward': {'x': 246, 'y': 697},
                     'left': {'x': 334, 'y': 787},
-                    'backward': {'x': 243, 'y': 869}
+                    'backward': {'x': 243, 'y': 869},
+                    'right': {'x': 162, 'y': 787}
                 }
             
-            print("\n🔄 Iniciando Lure com Joystick em LOOP...")
-            print("   Sequência executada a cada 10 segundos")
+            print("\n🔄 Iniciando Lure com Joystick (PASSOS INTERVALADOS)...")
+            print("   Fazendo trajeto quadrado com pausas no caminhar")
             print("   Pressione Ctrl+C para parar\n")
+            
+            cycle_interval = joystick_config.get('cycle_interval', 10)  # Lê do JSON ou usa padrão
             
             cycle_count = 0
             try:
                 while True:
                     cycle_count += 1
                     print(f"--- Ciclo #{cycle_count} ---")
-                    bot.lure_with_joystick(joystick_config, duration=4000, interval=0.5)
-                    print(f"\n⏳ Aguardando 10 segundos até próximo ciclo...\n")
-                    time.sleep(10)
+                    bot.lure_with_joystick_steps(joystick_config)
+                    print(f"\n⏳ Aguardando {cycle_interval} segundos até próximo ciclo...\n")
+                    time.sleep(cycle_interval)
                     
             except KeyboardInterrupt:
                 print(f"\n\n⏹ Loop parado após {cycle_count} ciclos")
