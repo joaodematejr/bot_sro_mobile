@@ -243,6 +243,122 @@ class SimpleBotADB:
         except Exception as e:
             print(f"✗ Erro ao desativar pointer_location: {e}")
             return False
+    
+    def move_joystick(self, start_x: int, start_y: int, end_x: int, end_y: int, duration: int = 4000, direction: str = "") -> bool:
+        """
+        Move o joystick de uma posição para outra
+        
+        Args:
+            start_x: Coordenada X inicial do joystick (centro)
+            start_y: Coordenada Y inicial do joystick (centro)
+            end_x: Coordenada X final do joystick
+            end_y: Coordenada Y final do joystick
+            duration: Duração do movimento em milissegundos (padrão: 4000ms = 4s)
+            direction: Nome da direção para exibição (opcional)
+            
+        Returns:
+            True se o movimento foi executado com sucesso
+        """
+        if not self.connected:
+            print("✗ Dispositivo não conectado")
+            return False
+        
+        try:
+            direction_text = f" ({direction})" if direction else ""
+            print(f"🕹️  Movendo joystick{direction_text} por {duration/1000}s...")
+            result = subprocess.run(
+                ["adb", "-s", self.device_address, "shell", "input", "swipe", 
+                 str(start_x), str(start_y), str(end_x), str(end_y), str(duration)],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            
+            if result.returncode == 0:
+                print(f"✓ Joystick movido com sucesso")
+                return True
+            else:
+                print(f"✗ Erro ao mover joystick: {result.stderr}")
+                return False
+                
+        except Exception as e:
+            print(f"✗ Erro ao executar movimento: {e}")
+            return False
+    
+    def move_joystick_forward(self, start_x: int, start_y: int, end_x: int = None, end_y: int = None, duration: int = 4000) -> bool:
+        """
+        Move o joystick para frente por um período determinado
+        
+        Args:
+            start_x: Coordenada X inicial do joystick (centro)
+            start_y: Coordenada Y inicial do joystick (centro)
+            end_x: Coordenada X final do joystick (opcional, usa start_x se não fornecido)
+            end_y: Coordenada Y final do joystick (opcional, calcula automaticamente se não fornecido)
+            duration: Duração do movimento em milissegundos (padrão: 4000ms = 4s)
+            
+        Returns:
+            True se o movimento foi executado com sucesso
+        """
+        if not self.connected:
+            print("✗ Dispositivo não conectado")
+            return False
+        
+        # Usa coordenadas fornecidas ou calcula a posição final
+        if end_x is None:
+            end_x = start_x
+        if end_y is None:
+            end_y = start_y - 150  # Move 150 pixels para cima por padrão
+        
+        return self.move_joystick(start_x, start_y, end_x, end_y, duration, "frente")
+    
+    def lure_with_joystick(self, joystick_config: dict, duration: int = 4000, interval: float = 0.5) -> bool:
+        """
+        Executa sequência de movimentos para Lure: frente -> esquerda -> trás
+        
+        Args:
+            joystick_config: Dicionário com configurações do joystick
+            duration: Duração de cada movimento em milissegundos (padrão: 4000ms = 4s)
+            interval: Intervalo entre movimentos em segundos (padrão: 0.5s)
+            
+        Returns:
+            True se todos os movimentos foram executados com sucesso
+        """
+        if not self.connected:
+            print("✗ Dispositivo não conectado")
+            return False
+        
+        center_x = joystick_config.get('center_x', 248)
+        center_y = joystick_config.get('center_y', 789)
+        
+        forward = joystick_config.get('forward', {})
+        left = joystick_config.get('left', {})
+        backward = joystick_config.get('backward', {})
+        
+        print("\n🎯 Iniciando sequência Lure com Joystick...")
+        print(f"   Duração de cada movimento: {duration/1000}s\n")
+        
+        success = True
+        
+        # 1. Mover para frente
+        if not self.move_joystick(center_x, center_y, forward.get('x', 246), forward.get('y', 697), duration, "frente"):
+            success = False
+        time.sleep(interval)
+        
+        # 2. Mover para esquerda
+        if not self.move_joystick(center_x, center_y, left.get('x', 334), left.get('y', 787), duration, "esquerda"):
+            success = False
+        time.sleep(interval)
+        
+        # 3. Mover para trás
+        if not self.move_joystick(center_x, center_y, backward.get('x', 243), backward.get('y', 869), duration, "trás"):
+            success = False
+        
+        if success:
+            print("\n✓ Sequência Lure completada!")
+        else:
+            print("\n⚠ Sequência Lure completada com alguns erros")
+        
+        return success
 
 
 def load_config(config_file: str = "bot_config.json") -> dict:
@@ -319,7 +435,8 @@ def main():
     print("2 - Ativar Pointer Location (mostrar coordenadas)")
     print("3 - Desativar Pointer Location")
     print("4 - Habilitar/Desabilitar Lure")
-    print("5 - Sair")
+    print("5 - Lure com Joystick (frente -> esquerda -> trás)")
+    print("6 - Sair")
     print("="*50)
     print(f"\n⚙️  Configuração atual:")
     print(f"   Dispositivo: {DEVICE}")
@@ -456,6 +573,39 @@ def main():
                 print(f"✗ Erro ao salvar configuração: {e}")
             
         elif opcao == "5":
+            # Executa sequência de Lure com movimentos do joystick em loop
+            config = load_config()
+            joystick_config = config.get("joystick", {})
+            
+            if not joystick_config:
+                print("\n⚙️  Configuração do joystick não encontrada.")
+                print("   Usando coordenadas padrão do bot_config.json")
+                # Cria config padrão
+                joystick_config = {
+                    'center_x': 248,
+                    'center_y': 789,
+                    'forward': {'x': 246, 'y': 697},
+                    'left': {'x': 334, 'y': 787},
+                    'backward': {'x': 243, 'y': 869}
+                }
+            
+            print("\n🔄 Iniciando Lure com Joystick em LOOP...")
+            print("   Sequência executada a cada 10 segundos")
+            print("   Pressione Ctrl+C para parar\n")
+            
+            cycle_count = 0
+            try:
+                while True:
+                    cycle_count += 1
+                    print(f"--- Ciclo #{cycle_count} ---")
+                    bot.lure_with_joystick(joystick_config, duration=4000, interval=0.5)
+                    print(f"\n⏳ Aguardando 10 segundos até próximo ciclo...\n")
+                    time.sleep(10)
+                    
+            except KeyboardInterrupt:
+                print(f"\n\n⏹ Loop parado após {cycle_count} ciclos")
+            
+        elif opcao == "6":
             print("Saindo...")
         else:
             print("Opção inválida!")
