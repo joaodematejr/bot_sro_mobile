@@ -313,7 +313,7 @@ class SimpleBotADB:
     
     def lure_with_joystick(self, joystick_config: dict, duration: int = 4000, interval: float = 0.5) -> bool:
         """
-        Executa sequência de movimentos para Lure: frente -> esquerda -> trás
+        Executa sequência de movimentos para Lure: frente -> esquerda -> trás -> direita
         
         Args:
             joystick_config: Dicionário com configurações do joystick
@@ -329,10 +329,12 @@ class SimpleBotADB:
         
         center_x = joystick_config.get('center_x', 248)
         center_y = joystick_config.get('center_y', 789)
+        duration = joystick_config.get('duration', duration)  # Usa do config ou mantém padrão
         
         forward = joystick_config.get('forward', {})
         left = joystick_config.get('left', {})
         backward = joystick_config.get('backward', {})
+        right = joystick_config.get('right', {})
         
         print("\n🎯 Iniciando sequência Lure com Joystick...")
         print(f"   Duração de cada movimento: {duration/1000}s\n")
@@ -351,6 +353,11 @@ class SimpleBotADB:
         
         # 3. Mover para trás
         if not self.move_joystick(center_x, center_y, backward.get('x', 243), backward.get('y', 869), duration, "trás"):
+            success = False
+        time.sleep(interval)
+        
+        # 4. Mover para direita
+        if not self.move_joystick(center_x, center_y, right.get('x', 162), right.get('y', 787), duration, "direita"):
             success = False
         
         if success:
@@ -435,7 +442,7 @@ def main():
     print("2 - Ativar Pointer Location (mostrar coordenadas)")
     print("3 - Desativar Pointer Location")
     print("4 - Habilitar/Desabilitar Lure")
-    print("5 - Lure com Joystick (frente -> esquerda -> trás)")
+    print("5 - Lure com Joystick (frente -> esquerda -> trás e direita)")
     print("6 - Sair")
     print("="*50)
     print(f"\n⚙️  Configuração atual:")
