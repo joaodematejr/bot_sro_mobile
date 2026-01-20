@@ -516,6 +516,165 @@ def load_config(config_file: str = "bot_config.json") -> dict:
         sys.exit(1)
 
 
+def save_config(config: dict, config_file: str = "bot_config.json"):
+    """
+    Salva configurações no arquivo JSON
+    
+    Args:
+        config: Dicionário com as configurações
+        config_file: Caminho do arquivo de configuração
+    """
+    try:
+        with open(config_file, 'w', encoding='utf-8') as f:
+            json.dump(config, f, indent=2, ensure_ascii=False)
+        print(f"✓ Configurações salvas em {config_file}")
+    except Exception as e:
+        print(f"✗ Erro ao salvar configurações: {e}")
+
+
+def calibration_mode(bot: SimpleBotADB, config: dict):
+    """
+    Modo de calibração interativo para capturar coordenadas
+    
+    Args:
+        bot: Instância do bot ADB
+        config: Configuração atual
+    """
+    print("\n" + "="*60)
+    print("🎯 MODO DE CALIBRAÇÃO - Captura de Coordenadas")
+    print("="*60)
+    print("\n📋 Instruções:")
+    print("   1. Ative o Pointer Location no menu principal (opção 2)")
+    print("   2. Toque na tela onde deseja capturar as coordenadas")
+    print("   3. Observe as coordenadas no topo da tela")
+    print("   4. Digite as coordenadas aqui quando solicitado")
+    print("   5. As configurações serão salvas automaticamente\n")
+    
+    print("🔧 O que deseja calibrar?")
+    print("1 - Camera Reset")
+    print("2 - Lure")
+    print("3 - Joystick (centro e direções)")
+    print("4 - Adicionar novo clique na sequência")
+    print("5 - Limpar todos os cliques da sequência")
+    print("6 - Voltar")
+    
+    try:
+        opcao = input("\nEscolha: ").strip()
+        
+        if opcao == "1":
+            print("\n📷 Calibrando Camera Reset...")
+            print("   Toque no botão de reset da câmera e anote as coordenadas\n")
+            x = int(input("   Coordenada X: ").strip())
+            y = int(input("   Coordenada Y: ").strip())
+            interval = float(input("   Intervalo em segundos [padrão: 8.0]: ").strip() or "8.0")
+            
+            config['camera_reset'] = {
+                "enabled": True,
+                "x": x,
+                "y": y,
+                "interval": interval,
+                "description": "Resetar Camera"
+            }
+            save_config(config)
+            print(f"\n✓ Camera Reset configurado: ({x}, {y}) a cada {interval}s")
+            
+        elif opcao == "2":
+            print("\n🎯 Calibrando Lure...")
+            print("   Toque no botão de lure e anote as coordenadas\n")
+            x = int(input("   Coordenada X: ").strip())
+            y = int(input("   Coordenada Y: ").strip())
+            interval = float(input("   Intervalo em segundos [padrão: 3.0]: ").strip() or "3.0")
+            enabled = input("   Habilitar agora? (s/n) [padrão: n]: ").strip().lower() == 's'
+            
+            config['lure'] = {
+                "enabled": enabled,
+                "x": x,
+                "y": y,
+                "interval": interval,
+                "description": "Lure"
+            }
+            save_config(config)
+            print(f"\n✓ Lure configurado: ({x}, {y}) a cada {interval}s")
+            
+        elif opcao == "3":
+            print("\n🕹️  Calibrando Joystick...")
+            print("   Toque no CENTRO do joystick e anote as coordenadas\n")
+            center_x = int(input("   Centro X: ").strip())
+            center_y = int(input("   Centro Y: ").strip())
+            
+            print("\n   Agora toque no joystick em cada direção:")
+            print("   (arraste o joystick até o limite e anote onde parou)\n")
+            
+            forward_x = int(input("   Frente X: ").strip())
+            forward_y = int(input("   Frente Y: ").strip())
+            
+            backward_x = int(input("   Trás X: ").strip())
+            backward_y = int(input("   Trás Y: ").strip())
+            
+            left_x = int(input("   Esquerda X: ").strip())
+            left_y = int(input("   Esquerda Y: ").strip())
+            
+            right_x = int(input("   Direita X: ").strip())
+            right_y = int(input("   Direita Y: ").strip())
+            
+            config['joystick'] = {
+                "center_x": center_x,
+                "center_y": center_y,
+                "duration": 4000,
+                "step_duration": 500,
+                "step_interval": 0.3,
+                "steps_per_direction": 4,
+                "cycle_interval": 5,
+                "forward": {"x": forward_x, "y": forward_y},
+                "backward": {"x": backward_x, "y": backward_y},
+                "left": {"x": left_x, "y": left_y},
+                "right": {"x": right_x, "y": right_y},
+                "description": "Joystick para movimento"
+            }
+            save_config(config)
+            print(f"\n✓ Joystick configurado com centro em ({center_x}, {center_y})")
+            
+        elif opcao == "4":
+            print("\n➕ Adicionando novo clique...")
+            print("   Toque no botão desejado e anote as coordenadas\n")
+            x = int(input("   Coordenada X: ").strip())
+            y = int(input("   Coordenada Y: ").strip())
+            interval = float(input("   Intervalo após este clique em segundos [padrão: 2.0]: ").strip() or "2.0")
+            description = input("   Descrição (ex: Skill 1): ").strip() or "Sem descrição"
+            
+            if 'clicks' not in config:
+                config['clicks'] = []
+            
+            config['clicks'].append({
+                "x": x,
+                "y": y,
+                "interval": interval,
+                "description": description
+            })
+            save_config(config)
+            print(f"\n✓ Clique adicionado: ({x}, {y}) - {description} [{interval}s]")
+            print(f"   Total de cliques na sequência: {len(config['clicks'])}")
+            
+        elif opcao == "5":
+            confirma = input("\n⚠️  Tem certeza que deseja limpar TODOS os cliques? (s/n): ").strip().lower()
+            if confirma == 's':
+                config['clicks'] = []
+                save_config(config)
+                print("✓ Todos os cliques foram removidos")
+            else:
+                print("✗ Operação cancelada")
+                
+        elif opcao == "6":
+            return
+        else:
+            print("✗ Opção inválida!")
+            
+    except ValueError:
+        print("✗ Valor inválido! Use apenas números.")
+    except KeyboardInterrupt:
+        print("\n\n✗ Calibração cancelada")
+
+
 def main():
     """Função principal com exemplo de uso"""
     
@@ -546,7 +705,8 @@ def main():
     print("3 - Desativar Pointer Location")
     print("4 - Habilitar/Desabilitar Lure")
     print("5 - Lure com Joystick (frente -> esquerda -> trás e direita)")
-    print("6 - Sair")
+    print("6 - 🎯 Modo Calibração (capturar coordenadas)")
+    print("7 - Sair")
     print("="*50)
     print(f"\n⚙️  Configuração atual:")
     print(f"   Dispositivo: {DEVICE}")
@@ -719,6 +879,9 @@ def main():
                 print(f"\n\n⏹ Loop parado após {cycle_count} ciclos")
             
         elif opcao == "6":
+            calibration_mode(bot, config)
+            
+        elif opcao == "7":
             print("Saindo...")
         else:
             print("Opção inválida!")
