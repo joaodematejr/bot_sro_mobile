@@ -15,7 +15,10 @@
     "mobile",
     "adb"
   ],
-  "author": "joaodematejr",
+  "author": {
+    "name": "joaodematejr",
+    "email": "joaodematejr@gmail.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "electron": "^28.0.0",
@@ -44,7 +47,8 @@
         "AppImage",
         "deb"
       ],
-      "category": "Utility"
+      "category": "Utility",
+      "maintainer": "joaodematejr <you@example.com>"
     },
     "win": {
       "target": ["nsis"],
