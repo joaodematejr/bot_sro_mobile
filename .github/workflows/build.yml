@@ -38,10 +38,10 @@ jobs:
       run: |
         $max = 3
         for ($i = 1; $i -le $max; $i++) {
-          Write-Host "Attempt $i of $max: npm ci --no-audit --no-fund"
+          Write-Host "Attempt ${i} of ${max}: npm ci --no-audit --no-fund"
           npm ci --no-audit --no-fund
           if ($LASTEXITCODE -eq 0) { break }
-          Write-Host "npm ci failed on attempt $i"
+          Write-Host "npm ci failed on attempt ${i}"
           if ($i -lt $max) { Start-Sleep -Seconds ($i * 5) }
           else { throw 'All attempts failed' }
         }
