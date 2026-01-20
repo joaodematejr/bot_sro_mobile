@@ -32,8 +32,26 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-node-
 
-    - name: Install dependencies
-      run: npm ci --no-audit --no-fund
+    - name: Install dependencies (with retry)
+      run: |
+        set -e
+        attempts=0
+        max_attempts=3
+        until [ $attempts -ge $max_attempts ]
+        do
+          attempts=$((attempts+1))
+          echo "Attempt $attempts of $max_attempts: npm ci --no-audit --no-fund"
+          npm ci --no-audit --no-fund && break
+          echo "npm ci failed on attempt $attempts"
+          if [ $attempts -lt $max_attempts ]; then
+            sleep_time=$((attempts * 5))
+            echo "Sleeping for ${sleep_time}s before retry..."
+            sleep $sleep_time
+          else
+            echo "All attempts failed; exiting with error"
+            exit 1
+          fi
+        done
 
     - name: Clean node_modules (Linux/macOS)
       if: runner.os != 'Windows'
