@@ -96,6 +96,42 @@ source venv/bin/activate  # Linux/macOS
 venv\Scripts\activate  # Windows
 ```
 
+## 🖥️ Interface Gráfica (Electron)
+
+Além da versão em linha de comando, este projeto inclui uma interface gráfica baseada em Electron para facilitar a configuração e o controle do bot.
+
+### Requisitos adicionais
+- Node.js (recomendado 16+)
+- npm (gerenciador de pacotes)
+- ADB instalado e funcionando no sistema
+
+### Instalar dependências da GUI
+No diretório do projeto, execute:
+
+```bash
+# Instala dependências Node (uma vez)
+npm install
+```
+
+Ou use o script de inicialização disponibilizado:
+
+```bash
+./start_gui.sh
+```
+
+### Executar a interface (desenvolvimento)
+
+```bash
+# Inicia a interface Electron (abertura da janela GUI)
+npm start
+```
+
+### Observações
+- A interface salva as configurações no `localStorage` do Electron (não em `bot_config.json`).
+- Se alterar arquivos em `electron/`, reinicie a aplicação para recarregar o `preload.js` e o processo principal.
+- Para empacotar a aplicação (opcional), adicione e configure uma ferramenta como `electron-builder` ou `electron-forge`.
+
+
 ## ⚙️ Configuração
 
 ### 1. Ativar Depuração USB no Android

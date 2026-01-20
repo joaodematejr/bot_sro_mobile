@@ -1,16 +1,87 @@
-# Python
+# ---- Python ----
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.env
-venv*/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# Virtual environments
+venv/
+.venv/
+
+ENV/
+venv_labelimg/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Pytest
+.pytest_cache/
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+
+# Mypy / caches
+.mypy_cache/
+.pyre/
+
+# Environment files
 .env
+.env.*
+.python-version
 
-# VSCode
+# ---- Node / Electron ----
+node_modules/
+# Electron packaged files
+*.asar
+*.app
+*.dmg
+*.exe
+*.msi
+
+# Build / output
+dist/
+build/
+out/
+release/
+.cache/
+.parcel-cache/
+
+# npm/yarn logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Project files to ignore ----
+# Logs
+*.log
+*.out
+*.err
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors / IDEs
 .vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
 
-# Dados e modelos
+# Data, models and outputs (project specific)
+runs/
+prints_yolo/
+prints/
 *.pt
 *.pth
 *.h5
@@ -18,37 +89,27 @@ venv*/
 *.ckpt
 *.weights
 
-# Logs e resultados
-runs/
-prints_yolo/
-prints/
-*.log
-*.out
-*.err
-
-# Dataset temporário e caches
+# Dataset temp and caches
 *.cache
 *.npz
 *.npy
 *.csv
 *.json
 
-# Exportações e sessões
+# Exported sessions
 sessoes_exports/
 sessoes/
 
-# Imagens e labels geradas
+# Images and generated labels (if you track raw assets, remove these)
 *.jpg
 *.png
 *.jpeg
 
-# Arquivos de configuração pessoais
+# Personal config files
 config_farming_adb.json
 ml_training_history.json
 
-# Outros
-.DS_Store
-Thumbs.db
+# Local absolute venv path (do not commit absolute local paths)
+venv_labelimg/
 
-# Não versionar arquivos de ambiente
-/home/joaodematejr/Documentos/github/bot_sro_mobile/venv_labelimg/
+# Keep lockfiles tracked (do NOT ignore package-lock.json or yarn.lock by default)
