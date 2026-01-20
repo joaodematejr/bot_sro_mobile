@@ -1,0 +1,58 @@
+name: Build Electron App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Cache node modules
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build (electron-builder)
+      run: |
+        npm run dist
+      env:
+        # If you publish, set GH_TOKEN secret; we keep publish disabled
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-dist-${{ matrix.os }}
+        path: |
+          dist/**
+
+  
+
+# Notes:
+# - This workflow runs electron-builder on the hosted runners for each OS.
+# - For Windows builds on Linux or cross-platform signing you may need additional tools (wine, osslsigncode).
+# - Code signing for macOS/Windows requires secrets and certificates; configure if needed.
+# - If you need to include a Python executable, build it per-OS (PyInstaller) and include the binary in extraResources before running electron-builder.
