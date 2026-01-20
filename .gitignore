@@ -113,3 +113,7 @@ ml_training_history.json
 venv_labelimg/
 
 # Keep lockfiles tracked (do NOT ignore package-lock.json or yarn.lock by default)
+
+## Ensure package files are not ignored
+!package.json
+!package-lock.json
