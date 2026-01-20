@@ -36,15 +36,28 @@ jobs:
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
+        Write-Host "node version:"; node --version
+        Write-Host "npm version:"; npm --version
         $max = 3
+        $success = $false
         for ($i = 1; $i -le $max; $i++) {
           Write-Host "Attempt ${i} of ${max}: npm ci --no-audit --no-fund"
           npm ci --no-audit --no-fund
-          if ($LASTEXITCODE -eq 0) { break }
+          if ($LASTEXITCODE -eq 0) { $success = $true; break }
           Write-Host "npm ci failed on attempt ${i}"
           if ($i -lt $max) { Start-Sleep -Seconds ($i * 5) }
-          else { throw 'All attempts failed' }
         }
+        if (-not $success) {
+          Write-Host "npm ci failed after $max attempts — falling back to npm install"
+          for ($j = 1; $j -le $max; $j++) {
+            Write-Host "Attempt ${j} of ${max}: npm install --no-audit --no-fund"
+            npm install --no-audit --no-fund
+            if ($LASTEXITCODE -eq 0) { $success = $true; break }
+            Write-Host "npm install failed on attempt ${j}"
+            if ($j -lt $max) { Start-Sleep -Seconds ($j * 5) }
+          }
+        }
+        if (-not $success) { throw 'All attempts to install dependencies failed' }
 
     - name: Clean node_modules (Linux/macOS)
       if: runner.os != 'Windows'
