@@ -9,15 +9,18 @@ import json
 import os
 import threading
 
+# Constante com endereço padrão do dispositivo
+DEFAULT_DEVICE_ADDRESS = "1170496755"
+
 class SimpleBotADB:
     """Bot simples para interação com dispositivo Android via ADB"""
     
-    def __init__(self, device_address: str = "192.168.240.112:5555"):
+    def __init__(self, device_address: str = DEFAULT_DEVICE_ADDRESS):
         """
         Inicializa o bot com endereço do dispositivo
         
         Args:
-            device_address: Endereço IP:porta do dispositivo (padrão: 127.0.0.1:5555)
+            device_address: Endereço IP:porta do dispositivo (padrão: DEFAULT_DEVICE_ADDRESS)
         """
         self.device_address = device_address
         self.connected = False
@@ -39,23 +42,60 @@ class SimpleBotADB:
             print("✗ ADB não encontrado. Instale com: sudo apt install adb")
             return False
     
-    def connect(self) -> bool:
-        """Conecta ao dispositivo via ADB"""
+    def get_connected_devices(self) -> list:
+        """Retorna lista de dispositivos conectados via ADB"""
         try:
-            # Tenta conectar
             result = subprocess.run(
-                ["adb", "connect", self.device_address],
+                ["adb", "devices"],
                 capture_output=True,
                 text=True,
-                timeout=10
+                timeout=5
             )
             
-            if "connected" in result.stdout.lower() or "already connected" in result.stdout.lower():
-                print(f"✓ Conectado a {self.device_address}")
+            devices = []
+            lines = result.stdout.strip().split('\n')
+            for line in lines[1:]:  # Pula a primeira linha "List of devices attached"
+                if '\tdevice' in line:
+                    device_id = line.split('\t')[0]
+                    devices.append(device_id)
+            
+            return devices
+        except Exception as e:
+            print(f"✗ Erro ao listar dispositivos: {e}")
+            return []
+    
+    def connect(self) -> bool:
+        """Conecta ao dispositivo via ADB (WiFi ou USB)"""
+        try:
+            # Verifica se já existe um dispositivo conectado
+            connected_devices = self.get_connected_devices()
+            
+            # Se o device_address está na lista de conectados, usa diretamente
+            if self.device_address in connected_devices:
+                print(f"✓ Dispositivo {self.device_address} já conectado via USB")
                 self.connected = True
                 return True
+            
+            # Se tem ":" no endereço, é WiFi (IP:porta)
+            if ":" in self.device_address:
+                result = subprocess.run(
+                    ["adb", "connect", self.device_address],
+                    capture_output=True,
+                    text=True,
+                    timeout=10
+                )
+                
+                if "connected" in result.stdout.lower() or "already connected" in result.stdout.lower():
+                    print(f"✓ Conectado a {self.device_address} via WiFi")
+                    self.connected = True
+                    return True
+                else:
+                    print(f"✗ Falha ao conectar via WiFi: {result.stdout}")
+                    return False
             else:
-                print(f"✗ Falha ao conectar: {result.stdout}")
+                # É um ID de dispositivo, mas não está conectado
+                print(f"✗ Dispositivo {self.device_address} não encontrado")
+                print(f"   Dispositivos disponíveis: {connected_devices}")
                 return False
                 
         except Exception as e:
@@ -65,13 +105,18 @@ class SimpleBotADB:
     def disconnect(self) -> bool:
         """Desconecta do dispositivo"""
         try:
-            result = subprocess.run(
-                ["adb", "disconnect", self.device_address],
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
-            print("✓ Desconectado")
+            # Se for WiFi (tem ":"), desconecta. Se for USB, apenas marca como desconectado
+            if ":" in self.device_address:
+                result = subprocess.run(
+                    ["adb", "disconnect", self.device_address],
+                    capture_output=True,
+                    text=True,
+                    timeout=5
+                )
+                print("✓ Desconectado do WiFi")
+            else:
+                print("✓ Sessão encerrada (dispositivo USB permanece conectado)")
+            
             self.connected = False
             return True
         except Exception as e:
@@ -441,7 +486,7 @@ def load_config(config_file: str = "bot_config.json") -> dict:
         print(f"  Criando arquivo de exemplo...")
         
         default_config = {
-            "device": "192.168.240.112:5555",
+            "device": DEFAULT_DEVICE_ADDRESS,
             "camera_reset": {
                 "enabled": True,
                 "x": 67,
@@ -477,7 +522,7 @@ def main():
     # Carrega configurações do JSON
     config = load_config()
     
-    DEVICE = config.get("device", "192.168.240.112:5555")
+    DEVICE = config.get("device", DEFAULT_DEVICE_ADDRESS)
     CLICKS = config.get("clicks", [])
     CAMERA_RESET = config.get("camera_reset", {})
     LURE = config.get("lure", {})
