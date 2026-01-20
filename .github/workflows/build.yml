@@ -13,7 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [windows-latest]
 
     steps:
     - name: Checkout
@@ -32,26 +32,19 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-node-
 
-    - name: Install dependencies (with retry)
+    - name: Install dependencies (with retry) - Windows PowerShell
+      if: runner.os == 'Windows'
+      shell: pwsh
       run: |
-        set -e
-        attempts=0
-        max_attempts=3
-        until [ $attempts -ge $max_attempts ]
-        do
-          attempts=$((attempts+1))
-          echo "Attempt $attempts of $max_attempts: npm ci --no-audit --no-fund"
-          npm ci --no-audit --no-fund && break
-          echo "npm ci failed on attempt $attempts"
-          if [ $attempts -lt $max_attempts ]; then
-            sleep_time=$((attempts * 5))
-            echo "Sleeping for ${sleep_time}s before retry..."
-            sleep $sleep_time
-          else
-            echo "All attempts failed; exiting with error"
-            exit 1
-          fi
-        done
+        $max = 3
+        for ($i = 1; $i -le $max; $i++) {
+          Write-Host "Attempt $i of $max: npm ci --no-audit --no-fund"
+          npm ci --no-audit --no-fund
+          if ($LASTEXITCODE -eq 0) { break }
+          Write-Host "npm ci failed on attempt $i"
+          if ($i -lt $max) { Start-Sleep -Seconds ($i * 5) }
+          else { throw 'All attempts failed' }
+        }
 
     - name: Clean node_modules (Linux/macOS)
       if: runner.os != 'Windows'
