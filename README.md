@@ -1,33 +1,14 @@
-# 🎮 Bot SRO Mobile - Sistema Completo de Farming Inteligente
+# 🎮 Bot SRO Mobile - Sistema de Automação via ADB
 
-Bot automatizado ultra-avançado para Silkroad Origin Mobile usando controle ADB (Android Debug Bridge). Sistema completo com **Inteligência Artificial**, **Machine Learning**, **Computer Vision**, **Analytics Detalhado**, **Sistema de Recompensas**, **Auto-Calibração**, **A/B Testing**, **Predição de Eventos**, **Dashboard Web em Tempo Real** e **Notificações Multi-Plataforma**.
-
-## 🌟 Novidades v2.0
-
-- 🎯 **Auto-Calibração Inteligente** - Ajusta parâmetros automaticamente baseado em performance
-- 🧪 **A/B Testing** - Testa e escolhe a melhor configuração automaticamente
-- 🔮 **Predição de Eventos** - Prevê level up, XP/hora e melhor horário para farming
-- 🌐 **Dashboard Web** - Interface moderna com gráficos em tempo real
-- 🔔 **Notificações** - Alertas via Telegram, Discord ou Desktop
-- 🚀 **Otimizador Automático** - Sistema integrado que combina todos os recursos de IA
-
-## 🎥 Demonstração
-
-[![Demonstração do Bot](https://img.shields.io/badge/Video-Demo-red?style=for-the-badge&logo=youtube)]([Gravação%20de%20tela%20de%2015-12-2025%2010:13:37.webm](https://github.com/joaodematejr/bot_sro_mobile/blob/main/img/Grava%C3%A7%C3%A3o%20de%20tela%20de%2015-12-2025%2010%3A13%3A37.webm))
-
-*Vídeo mostrando o bot em ação com movimento automático inteligente, detecção de skills e farming otimizado.*
+Bot automatizado simples para Silkroad Origin Mobile usando controle ADB (Android Debug Bridge). Sistema focado em cliques automáticos configuráveis com suporte a movimentação via joystick virtual.
 
 ## 📋 Índice
 
 - [Funcionalidades](#-funcionalidades)
-- [Sistemas Inteligentes](#-sistemas-inteligentes)
-- [Sistemas Avançados de ML](#-sistemas-avançados-de-ml)
-- [🆕 Novos Sistemas de IA 2.0](#-novos-sistemas-de-ia-20)
 - [Requisitos](#-requisitos)
 - [Instalação](#-instalação)
 - [Configuração](#️-configuração)
 - [Uso](#-uso)
-- [Analytics e Métricas](#-analytics-e-métricas)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Troubleshooting](#-troubleshooting)
 
@@ -35,1401 +16,358 @@ Bot automatizado ultra-avançado para Silkroad Origin Mobile usando controle ADB
 
 ### 🤖 Automação Principal
 
-- ✅ **Farming Infinito** - Loop automático de combate e loot
-- ✅ **Sistema de Target** - Detecção e ataque automático de inimigos
-- ✅ **Uso de Skills** - Rotação inteligente de habilidades
-- ✅ **Coleta de Loot** - Pickup automático de itens
-- ✅ **Reset de Câmera** - Mantém visão ideal
-- ✅ **Movimentação Inteligente** - Exploração de áreas baseada em ML
-- ✅ **Sistema de Recuperação** - Detecção e uso de potions
+- ✅ **Cliques Automáticos** - Sequência configurável de cliques com intervalos individuais
+- ✅ **Reset de Câmera em Paralelo** - Thread dedicada para manter visão ideal
+- ✅ **Sistema de Lure** - Cliques automáticos paralelos para atrair inimigos
+- 🕹️ **Movimentação via Joystick** - Controle de movimento usando joystick virtual
+- 🎯 **Lure com Joystick** - Sequência de movimentos em quadrado (frente → esquerda → trás → direita)
+- 📍 **Pointer Location** - Ativar/desativar exibição de coordenadas na tela
 
-### 🛡️ Sistema de Proteção Inteligente
+### 🔧 Funcionalidades Técnicas
 
-- 🚨 **Detecção de HP Baixo** - Monitora saúde via análise de pixel
-- 🔔 **Notificações do Sistema** - Alertas visuais e sonoros
-- ⚠️ **Detecção de Inimigos Perigosos** - OCR identifica bosses/elites
-- 🏃 **Sistema de Fuga Automática** - Evita combates perigosos
-- 💊 **Auto-Potion** - Uso automático de consumíveis
+- 🔌 **Conexão ADB** - Conecta automaticamente ao dispositivo Android via WiFi
+- 📱 **Comandos ADB** - Execução de comandos `adb shell input tap` e `input swipe`
+- 🧵 **Threading** - Threads paralelas para camera reset e lure
+- ⚙️ **Configuração JSON** - Todos os parâmetros em arquivo externo editável
+- 🎮 **Controle de Joystick** - Sistema completo para movimentação direcional
 
-### 🧠 Inteligência Artificial
+### 🕹️ Sistema de Joystick
 
-#### Machine Learning (Scikit-learn)
+O bot suporta dois modos de movimentação via joystick:
 
-- 🎓 **RandomForest Regressor** - Predição de densidade de inimigos
-- 🗺️ **KMeans Clustering** - Identificação de hotspots de farming
-- 📊 **StandardScaler** - Normalização de features para melhor acurácia
-- 💾 **Auto-Treinamento** - Treina automaticamente a cada 100 amostras
-- 📈 **Múltiplos Modelos** - 4 formatos salvos (sklearn, ultra, ultra_adb, avancado)
-- 🔄 **Treinamento Contínuo** - Melhora ao longo do tempo
+#### Modo Contínuo
+- Movimento sustentado em uma direção por duração configurável (padrão: 4000ms)
+- Ideal para deslocamentos longos
 
-#### Computer Vision (OpenCV)
+#### Modo com Passos
+- Movimento intervalado com pausas entre passos
+- Parâmetros configuráveis:
+  - `step_duration`: Duração de cada passo (padrão: 500ms)
+  - `step_interval`: Pausa entre passos (padrão: 0.3s)
+  - `steps_per_direction`: Quantidade de passos por direção (padrão: 4)
+- Cria efeito de caminhada mais natural
+- Usado na sequência de Lure automática
 
-- 🎨 **Detecção de Cores** - `cv2.inRange()` para identificar elementos por cor
-- ⭕ **Detecção de Círculos** - `cv2.HoughCircles()` para encontrar inimigos no minimap
-- 📝 **OCR de Coordenadas** - Lê posição X,Y do personagem via Tesseract
-- 🗺️ **Análise de Minimap** - 8 setores com contagem de inimigos
-- 🎯 **Detecção de Combate** - ImageHash para identificar estado de batalha
-- 📊 **Análise de Densidade** - Heatmap de áreas com mais inimigos
+## 📋 Requisitos
 
-#### Advanced Vision
+### Sistema Operacional
+- ✅ Linux (testado em Ubuntu/Debian)
+- ✅ Windows (com WSL ou ADB nativo)
+- ✅ macOS
 
-- 🌈 **8 Cores Pré-configuradas** - Vermelho, azul, verde, amarelo, roxo, laranja, branco, preto
-- 🔍 **Multi-Detecção** - Combina cor + círculo + OCR
-- 📐 **Vetor de Movimento** - Calcula direção baseado em coordenadas
-- ⚙️ **Configurável** - Todos os parâmetros ajustáveis via JSON
+### Software
+- 🔧 **ADB (Android Debug Bridge)** - Ferramenta de linha de comando para Android
+- 🐍 **Python 3.7+** - Linguagem de programação
 
-#### Algoritmo de Decisão
+### Hardware
+- 📱 **Dispositivo Android** - Com depuração USB ativada
+- 🌐 **Conexão de Rede** - WiFi para conexão ADB wireless
 
-1. **Análise de Minimap** → Conta inimigos por setor
-2. **Machine Learning** → Prevê densidade esperada
-3. **Clustering** → Identifica área mais promissora
-4. **Decisão de Movimento** → Move para direção ideal
-5. **Feedback Loop** → Coleta dados para próximo treinamento
+## 🔧 Instalação
 
-### 📊 Analytics Completo
+### 1. Instalar ADB
 
-#### Tracking de XP
-- 📈 **XP Atual via OCR** - Lê porcentagem exata da barra de XP
-- 💰 **Detecção de EXP Ganho** - OCR identifica quantidade exata após combate
-- ⚡ **XP/min em Tempo Real** - Calcula taxa de ganho
-- 🎯 **Previsão de Level** - Estima tempo para 100% baseado em XP/min
-- 📊 **Histórico Completo** - Salva timeline de todo o progresso
-
-#### Estatísticas de Combate
-- ⚔️ **Kills Tracking** - Conta mortes de inimigos
-- 💀 **Death Counter** - Registra mortes do personagem
-- ⏱️ **Duração de Combate** - Tempo médio por batalha
-- 📈 **Kills/min** - Taxa de abate
-- 🎯 **Eficiência de Combate** - Análise completa de performance
-
-#### Recursos e Consumíveis
-- 💊 **Potions Usadas** - Conta HP/MP/Vigor
-- 💥 **Skills Utilizadas** - Tracking por habilidade
-- 💰 **Loot Coletado** - Histórico de itens
-- 📊 **Taxa de Uso** - Consumo médio por tempo
-
-#### Sistema de Sessões
-- 🆔 **Session ID Único** - Cada farming tem identificador
-- 💾 **Auto-Save** - Salva progresso automaticamente
-- 📁 **Histórico Persistente** - Mantém dados de todas as sessões
-- 📤 **Export JSON** - Gera arquivo com todas as métricas
-
-### 🎓 Sistema de Métricas de Aprendizado ML
-
-#### Monitoramento de Treinamento
-- 📊 **Timeline de Amostras** - Histórico completo de coleta
-- ⏱️ **Tempo de Treinamento** - Duração de cada treino
-- 🎯 **Acurácia (R² Score)** - Qualidade do modelo
-- 📈 **Curva de Aprendizado** - Visualização de progresso
-- 🏆 **Milestones** - Metas (10, 50, 100, 200, 500, 1000+ amostras)
-
-#### Análise de Performance
-- 📈 **Tendências** - Detecta melhora/piora em XP/min, kills/min, duração combate
-- 🔗 **Correlação ML-Performance** - Mede impacto real do ML na eficiência
-- 💡 **Insights Automáticos** - Recomendações baseadas em dados
-- 📊 **Dashboard Ao Vivo** - Visualização em tempo real do progresso
-- 🎨 **Barras de Progresso** - Acompanhamento visual de metas
-
-#### Exportação e Relatórios
-- 📄 **Relatório Resumido** - Texto formatado com principais métricas
-- 💾 **Export JSON Detalhado** - Todos os dados para análise externa
-- 📊 **Métricas de Sessão** - Taxa de coleta, amostras/min
-- 🎯 **Próximo Marco** - Mostra quantas amostras faltam para meta
-
-### 🔔 Sistema de Notificações
-
-- 🖥️ **Notificações do Sistema** - Via libnotify (Linux)
-- 🚨 **Alertas de Perigo** - Quando detecta inimigos perigosos
-- ⚠️ **Urgência Crítica** - Som + ícone de alerta
-- ⏱️ **Duração Configurável** - 10s para alertas importantes
-
-## 🎯 Sistemas Avançados de ML
-
-### 💰 Sistema de Recompensas (`sistema_recompensas.py`)
-
-Sistema de **Reinforcement Learning** que avalia qualidade das ações do bot em tempo real.
-
-#### Pesos de Recompensas
-- ✅ **Kill** = +10 pontos
-- ✅ **Kill Rápido** (< 10s) = +5 pontos
-- ✅ **Multi-Kill** (3+ em 30s) = +15 pontos
-- ✅ **XP Ganho** = +1 por 0.01%
-- ⚔️ **Sem Dano** = +2 pontos
-- 🎯 **Mob Próximo** = +5 pontos
-- 🏃 **Fuga Sucesso** = +8 pontos
-- 💎 **Item Coletado** = +3 pontos
-- 🗺️ **Área Boa** = +5 pontos
-- 🔥 **AOE Eficiente** (3+ mobs) = +7 pontos
-- ⚡ **Skill Eficiente** = +3 pontos
-
-#### Penalidades
-- ❌ **Morte** = -50 pontos
-- ⚠️ **HP Crítico** (< 20%) = -10 pontos
-- 🩹 **HP Baixo** (< 50%) = -5 pontos
-- ⏱️ **Tempo Ocioso** = -2 pontos/min
-- 📍 **Área Ruim** = -3 pontos
-- 🚫 **Stuck** (sem movimento) = -8 pontos
-- 💥 **Skill Desperdiçada** = -2 pontos
-
-#### Funcionalidades
-```python
-# Registra estado e calcula recompensa
-recompensa = sistema.registrar_estado({
-    'hp_percent': 85,
-    'mobs_nearby': 3,
-    'xp_percent': 45.5,
-    'in_combat': True,
-    'kills_recent': 2
-})
-
-# Relatório completo ao finalizar
-sistema.finalizar_sessao()  # Mostra melhores/piores ações
-```
-
-#### Saída
-```
-💰 Sistema de Recompensas - Relatório Final
-============================================================
-📊 Estatísticas da Sessão:
-   Duração: 45.2 min
-   Estados registrados: 542
-   Recompensa total: +1,247.5
-   Recompensa média: +2.30 por estado
-   Melhor recompensa: +25.0
-   Pior recompensa: -15.0
-
-🏆 Melhores Ações:
-   #1. Multi-kill + XP alto: +25.0
-   #2. Kill rápido + sem dano: +17.0
-   #3. AOE eficiente: +15.0
-
-⚠️ Piores Ações:
-   #1. HP crítico + área ruim: -15.0
-   #2. Morte: -50.0
-```
-
-### 🎓 Treinador com Recompensas (`treinador_recompensas.py`)
-
-Treina **RandomForest** usando recompensas como **sample weights** para aprendizado acelerado.
-
-#### Características
-- 🌲 **RandomForest**: 300 estimators, max_depth=20
-- ⚡ **GradientBoosting**: 200 estimators, max_depth=8 (alternativa)
-- 🎯 **Sample Weighting**: Ações com alta recompensa = maior peso no treino
-- 📊 **Comparação**: Mostra melhora vs modelo anterior
-- 🔍 **Feature Importance**: Identifica features mais relevantes
-
-#### Uso
+#### Linux (Ubuntu/Debian)
 ```bash
-# Menu interativo
-python3 treinador_recompensas.py
-
-# Treinamento rápido
-./treinar_rapido.sh
+sudo apt update
+sudo apt install adb
 ```
 
-#### Saída
-```
-🎓 Treinando RandomForest com Recompensas...
-============================================================
-✅ Modelo treinado com 4,500 amostras
-   Acurácia: 87.3%
-   Tempo: 2.45s
-
-📊 Comparação com Modelo Anterior:
-   Modelo antigo: 82.1% acurácia
-   Modelo novo: 87.3% acurácia
-   Melhora: +5.2% ⬆️
-
-🔍 Features Mais Importantes:
-   1. enemy_count: 34.2%
-   2. hour: 18.5%
-   3. sector_N: 12.3%
-```
-
-### 🗺️ Mapeamento de Hotspots (`mapeamento_hotspots.py`)
-
-Sistema que **identifica e ranqueia** as melhores áreas de farming automaticamente.
-
-#### Grid de Mapeamento
-- 📍 Grid **10x10** (100 células)
-- 📊 Rastreia: XP/hora, Kills/min, Mortes, Densidade de mobs
-- 🏆 Calcula **score de qualidade** por região
-- 🎨 Gera **heatmaps visuais** com matplotlib
-
-#### Cálculo de Score
-```python
-Score = XP/hora × 1000 × 0.5        # 50% peso
-      + Kills/min × 20 × 0.3         # 30% peso
-      + Mobs médios × 5 × 0.1        # 10% peso
-      - Mortes/hora × 10 × 0.1       # 10% penalidade
-```
-
-#### Uso
+#### macOS
 ```bash
-# 1. Rodar bot (coleta dados automaticamente)
-python3 main.py
-
-# 2. Ver hotspots mapeados
-./ver_hotspots.sh
-# OU
-python3 mapeamento_hotspots.py
+brew install android-platform-tools
 ```
 
-#### Menu Interativo
-```
-🗺️  MAPEAMENTO DE HOTSPOTS
-======================================
-1. 📊 Ver relatório de hotspots
-2. 🎨 Gerar heatmap (score)
-3. 🎨 Gerar heatmap (XP)
-4. 🎨 Gerar heatmap (Kills)
-5. 🏆 Ver melhor hotspot
-0. ❌ Voltar
-```
+#### Windows
+Baixe o [Android SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) e adicione ao PATH.
 
-#### Saída
-```
-🏆 TOP 3 HOTSPOTS:
-----------------------------------------------------------------------
-#1. auto_5,5
-   Score: 127.45
-   XP/hora: 0.0245%
-   Kills/min: 3.2
-   Mortes/hora: 0.0
-   Mobs médios: 8.5
-   Sessões: 3
-   🌟🌟🌟 MELHOR HOTSPOT!
-
-#2. auto_4,6
-   Score: 98.30
-   XP/hora: 0.0198%
-   Kills/min: 2.8
-   🌟🌟 Excelente!
-
-#3. auto_6,5
-   Score: 85.67
-   XP/hora: 0.0176%
-   Kills/min: 2.5
-   🌟🌟 Excelente!
-```
-
-#### Heatmaps Gerados
-- 📊 `heatmap_score_*.png` - Qualidade geral
-- 💰 `heatmap_xp_*.png` - XP ganho
-- ⚔️ `heatmap_kills_*.png` - Kills por região
-
-### 🔍 Detector Visual Corrigido (`detector_corrigido.py`)
-
-Detecção precisa de objetos **apenas no minimap**.
-
-#### Melhorias
-- ✅ **Crop do minimap**: Analisa região (150,150) → 200x200
-- ✅ **HSV otimizado**: S≥200, V≥200 (cores vibrantes)
-- ✅ **Auto-cleanup**: Mantém apenas 10 imagens debug
-- ✅ **Blob detection**: min_area=20, max_area=500
-
-#### Cores Detectadas
-- 🔴 **Vermelho**: Inimigos (HSV: 0-10, 200-255, 200-255)
-- 🔵 **Azul**: Aliados (HSV: 100-130, 180-255, 180-255)
-- 🟡 **Amarelo**: Itens/NPCs (HSV: 20-30, 200-255, 200-255)
-
-### 📊 Análise de Diversidade (`analisar_diversidade.py`)
-
-Ferramenta de diagnóstico para qualidade dos dados de treino.
-
-#### Métricas
-- 🎯 **Unicidade**: % de amostras únicas
-- 📊 **Variância**: Features com baixa variância
-- 📏 **Distâncias**: Similaridade entre amostras
-- 💡 **Recomendações**: Quantos clusters usar
-
-#### Exemplo de Saída
-```
-📊 Análise de Diversidade - 4,300 amostras
-============================================================
-✅ Amostras únicas: 2,228 (51.8%)
-⚠️  Features baixa variância: 44%
-📏 Distância média: 3.45
-💡 Recomendação: Use 5-10 clusters (não 3)
-```
-
----
-
-## 🆕 Novos Sistemas de IA 2.0
-
-### 🎯 Auto-Calibração Inteligente (`auto_calibracao.py`)
-
-Sistema que **analisa performance e ajusta parâmetros automaticamente** baseado em métricas reais.
-
-#### Funcionalidades
-- ✅ **Análise automática** de sessões de farming
-- ✅ **Detecção de problemas**: Kills baixos, mortes frequentes, tempo ocioso
-- ✅ **Sugestão de ajustes** inteligentes
-- ✅ **Aplicação automática** de configurações otimizadas
-- ✅ **Score de performance** (0-100)
-- ✅ **Histórico** de 50 sessões
-
-#### Parâmetros Ajustáveis
-- `intervalo_target` (1.0-5.0s) - Frequência de busca por alvos
-- `clicks_por_ciclo` (5-30) - Tentativas de ataque
-- `duracao_skill` (0.5-3.0s) - Tempo de execução de skills
-- `raio_mob_proximo` (50-200px) - Distância de detecção
-- `threshold_hp_baixo` (20-60%) - HP para usar potion
-
-#### Metas de Performance
-- Kills/hora: 150+
-- XP/minuto: 1.0%+
-- Taxa de morte: <0.1/hora
-- Tempo ocioso: <15%
-
-#### Uso
+### 2. Clonar o Repositório
 ```bash
-# Analisar última sessão
-python3 auto_calibracao.py
-
-# Via código
-from auto_calibracao import AutoCalibracao
-
-calibrador = AutoCalibracao()
-resultado = calibrador.analisar_sessao({
-    'duracao_segundos': 3600,
-    'kills': 120,
-    'xp_ganho': 45,
-    'mortes': 1,
-    'tempo_ocioso': 600
-})
-
-# Aplicar ajustes automaticamente
-calibrador.aplicar_ajustes_automaticos(resultado['ajustes_sugeridos'])
-```
-
-#### Saída Exemplo
-```
-📊 ANÁLISE DA SESSÃO:
-Score: 61.5/100
-
-⚠️  PROBLEMAS DETECTADOS:
-  • kills_baixos: 120.00 (meta: 150)
-  • mortes_frequentes: 1.00 (meta: 0.1)
-  • xp_baixo: 0.75 (meta: 1.0)
-
-💡 AJUSTES SUGERIDOS:
-  • intervalo_target: diminuir
-    Razão: Aumentar frequência de busca por alvos
-  • clicks_por_ciclo: aumentar
-    Razão: Mais clicks = mais tentativas de ataque
-```
-
-### 🧪 Sistema de A/B Testing (`ab_testing.py`)
-
-Testa **múltiplas configurações** e escolhe a melhor automaticamente usando **epsilon-greedy**.
-
-#### Variantes Disponíveis
-- 🛡️ **A_conservador**: Seguro, defensivo (intervalo 3s, 10 clicks, HP 50%)
-- ⚔️ **B_agressivo**: Máximo DPS (intervalo 1.5s, 20 clicks, HP 30%)
-- ⚖️ **C_balanceado**: Equilibrado (intervalo 2s, 15 clicks, HP 40%)
-- 🔬 **D_experimental**: Testes extremos (intervalo 1s, 25 clicks, HP 25%)
-
-#### Estratégia
-- **Epsilon-greedy**: 80% usa melhor, 20% explora outras
-- **Score composto**: 40% kills + 30% XP + 30% sobrevivência
-- **Histórico completo** de todas as variantes
-
-#### Uso
-```bash
-# Ver relatório
-python3 ab_testing.py
-
-# Aplicar variante
-from ab_testing import ABTesting
-
-ab = ABTesting()
-ab.aplicar_variante('B_agressivo')
-
-# Registrar resultado após sessão
-ab.registrar_resultado({
-    'duracao_segundos': 3600,
-    'kills': 180,
-    'xp_ganho': 60,
-    'mortes': 2
-})
-
-# Ver melhor
-melhor = ab.obter_melhor_variante()
-```
-
-#### Saída
-```
-🧪 A/B TESTING - RELATÓRIO DE VARIANTES
-══════════════════════════════════════
-  A_conservador
-    Score: 65.3  |  Kills/h: 135.2  |  Testes: 3
-
-  B_agressivo 🏆
-    Score: 78.5  |  Kills/h: 182.4  |  Testes: 5
-
-  C_balanceado
-    Score: 71.2  |  Kills/h: 158.7  |  Testes: 4
-```
-
-### 🔮 Predição de Eventos (`predicao_eventos.py`)
-
-Sistema que **prevê eventos futuros** usando séries temporais e padrões aprendidos.
-
-#### Predições Disponíveis
-- ⏱️ **Tempo até HP baixo** - Prevê quando HP ficará crítico
-- 🎉 **Horário de Level UP** - Estima quando chegará a 100%
-- 📊 **XP na próxima hora** - Calcula XP/hora esperado
-- ⭐ **Melhor horário** - Detecta padrões por hora do dia
-- ⚠️ **Alertas proativos** - Avisos antecipados
-
-#### Padrões Aprendidos
-- Dano médio por segundo em combate
-- Tempo médio para matar mobs
-- XP médio por kill
-- Performance por horário do dia
-
-#### Uso
-```bash
-# Testar predições
-python3 predicao_eventos.py
-
-# Integrar no bot
-from predicao_eventos import PredicaoEventos
-
-predicao = PredicaoEventos()
-
-# Registrar combate
-predicao.registrar_combate({
-    'hp_inicial': 100,
-    'hp_final': 85,
-    'duracao': 8.5,
-    'xp_ganho': 0.05
-})
-
-# Prever level up
-level_up = predicao.prever_level_up(xp_atual=45.5)
-print(f"Level UP em: {level_up}")
-
-# XP/hora
-xp_hora = predicao.prever_xp_proxima_hora()
-print(f"XP estimado: {xp_hora:.2f}%")
-
-# Alertas
-alertas = predicao.alertas_proativos({
-    'hp': 75,
-    'em_combate': True,
-    'xp_atual': 45.5
-})
-```
-
-#### Saída
-```
-⏰ ANÁLISE DE HORÁRIOS DE FARMING
-══════════════════════════════════════
-🌟 MELHOR HORÁRIO: 14:00 - 15:00
-   XP médio: 0.087% por kill
-
-📉 PIOR HORÁRIO: 03:00 - 04:00
-   XP médio: 0.042% por kill
-
-💡 SUGESTÃO:
-   Farme durante 14:00 - 15:00 para máxima eficiência
-```
-
-### 🌐 Dashboard Web em Tempo Real (`dashboard_web.py`)
-
-Interface web moderna com **atualização automática via WebSocket** e gráficos interativos.
-
-#### Recursos
-- 📊 **Métricas em tempo real** - Uptime, XP, Kills, Score
-- 📈 **Gráficos interativos** - Chart.js com histórico
-- 🔔 **Alertas visuais** - Problemas e conquistas
-- 🎨 **Design moderno** - Gradientes, backdrop-filter, animações
-- 🔄 **Auto-atualização** - WebSocket a cada 5 segundos
-- 📱 **Responsivo** - Acesse de qualquer dispositivo na rede
-
-#### Tecnologias
-- **Backend**: Flask + SocketIO
-- **Frontend**: Chart.js + WebSockets + CSS moderno
-- **Dados**: JSON do analytics_data/
-
-#### Uso
-```bash
-# Instalar dependências
-pip install Flask Flask-SocketIO
-
-# Iniciar dashboard
-python3 dashboard_web.py
-
-# Acessar no navegador
-http://localhost:5000
-
-# Testar com dados simulados (outro terminal)
-python3 testar_dashboard.py 5
-```
-
-#### Visualizações
-- ⏱️ Status online com uptime
-- 💰 XP total e XP/min
-- ⚔️ Kills total e kills/min
-- 📊 Score de eficiência
-- 📈 Gráfico de histórico de XP
-- 📈 Gráfico de histórico de Kills
-- 🔔 Feed de alertas em tempo real
-
-### 🔔 Sistema de Notificações Multi-Plataforma (`sistema_notificacoes.py`)
-
-Envia **alertas importantes** para múltiplos canais automaticamente.
-
-#### Canais Suportados
-- 💬 **Telegram** - Via Bot API (recomendado)
-- 💜 **Discord** - Via Webhooks
-- 🖥️ **Desktop** - Notificações nativas (Linux)
-- 📧 **Email** - SMTP (opcional)
-
-#### Eventos Notificados
-- 🎯 **Milestone de kills** - A cada 100 kills
-- 🎉 **Level UP** - Quando sobe de nível
-- 💀 **Morte** - Quando o personagem morre
-- ❌ **Erros críticos** - Falhas do bot
-- ⏸️ **Bot pausado** - Inatividade longa
-- 📊 **Fim de sessão** - Resumo completo
-
-#### Configuração Telegram
-```python
-from sistema_notificacoes import SistemaNotificacoes
-
-notif = SistemaNotificacoes()
-
-# 1. Fale com @BotFather no Telegram
-# 2. Crie um bot e pegue o token
-# 3. Fale com @userinfobot e pegue seu chat_id
-notif.configurar_telegram("SEU_TOKEN", "SEU_CHAT_ID")
-
-# Testar
-notif.testar_notificacoes()
-```
-
-#### Configuração Discord
-```python
-# 1. Vá em Servidor > Configurações > Integrações > Webhooks
-# 2. Crie webhook e copie a URL
-notif.configurar_discord("SUA_WEBHOOK_URL")
-```
-
-#### Uso no Bot
-```python
-# Kill milestone
-notif.notificar_kill(100)
-
-# Level up
-notif.notificar_level_up(45)
-
-# Morte
-notif.notificar_morte()
-
-# Fim de sessão
-notif.notificar_sessao_completa({
-    'duracao_total': 3600,
-    'kills_total': 150,
-    'xp_total': 45.5,
-    'mortes': 1,
-    'xp_por_minuto': 0.76
-})
-```
-
-#### Filtros Configuráveis
-- **Nível mínimo**: debug, info, warning, error, critical
-- **Tipos de eventos**: kills, level_up, morte, erro
-- **Canais ativos**: Liga/desliga cada canal
-
-### 🚀 Otimizador Automático (`otimizador_automatico.py`)
-
-Sistema **integrado** que combina Auto-Calibração + A/B Testing + Predição.
-
-#### Modos de Operação
-- 🛡️ **Conservador**: Só ajusta se score < 60 (mais seguro)
-- ⚙️ **Automático**: Ajusta se score < 70 (recomendado)
-- ⚔️ **Agressivo**: Sempre ajusta quando possível (experimental)
-
-#### Funcionalidades
-- ✅ Análise automática de performance
-- ✅ Detecção inteligente de problemas
-- ✅ Aplicação automática de ajustes
-- ✅ Histórico de otimizações
-- ✅ Relatórios detalhados
-- ✅ Integração com todos os sistemas
-
-#### Uso Rápido
-```bash
-# Modo interativo (recomendado para testes)
-python3 otimizador_automatico.py interativo
-
-# Exemplo básico
-python3 otimizador_automatico.py exemplo
-
-# Ver código de integração
-python3 otimizador_automatico.py integracao
-```
-
-#### Integração no Bot
-```python
-from otimizador_automatico import OtimizadorAutomatico
-
-# Criar otimizador (modo automático)
-otimizador = OtimizadorAutomatico(modo='automatico')
-
-# A cada 1 hora de farming
-resultado = otimizador.analisar_e_otimizar({
-    'duracao_segundos': 3600,
-    'kills': 120,
-    'xp_ganho': 45,
-    'mortes': 1,
-    'tempo_ocioso': 600
-}, aplicar=True)
-
-# Ver relatório
-print(otimizador.relatorio_completo())
-```
-
-#### Saída Completa
-```
-🔍 ANALISANDO PERFORMANCE...
-══════════════════════════════════════════════════════════════════
-
-📊 SCORE GERAL: 61.5/100
-⚠️  REGULAR
-
-⚠️  PROBLEMAS DETECTADOS (4):
-  • kills_baixos: 120.00 (meta: 150)
-  • mortes_frequentes: 1.00 (meta: 0.1)
-  • tempo_ocioso_alto: 0.17 (meta: 0.15)
-  • xp_baixo: 0.75 (meta: 1.0)
-
-💡 AJUSTES SUGERIDOS (4):
-  • intervalo_target: diminuir
-    ↳ Aumentar frequência de busca por alvos
-  • clicks_por_ciclo: aumentar
-    ↳ Mais clicks = mais tentativas de ataque
-  • threshold_hp_baixo: aumentar
-    ↳ Usar potion mais cedo para evitar mortes
-  • raio_mob_proximo: aumentar
-    ↳ Detectar mobs mais distantes
-
-⚙️  APLICANDO AJUSTES AUTOMATICAMENTE...
-   ✅ 4 ajuste(s) aplicado(s):
-
-   • intervalo_target:
-     2.0 → 1.8
-     Razão: Aumentar frequência de busca por alvos
-```
-
----
-
-## 📦 Requisitos
-
-### Sistema
-- Linux (testado em Pop!_OS/Ubuntu)
-- Python 3.10+
-- Android Debug Bridge (ADB)
-- Waydroid ou dispositivo Android conectado via rede
-
-### Dependências Python
-```bash
-# Machine Learning & Computer Vision
-numpy>=1.24.0
-pillow>=10.0.0
-scikit-learn>=1.3.0
-opencv-python>=4.8.0
-opencv-contrib-python>=4.8.0
-imagehash>=4.3.0
-pytesseract>=0.3.10
-scipy>=1.11.0
-joblib>=1.3.0
-pandas>=2.0.0
-
-# Web Dashboard & Notificações (Novos)
-Flask>=2.3.0
-Flask-SocketIO>=5.3.0
-python-socketio>=5.9.0
-requests>=2.31.0
-
-# Utilities
-python-dateutil>=2.8.2
-```
-
-### Ferramentas do Sistema
-```bash
-android-tools-adb        # Controle Android
-tesseract-ocr            # OCR para leitura de texto
-tesseract-ocr-por        # Idioma português para OCR
-libnotify-bin           # Notificações do sistema (Linux)
-```
-
-## 🚀 Instalação
-
-### 1. Clone o repositório
-```bash
-git clone <repo-url> bot_sro_mobile
+git clone https://github.com/joaodematejr/bot_sro_mobile.git
 cd bot_sro_mobile
 ```
 
-### 2. Instale dependências do sistema
+### 3. Preparar Ambiente (Opcional)
 ```bash
-sudo apt-get update
-sudo apt-get install -y android-tools-adb tesseract-ocr tesseract-ocr-por libnotify-bin
-```
-
-### 3. Instale dependências Python
-```bash
-pip3 install -r requirements.txt
-```
-
-### 4. Conecte ao dispositivo Android
-```bash
-# Para Waydroid
-adb connect 192.168.240.112:5555
-
-# Para dispositivo físico (encontre o IP nas configurações)
-adb connect SEU_IP:5555
-
-# Verifique conexão
-adb devices
+# Criar ambiente virtual (recomendado)
+python3 -m venv venv
+source venv/bin/activate  # Linux/macOS
+# ou
+venv\Scripts\activate  # Windows
 ```
 
 ## ⚙️ Configuração
 
-### Arquivo de Configuração (`config_farming_adb.json`)
+### 1. Ativar Depuração USB no Android
 
-O bot gera automaticamente um arquivo de configuração. Principais seções:
+1. Vá em **Configurações** → **Sobre o telefone**
+2. Toque 7 vezes em **Número da compilação**
+3. Volte e acesse **Opções do desenvolvedor**
+4. Ative **Depuração USB**
+5. Ative **Depuração USB via rede**
 
-#### Configuração Básica
+### 2. Conectar via ADB WiFi
+
+```bash
+# Conectar via USB primeiro
+adb tcpip 5555
+
+# Desconectar USB e conectar via WiFi
+adb connect <IP_DO_DISPOSITIVO>:5555
+```
+
+### 3. Configurar bot_config.json
+
+O arquivo `bot_config.json` contém todas as configurações do bot:
+
 ```json
 {
-  "adb_device": "192.168.240.112:5555",
-  "screen_width": 1920,
-  "screen_height": 993,
-  
-  "joystick_centro_x": 288,
-  "joystick_centro_y": 868,
-  "joystick_raio": 73,
-  
-  "posicoes_skills": [
-    {"nome": "Skill 1", "x": 1632, "y": 744},
-    {"nome": "Skill 2", "x": 1728, "y": 784},
-    {"nome": "Skill 3", "x": 1536, "y": 784}
+  "device": "192.168.240.112:5555",
+  "camera_reset": {
+    "enabled": true,
+    "x": 67,
+    "y": 146,
+    "interval": 8.0,
+    "description": "Resetar Camera"
+  },
+  "lure": {
+    "enabled": false,
+    "x": 1728,
+    "y": 803,
+    "interval": 3.0,
+    "description": "Lure"
+  },
+  "joystick": {
+    "center_x": 248,
+    "center_y": 789,
+    "duration": 4000,
+    "step_duration": 500,
+    "step_interval": 0.3,
+    "steps_per_direction": 4,
+    "cycle_interval": 5,
+    "forward": {"x": 246, "y": 697},
+    "backward": {"x": 243, "y": 869},
+    "left": {"x": 334, "y": 787},
+    "right": {"x": 164, "y": 790}
+  },
+  "clicks": [
+    {
+      "x": 1833,
+      "y": 540,
+      "interval": 2.0,
+      "description": "Skill 1"
+    }
   ]
 }
 ```
 
-#### Configuração de IA
-```json
-{
-  "ia_config": {
-    "usar_ia": true,
-    "usar_ml": true,
-    "usar_advanced_vision": true,
-    "intervalo_analise_ia": 5,
-    "min_amostras_treino": 10
-  },
-  
-  "advanced_vision": {
-    "detect_colors_enabled": true,
-    "detect_circles_enabled": true,
-    "read_coords_enabled": true,
-    "target_colors": ["vermelho", "azul", "amarelo"],
-    "coord_region": {"x": 10, "y": 10, "width": 200, "height": 30}
-  }
-}
-```
+#### Parâmetros Principais
 
-#### Configuração de Analytics
-```json
-{
-  "analytics_config": {
-    "enabled": true,
-    "auto_save_interval": 300,
-    "export_on_exit": true,
-    "track_xp": true,
-    "track_combat": true,
-    "track_resources": true
-  }
-}
-```
-  "screen_width": 1920,
-  "screen_height": 993,
-  
-  "joystick_centro_x": 288,
-  "joystick_centro_y": 868,
-  "joystick_raio": 73,
-  
-  "posicoes_skills": [
-    {"nome": "Skill 1", "x": 1632, "y": 744},
-    {"nome": "Skill 2", "x": 1728, "y": 784},
-    {"nome": "Skill 3", "x": 1536, "y": 784}
-  ],
-  
-  "posicao_botao_camera": {"x": 50, "y": 150},
-  "intervalo_reset_camera": 1,
-  
-  "usar_minimapa": true,
-  "posicao_minimapa": {"x": 50, "y": 50, "width": 200, "height": 200},
-  
-  "detectar_inimigos_perigosos": true,
-  "inimigos_para_fugir": ["Giant", "Boss", "Elite", "Champion"],
-  "regiao_nome_inimigo": {"x": 400, "y": 100, "largura": 600, "altura": 150},
-  "intervalo_verificacao_inimigo": 2,
-  
-  "salvar_imagens_treino": true,
-  "max_imagens_treino": 100
-}
-```
+- **device**: Endereço IP:porta do dispositivo Android
+- **camera_reset**: Configuração para reset automático de câmera
+  - `enabled`: Habilita/desabilita a função
+  - `x`, `y`: Coordenadas do botão de reset
+  - `interval`: Intervalo entre resets em segundos
+- **lure**: Configuração para cliques automáticos de atração
+  - `enabled`: Habilita/desabilita a função
+  - `x`, `y`: Coordenadas do botão de lure
+  - `interval`: Intervalo entre cliques em segundos
+- **joystick**: Configuração do joystick virtual
+  - `center_x`, `center_y`: Centro do joystick
+  - `duration`: Duração padrão de movimento contínuo (ms)
+  - `step_duration`: Duração de cada passo (ms)
+  - `step_interval`: Pausa entre passos (segundos)
+  - `steps_per_direction`: Número de passos por direção
+  - `cycle_interval`: Pausa entre ciclos completos (segundos)
+  - Direções: `forward`, `backward`, `left`, `right`
+- **clicks**: Lista de cliques sequenciais
+  - `x`, `y`: Coordenadas do clique
+  - `interval`: Tempo de espera após este clique (segundos)
+  - `description`: Descrição do botão/ação
 
-### Personalização
+## 🚀 Uso
 
-
-
-## 🎯 Uso
-
-### Execução Principal
-```bash
-# Farming infinito com todas as funcionalidades
-python3 main.py
-```
-
-O bot iniciará automaticamente com:
-- ✅ IA e ML habilitados
-- ✅ Analytics tracking XP, combate e recursos
-- ✅ Advanced Vision (cores, círculos, OCR)
-- ✅ Auto-save de métricas
-- ✅ Notificações de alerta
-
-### Interromper com Segurança
-Pressione `Ctrl+C` para parar. O bot irá:
-1. Salvar analytics automaticamente
-2. Exportar métricas para JSON
-3. Exibir relatório completo com:
-   - Estatísticas de XP (ganho, taxa, tempo para level)
-   - Estatísticas de combate (kills, kills/min, XP/kill)
-   - Estatísticas de IA (análises, movimentos, detecções)
-   - Caminho do arquivo de métricas exportado
-
-### Exemplo de Output ao Parar
-```
-📊 Estatísticas:
-  🎥 Resets de câmera: 145
-  🎯 Targets totais: 287
-  🔄 Ciclos de target: 95
-  💰 Screenshots EXP ganho: 58
-
-📈 Analytics:
-  XP ganho: 2.35%
-  XP/min: 0.0154%
-  Tempo para level: 3h 28min
-  Kills: 45
-  Kills/min: 2.10
-  XP médio/kill: 0.0523%
-
-💰 Sistema de Recompensas - Relatório Final:
-  Duração: 45.2 min
-  Recompensa total: +1,247.5
-  Melhor ação: Multi-kill + XP alto (+25.0)
-
-🗺️  Hotspot Finalizado: auto_farming_area
-  Score: 127.45
-  XP/hora: 0.0245%
-  Rank: #1 🌟🌟🌟
-
-💾 Métricas exportadas: metrics_20251214_143052.json
-
-🧠 Estatísticas de IA:
-  🔍 Análises de minimap: 89
-  🚶 Movimentos inteligentes: 12
-  👹 Inimigos detectados: 234
-  📊 Média por scan: 2.6
-  🎓 Amostras ML coletadas: 89
-```
-
-## 🎓 Ferramentas de Treinamento
-
-### Treinamento com Recompensas
-```bash
-# Menu interativo
-python3 treinador_recompensas.py
-
-# Treinamento rápido
-./treinar_rapido.sh
-```
-
-**Opções:**
-1. 🌲 **RandomForest** com recompensas (recomendado)
-2. ⚡ **GradientBoosting** com recompensas (alternativa)
-3. 🧪 **Testar modelo** (predição de ações)
-4. 📊 **Comparar** com modelo anterior
-
-### Visualização de Hotspots
-```bash
-# Menu de hotspots
-./ver_hotspots.sh
-
-# OU direto
-python3 mapeamento_hotspots.py
-```
-
-**Opções:**
-1. 📊 **Relatório** - Top 10 hotspots ranqueados
-2. 🎨 **Heatmap Score** - Mapa de qualidade
-3. 🎨 **Heatmap XP** - Mapa de XP ganho
-4. 🎨 **Heatmap Kills** - Mapa de kills
-5. 🏆 **Melhor hotspot** - Detalhes do #1
-
-### Análise de Diversidade
-```bash
-# Diagnóstico dos dados de treino
-python3 analisar_diversidade.py
-```
-
-**Mostra:**
-- % de amostras únicas
-- Features com baixa variância
-- Recomendação de clusters
-- Plano de coleta de dados
-
-## 📊 Analytics e Métricas
-
-### Visualizador de Analytics
+### Executar o Bot
 
 ```bash
-# Menu interativo completo
-python3 view_analytics.py
+python3 simple_bot.py
 ```
 
-**Opções disponíveis:**
-1. 📊 Ver sessão atual
-2. 📁 Histórico de sessões
-3. 💰 Análise de XP ganho
-4. 💾 Exportar métricas
-5. 📈 Análise de eficiência
-6. 📄 Relatório completo
-7. ❌ Sair
+### Menu Principal
 
-### Sistema de Métricas ML
+```
+==================================================
+BOT SIMPLES ADB - MENU
+==================================================
+1 - Iniciar Bot (cliques automáticos)
+2 - Ativar Pointer Location (mostrar coordenadas)
+3 - Desativar Pointer Location
+4 - Habilitar/Desabilitar Lure
+5 - Lure com Joystick (frente → esquerda → trás → direita)
+6 - Sair
+==================================================
+```
+
+### Opções do Menu
+
+#### 1. Iniciar Bot
+- Executa a sequência de cliques configurada em `bot_config.json`
+- Se `camera_reset.enabled = true`, inicia thread paralela para reset de câmera
+- Se `lure.enabled = true`, inicia thread paralela para cliques de lure
+- **Pressione Ctrl+C para parar**
+
+#### 2. Ativar Pointer Location
+- Ativa a exibição de coordenadas na tela do Android
+- Útil para descobrir as coordenadas de botões para configurar no JSON
+- Execute: `adb shell settings put system pointer_location 1`
+
+#### 3. Desativar Pointer Location
+- Remove a exibição de coordenadas da tela
+
+#### 4. Habilitar/Desabilitar Lure
+- Alterna o estado de `lure.enabled` no arquivo de configuração
+- Mudança será aplicada na próxima execução do bot
+
+#### 5. Lure com Joystick
+- Executa movimento em quadrado usando o joystick virtual
+- Sequência: frente → esquerda → trás → direita
+- Usa modo com passos intervalados para movimento mais natural
+- Loop infinito até pressionar Ctrl+C
+
+#### 6. Sair
+- Desconecta do dispositivo e encerra o programa
+
+### Descobrindo Coordenadas
+
+1. Ative o Pointer Location (opção 2 do menu)
+2. Toque nos botões desejados na tela
+3. Observe as coordenadas no topo da tela
+4. Anote os valores X e Y
+5. Adicione ao `bot_config.json`
+6. Desative o Pointer Location (opção 3)
+
+### Exemplo de Uso
 
 ```bash
-# Dashboard único
-python3 metricas_aprendizado.py
+# 1. Conectar ao dispositivo
+python3 simple_bot.py
 
-# Monitoramento contínuo (atualiza a cada 30s)
-python3 metricas_aprendizado.py monitor
+# 2. Ativar Pointer Location
+Escolha: 2
 
-# Monitoramento com intervalo customizado (60s)
-python3 metricas_aprendizado.py monitor 60
-```
+# 3. Anotar coordenadas tocando nos botões
 
-**Dashboard de Métricas ML:**
-```
-🧠 DASHBOARD DE APRENDIZADO ML
-================================================================================
+# 4. Desativar Pointer Location
+Escolha: 3
 
-📊 PROGRESSO DE TREINAMENTO
---------------------------------------------------------------------------------
-Total de amostras: 89
-Trainings realizados: 0
+# 5. Editar bot_config.json com as coordenadas
 
-Próximo marco: 100 amostras
-[████████████████████████████████████░░░░] 89.0% (89/100)
+# 6. Iniciar o bot
+Escolha: 1
 
-📈 Sessão Atual:
-  Amostras coletadas: 89
-  Taxa de coleta: 1.23 amostras/min
-
-🎯 TENDÊNCIAS DE PERFORMANCE
---------------------------------------------------------------------------------
-XP/min: 📈 0.0154% (+8.3%)
-Kills/min: 📈 2.10 (+12.1%)
-Duração combate: 📈 14.2s (-5.7%)
-
-🔗 Impacto do ML: +10.5%
-   ✅ ML está melhorando a performance!
-```
-
-### Relatório de Aprendizado Completo
-
-```bash
-python3 relatorio_aprendizado.py
-```
-
-**Menu de Relatórios:**
-1. 📄 Ver relatório completo
-2. 💾 Exportar métricas (JSON)
-3. 🤖 Status dos modelos ML
-4. 📸 Estatísticas de imagens
-5. 📈 Análise de progressão
-6. 🎯 Impacto do ML
-0. ❌ Sair
-
-**Exemplo de Relatório:**
-```
-📊 RELATÓRIO DE MÉTRICAS DE APRENDIZADO
-================================================================================
-
-🤖 MODELOS DE MACHINE LEARNING
---------------------------------------------------------------------------------
-✅ Modelos treinados: 4
-  • modelo_sklearn.pkl (45.2 KB)
-  • modelo_ultra.pkl (38.7 KB)
-  • modelo_ultra_adb.pkl (92.1 KB)
-  • ml_avancado_modelo.pkl (92.1 KB)
-
-📊 Total de amostras coletadas: 89
-🕐 Último treinamento: 14/12/2025 14:30
-   (há 2 horas)
-
-📸 DADOS DE TREINAMENTO
---------------------------------------------------------------------------------
-Imagens de minimap: 89
-Imagens de EXP gain: 58
-Espaço total: 12.45 MB
-Período de coleta: 3 dias
-
-📈 PROGRESSÃO DE APRENDIZADO
---------------------------------------------------------------------------------
-Total de sessões analisadas: 5
-Tempo total de farming: 2:15:33
-Sessões com ML ativo: 3
-
-XP/min: 📈 Melhorando (+8.3%)
-  Média: 0.0142%/min
-
-Kills/min: 📈 Melhorando (+12.1%)
-  Média: 2.05 kills/min
-
-💡 RECOMENDAÇÕES
---------------------------------------------------------------------------------
-  ✅ Dados suficientes! Execute force_train() para criar modelos
-  ✅ ML melhorando performance significativamente!
-```
-
-### Detecção de XP Ganho
-
-```bash
-# Processa screenshots de EXP ganho
-python3 xp_detector.py
-```
-
-Extrai valores exatos de XP de screenshots usando OCR otimizado.
-
-### Status do Treinamento ML
-
-```bash
-python3 ml_status.py
-```
-
-Mostra:
-- Amostras coletadas
-- Progresso até próximo treino
-- Modelos salvos
-- Opção de treino manual
-
-### Utilitários
-
-```bash
-# Limpa screenshots corrompidos
-python3 clean_corrupted.py
-
-# Testa método de screenshot
-python3 test_screenshot.py
-```
-
-## 🎮 Calibração
-
-### 📍 Método Rápido: Visualização de Coordenadas (RECOMENDADO)
-
-**Ative a exibição de coordenadas na tela do dispositivo:**
-
-```bash
-# Ativar visualização de coordenadas (mostra X,Y no topo da tela ao tocar)
-adb -s 192.168.240.112:5555 shell settings put system pointer_location 1
-
-# Agora toque em qualquer lugar do jogo e veja as coordenadas aparecerem!
-# Anote os valores X,Y de cada botão/região
-
-# Desativar quando terminar a calibração
-adb -s 192.168.240.112:5555 shell settings put system pointer_location 0
-```
-
-**Como usar:**
-1. Execute o comando para ativar
-2. Toque em cada botão/região do jogo (joystick, skills, loot, etc.)
-3. As coordenadas aparecem em tempo real no topo da tela
-4. Anote os valores X,Y e atualize `config_farming_adb.json`
-5. Desative quando terminar
-
-### Calibrador Interativo (Alternativo)
-Use o calibrador para encontrar coordenadas precisas:
-
-```bash
-python3 calibrador_interativo.py
-```
-
-O script permite testar coordenadas digitando X e Y. Clica no dispositivo e você vê o resultado instantaneamente.
-
-### Elementos para Calibrar
-
-1. **Joystick** (canto inferior esquerdo)
-   - Centro: onde o joystick está em repouso
-   - Raio: distância máxima do arrasto
-
-2. **Skills** (canto inferior direito)
-   - Posição de cada botão de skill
-
-3. **Botão de Câmera** (próximo ao level do personagem)
-   - Ícone para resetar câmera
-
-4. **Minimapa** (canto superior esquerdo)
-   - Região onde aparecem os inimigos
-
-5. **Barra de HP** (canto superior esquerdo)
-   - Pixel para detectar HP baixo
-
-6. **Barra de XP** (parte inferior da tela)
-   - Região para OCR ler percentual de XP
-
-7. **Região de Nome do Inimigo** (centro-superior da tela)
-   - Área onde aparece o nome do inimigo durante combate
-   - Usado para detectar inimigos perigosos (Giant, Boss, etc.)
-
-### Calibrando Região de Nome do Inimigo
-
-Para melhor detecção de inimigos perigosos:
-
-1. Entre em combate com qualquer inimigo
-2. Observe onde o nome aparece (geralmente centro-superior)
-3. Tire um screenshot: `adb shell screencap -p > screenshot.png`
-4. Meça as coordenadas da região do nome
-5. Ajuste `regiao_nome_inimigo` no config
-
-### Testando Coordenadas Manualmente
-```bash
-# Teste básico
-adb -s 192.168.240.112:5555 shell input tap X Y
-
-# Teste de movimento (joystick)
-adb -s 192.168.240.112:5555 shell input swipe 288 868 361 868 1500
+# Bot executará:
+# - Sequência de cliques configurada
+# - Camera reset em paralelo (se habilitado)
+# - Lure em paralelo (se habilitado)
 ```
 
 ## 📁 Estrutura do Projeto
 
 ```
 bot_sro_mobile/
-├── main.py                          # ⭐ Script principal do bot
-├── ai_modules.py                    # 🧠 Módulos de IA (ML + CV)
-│   ├── MinimapVision                # Análise de minimap (8 setores)
-│   ├── MLPredictor                  # Machine Learning (RF + KMeans)
-│   ├── CombatDetector               # Detecção de combate (ImageHash)
-│   ├── OCRReader                    # OCR para XP e texto
-│   └── AdvancedVision               # Detecção avançada (cores + círculos)
-│
-├── analytics.py                     # 📊 Sistema de analytics completo
-│   └── FarmingAnalytics             # XP, combate, recursos, previsões
-│
-├── xp_detector.py                   # 💰 Detector de EXP ganho (OCR)
-│   └── XPGainDetector               # Extração de valores de XP
-│
-├── metricas_aprendizado.py          # 🎓 Sistema de métricas ML
-│   └── MetricasAprendizadoML        # Tracking de treinamento e tendências
-│
-├── relatorio_aprendizado.py         # 📄 Relatórios de aprendizado
-│   └── RelatorioAprendizado         # Análise completa de ML e progresso
-│
-├── view_analytics.py                # 📈 Visualizador de analytics
-│   └── Menu interativo              # 7 opções de visualização
-│
-├── sistema_recompensas.py           # 💰 Sistema de Recompensas (RL)
-│   └── SistemaRecompensas           # Avaliação de ações (reward/penalty)
-│
-├── treinador_recompensas.py         # 🎓 ML com Sample Weighting
-│   └── TreinadorComRecompensas      # RandomForest + rewards
-│
-├── mapeamento_hotspots.py           # 🗺️ Mapeamento de Áreas
-│   └── MapeadorHotspots             # Grid 10x10, scores, heatmaps
-│
-├── detector_corrigido.py            # 🔍 Detecção Visual Otimizada
-│   └── DetectorVisualCorrigido      # Minimap-only, HSV ajustado
-│
-├── analisar_diversidade.py          # 📊 Análise de Dados
-│   └── Diagnóstico de qualidade     # Unicidade, variância, clusters
-│
-├── limpar_imagens.py                # 🧹 Gerenciador de Imagens
-│   └── Limpeza interativa           # Mantém N mais recentes
-│
-├── ml_status.py                     # 🔍 Status do ML
-├── test_screenshot.py               # 🧪 Testa métodos de screenshot
-├── clean_corrupted.py               # 🧹 Remove PNGs corrompidos
-│
-├── treinar_rapido.sh                # ⚡ Script de treino rápido
-├── ver_hotspots.sh                  # 🗺️ Visualizador de hotspots
-│
-├── config_farming_adb.json          # ⚙️ Configuração principal
-├── requirements.txt                 # 📦 Dependências Python
-│
-├── ml_models/                       # 🤖 Modelos e Dados
-│   ├── modelo_sklearn.pkl           # RandomForest base
-│   ├── modelo_com_recompensas.pkl   # RF com rewards
-│   ├── training_data.json           # 4,500+ amostras
-│   ├── rewards_history.json         # Histórico de recompensas
-│   └── hotspots_map.json            # Mapa de hotspots
-│
-├── analytics_data/                  # 📊 Dados de analytics
-│   ├── session_*.json               # Sessões de farming
-│   └── heatmaps/                    # Mapas visuais de hotspots
-│       ├── heatmap_score_*.png
-│       ├── heatmap_xp_*.png
-│       └── heatmap_kills_*.png
-│
-├── treino_ml/                       # 📸 Screenshots de treino (max: 10)
-├── exp_ganho_treino/                # 💰 XP ganho (max: 10)
-├── minimap_captures/                # 🗺️ Capturas minimap (max: 10)
-├── debug_deteccao/                  # 🔍 Debug detector (max: 10)
-│
-└── README.md                        # 📖 Esta documentação
+├── simple_bot.py          # Script principal do bot
+├── bot_config.json        # Arquivo de configuração
+├── README.md              # Este arquivo
+├── requirements.txt       # Dependências Python (vazio)
+└── __init__.py           # Módulo Python
 ```
 
-### Arquivos Principais
+### Classe Principal: `SimpleBotADB`
 
-#### `main.py` (1635+ linhas)
-**Bot completo com:**
-- `Config`: Gerenciamento de configurações JSON
-- `screenshot()`: Captura de tela via ADB (shell + pull)
-- `start_infinite_farming()`: Loop principal de farming
-- Integração: IA + ML + Analytics + Recompensas + Hotspots
-- Signal handler com relatório final completo
-
-#### `ai_modules.py` (1072+ linhas)
-**Cinco módulos de IA:**
-1. **MinimapVision**: Análise OpenCV do minimap
-   - 8 setores direcionais
-   - Contagem de inimigos por cor
-   - Heatmap de densidade
-   
-2. **MLPredictor**: Machine Learning
-   - RandomForest para predição de densidade
-   - KMeans para clustering (2 clusters otimizado)
-   - Auto-treino a cada 100 amostras
-   - 4 formatos de modelo salvos
-   - Integração com MetricasAprendizadoML
-   
-3. **CombatDetector**: Detecção de estado
-   - ImageHash para identificar combate
-   - Histórico de estados
-   - Estatísticas de tempo em combate
-   
-4. **OCRReader**: Leitura de texto
-   - Extração de XP da barra
-   - Detecção de inimigos perigosos
-   - Leitura de coordenadas
-   
-5. **AdvancedVision**: Computer Vision avançado
-   - `detect_colors()`: cv2.inRange para 8 cores
-   - `detect_circles()`: cv2.HoughCircles
-   - `read_coordinates_ocr()`: OCR de posição
-   - `get_movement_vector()`: Cálculo de direção
-
-#### `analytics.py` (600+ linhas)
-**FarmingAnalytics - Sistema completo:**
-- `update_xp()`: Atualiza XP via OCR
-- `add_xp_gain()`: Registra XP de combate
-- `register_combat()`: Tracking de batalhas
-- `get_xp_per_minute()`: Calcula taxa
-- `predict_time_to_level()`: Estimativa para 100%
-- `export_metrics()`: Salva JSON
-- `generate_report()`: Relatório formatado
-
-#### `metricas_aprendizado.py` (550+ linhas)
-**MetricasAprendizadoML - Tracking de ML:**
-- `register_sample_collected()`: Registra coleta
-- `register_training_completed()`: Registra treino
-- `register_performance_data()`: Tracking de performance
-- `get_training_progress()`: Progresso atual
-- `get_performance_trends()`: Análise de tendências
-- `print_live_dashboard()`: Dashboard ao vivo
-- `generate_summary_report()`: Relatório resumido
-
-#### `xp_detector.py` (250+ linhas)
-**XPGainDetector - OCR de EXP:**
-- Preprocessamento: CLAHE, threshold, resize
-- 4 regex patterns para parsing
-- Batch processing de screenshots
-- Estatísticas de valores detectados
-
-#### `sistema_recompensas.py` (400+ linhas)
-**SistemaRecompensas - Reinforcement Learning:**
-- 15+ tipos de recompensas (kills, XP, combate, etc.)
-- Penalidades (mortes, HP baixo, stuck)
-- Histórico completo (1000 últimas ações)
-- Relatório final com melhores/piores ações
-- Salva em `ml_models/rewards_history.json`
-
-#### `treinador_recompensas.py` (450+ linhas)
-**TreinadorComRecompensas - ML com Feedback:**
-- RandomForest com sample_weight baseado em rewards
-- GradientBoosting como alternativa
-- Comparação com modelo anterior
-- Feature importance analysis
-- Menu interativo com 4 opções
-
-#### `mapeamento_hotspots.py` (550+ linhas)
-**MapeadorHotspots - Spatial Analysis:**
-- Grid 10x10 para 1000x1000 coordenadas
-- Rastreamento: XP/hora, Kills/min, Mortes, Mobs
-- Cálculo de score de qualidade
-- Ranking automático de regiões
-- Geração de heatmaps com matplotlib
-- Salva em `ml_models/hotspots_map.json`
-
-#### `detector_corrigido.py` (293 linhas)
-**DetectorVisualCorrigido - CV Otimizado:**
-- Crop minimap: região (150,150) → 200x200
-- HSV ajustado: S≥200, V≥200 (cores vibrantes)
-- Blob detection: min=20, max=500, circularity≥0.5
-- Auto-cleanup: mantém 10 imagens debug
-- 3 cores: Vermelho (inimigos), Azul (aliados), Amarelo (itens)
-
-#### `analisar_diversidade.py` (235 linhas)
-**Diagnóstico de Dados:**
-- Calcula % de amostras únicas
-- Identifica features de baixa variância
-- Análise de distâncias entre amostras
-- Recomendação de clusters otimizada
-- Plano de coleta de dados diversificados
-
-## 🆕 Atualização v2.1 - 22/12/2025
-
-#### Melhorias no Monitoramento de Treinamento ML
-- Correção: agora o histórico de treinamento salva corretamente arrays numpy (features e pred) convertendo para tipos nativos, evitando erros de serialização JSON.
-- O monitoramento registra cada amostra coletada, tempo de treino, acurácia (R² Score), milestones atingidas e gera automaticamente a curva de aprendizado.
-- Resumo e curva de aprendizado são exibidos automaticamente ao atingir milestones e ao finalizar a sessão.
-- O sistema está mais robusto para grandes volumes de dados e múltiplos modelos.
-
-#### Exemplo de Log Corrigido
-```
-[ML] Predição de densidade de inimigos: 5.00
-[ML] Cluster do local atual: 0
-🏆 Milestone atingido: 100 amostras coletadas!
-===== Monitoramento de Treinamento ML =====
-Amostras coletadas: 100
-Treinos realizados: 1
-Última acurácia (R²): 0.9821
-Último tempo de treino: 2.45s
-Milestones atingidos: [10, 50, 100]
-==========================================
-Curva de aprendizado salva em curva_aprendizado.png
+```python
+class SimpleBotADB:
+    def __init__(self, device_address: str)
+    def check_adb() -> bool
+    def connect() -> bool
+    def disconnect() -> bool
+    def tap(x: int, y: int) -> bool
+    def click_loop(x: int, y: int, interval: float, max_clicks: int)
+    def click_sequence(positions: list, interval: float, repeat: int)
+    def enable_pointer_location() -> bool
+    def disable_pointer_location() -> bool
+    def move_joystick(start_x, start_y, end_x, end_y, duration, direction) -> bool
+    def move_joystick_forward(start_x, start_y, end_x, end_y, duration) -> bool
+    def lure_with_joystick(joystick_config: dict, duration: int, interval: float) -> bool
+    def lure_with_joystick_steps(joystick_config: dict, step_duration: int, 
+                                  step_interval: float, steps_per_direction: int) -> bool
 ```
 
-#### Observação Técnica
-- Se aparecer o aviso: `[ML] Aviso: poucos dados distintos para clustering. Colete mais amostras variadas para melhor análise de hotspots.`, continue coletando amostras para melhorar o agrupamento.
-- O sistema de sessões e exportação JSON permanece igual, mas agora o histórico de ML está sempre salvo corretamente.
+## 🐛 Troubleshooting
+
+### ADB não encontrado
+```
+✗ ADB não encontrado. Instale com: sudo apt install adb
+```
+**Solução**: Instale o ADB conforme instruções de instalação acima.
+
+### Falha ao conectar
+```
+✗ Falha ao conectar: connection refused
+```
+**Possíveis causas**:
+- Dispositivo não está na mesma rede WiFi
+- IP do dispositivo mudou
+- Depuração USB desativada
+- Porta 5555 não está aberta
+
+**Soluções**:
+1. Verificar IP do dispositivo: **Configurações** → **Sobre** → **Status** → **Endereço IP**
+2. Reconectar via USB: `adb tcpip 5555`
+3. Verificar depuração USB está ativada
+4. Reiniciar o servidor ADB: `adb kill-server && adb start-server`
+
+### Cliques não funcionam
+```
+✗ Erro ao clicar: error: device offline
+```
+**Solução**: Reconectar ao dispositivo
+```bash
+adb disconnect
+adb connect <IP_DO_DISPOSITIVO>:5555
+```
+
+### Coordenadas erradas
+- Use o **Pointer Location** para descobrir coordenadas precisas
+- Lembre-se que coordenadas podem variar entre dispositivos
+- Teste cliques individuais antes de adicionar ao bot
+
+### Bot não inicia threads paralelas
+- Verifique se `camera_reset.enabled` está como `true` no JSON
+- Verifique se `lure.enabled` está como `true` no JSON
+- Certifique-se que o JSON está formatado corretamente
+
+### Movimento do joystick não funciona
+- Verifique as coordenadas do joystick no seu dispositivo
+- Ajuste `center_x` e `center_y` para o centro do joystick
+- Ajuste as coordenadas direcionais (forward, backward, left, right)
+- Teste diferentes valores de `duration` e `step_duration`
+
+## 🔒 Aviso Legal
+
+Este bot é apenas para fins educacionais. O uso de bots em jogos online pode violar os Termos de Serviço e resultar em banimento da conta. Use por sua conta e risco.
+
+## 📝 Licença
+
+Este projeto é de código aberto. Sinta-se livre para usar, modificar e distribuir.
+
+## 🤝 Contribuições
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests.
+
+## 📧 Contato
+
+Para dúvidas ou sugestões, abra uma issue no GitHub.
 
 ---
+
+**Desenvolvido com ❤️ para a comunidade SRO Mobile**
