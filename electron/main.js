@@ -25,13 +25,15 @@ let config = {
   clicks: [],
   joystick: {
     pattern: 'straight',
-    centerX: 193,
-    centerY: 903,
+    centerX: '13%',
+    centerY: '80%',
     radius: 60,
-    duration: 100,
+    duration: 1000,
     pause: 0.2,
     loopEnabled: false,
-    loopInterval: 3.0
+    loopInterval: 3.0,
+    movementInterval: 0.5,
+    repetitions: 3
   }
 };
 
@@ -57,13 +59,15 @@ function loadConfig() {
       if (!config.joystick) {
         config.joystick = {
           pattern: 'straight',
-          centerX: 193,
-          centerY: 903,
+          centerX: '13%',
+          centerY: '80%',
           radius: 60,
-          duration: 100,
+          duration: 1000,
           pause: 0.2,
           loopEnabled: false,
-          loopInterval: 3.0
+          loopInterval: 3.0,
+          movementInterval: 0.5,
+          repetitions: 3
         };
       }
     }
@@ -296,13 +300,15 @@ ipcMain.handle('save-config', (event, newConfig) => {
   if (!newConfig.joystick) {
     newConfig.joystick = {
       pattern: 'straight',
-      centerX: 193,
-      centerY: 903,
+      centerX: '13%',
+      centerY: '80%',
       radius: 60,
-      duration: 100,
+      duration: 1000,
       pause: 0.2,
       loopEnabled: false,
-      loopInterval: 3.0
+      loopInterval: 3.0,
+      movementInterval: 0.5,
+      repetitions: 3
     };
   }
   config = newConfig;
@@ -396,13 +402,15 @@ ipcMain.handle('start-bot', async (event, newConfig) => {
       if (!newConfig.joystick) {
         newConfig.joystick = {
           pattern: 'straight',
-          centerX: 193,
-          centerY: 903,
+          centerX: '13%',
+          centerY: '80%',
           radius: 60,
-          duration: 100,
+          duration: 1000,
           pause: 0.2,
           loopEnabled: false,
-          loopInterval: 3.0
+          loopInterval: 3.0,
+          movementInterval: 0.5,
+          repetitions: 3
         };
       }
       config = newConfig;
@@ -436,8 +444,8 @@ ipcMain.handle('stop-bot', async (event, newConfig) => {
 
 ipcMain.handle('lure-joystick', async () => {
   try {
-    const joystickCfg = config.joystick || { centerX: 193, centerY: 903, radius: 60 };
-    const swipeDuration = joystickCfg.duration || 100;
+    const joystickCfg = config.joystick || { centerX: '13%', centerY: '80%', radius: 60, duration: 1000, pause: 0.2, movementInterval: 0.5, repetitions: 3 };
+    const swipeDuration = joystickCfg.duration || 1000;
     const { centerX, centerY, radius } = await resolveJoystickCoords(joystickCfg);
 
     // Sequence of movements
@@ -461,7 +469,7 @@ ipcMain.handle('lure-joystick', async () => {
 
 ipcMain.handle('execute-lure-pattern', async (event, joystickConfig) => {
   try {
-    const { duration, pause, pattern, movementInterval = 0.5, repetitions = 1 } = joystickConfig;
+    const { duration = 1000, pause = 0.2, pattern, movementInterval = 0.5, repetitions = 3 } = joystickConfig;
     const { centerX, centerY, radius } = await resolveJoystickCoords(joystickConfig);
 
     if (pattern === 'square') {
@@ -506,7 +514,7 @@ ipcMain.handle('execute-lure-pattern', async (event, joystickConfig) => {
 
 // Função auxiliar para executar padrão de lure
 async function executeLureMovement(joystickConfig) {
-  const { duration, pause, pattern, movementInterval = 0.5, repetitions = 1 } = joystickConfig;
+  const { duration = 1000, pause = 0.2, pattern, movementInterval = 0.5, repetitions = 3 } = joystickConfig;
   const { centerX, centerY, radius } = await resolveJoystickCoords(joystickConfig);
 
   if (pattern === 'square') {
