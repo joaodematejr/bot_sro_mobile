@@ -103,6 +103,50 @@ async function adbSwipe(x1, y1, x2, y2, duration = 100) {
   await adbCommand(`shell input swipe ${x1} ${y1} ${x2} ${y2} ${duration}`);
 }
 
+// Cache do tamanho da tela (largura x altura)
+let screenSizeCache = null;
+
+async function getScreenSize() {
+  try {
+    if (screenSizeCache) return screenSizeCache;
+    const output = await adbCommand('shell wm size');
+    // Exemplo de output: "Physical size: 1080x2340"
+    const m = output.match(/(\d+)x(\d+)/);
+    if (m) {
+      screenSizeCache = { width: parseInt(m[1], 10), height: parseInt(m[2], 10) };
+      return screenSizeCache;
+    }
+  } catch (error) {
+    console.warn('Não foi possível obter tamanho da tela via adb:', error.message);
+  }
+  // Fallback se não conseguir obter tamanho: assume 1080x1920
+  screenSizeCache = { width: 1080, height: 1920 };
+  return screenSizeCache;
+}
+
+function parsePercentValue(val, total) {
+  // Aceita: '50%' -> 50%, 0.5 -> 50%, 50 -> pixels
+  if (typeof val === 'string' && val.trim().endsWith('%')) {
+    const num = parseFloat(val.trim().slice(0, -1));
+    if (!isNaN(num)) return Math.round((num / 100) * total);
+  }
+  if (typeof val === 'number' && val > 0 && val <= 1) {
+    return Math.round(val * total);
+  }
+  // caso contrário assume pixels
+  return Math.round(Number(val) || 0);
+}
+
+async function resolveJoystickCoords(joystickConfig) {
+  const screen = await getScreenSize();
+  const centerX = parsePercentValue(joystickConfig.centerX ?? joystickConfig.cx ?? 0, screen.width);
+  const centerY = parsePercentValue(joystickConfig.centerY ?? joystickConfig.cy ?? 0, screen.height);
+  // radius normalmente é em pixels; se for percentual, interpretamos em relação à menor dimensão
+  const base = Math.min(screen.width, screen.height);
+  const radius = parsePercentValue(joystickConfig.radius ?? 0, base);
+  return { centerX, centerY, radius };
+}
+
 function sleep(seconds) {
   return new Promise(resolve => setTimeout(resolve, seconds * 1000));
 }
@@ -392,11 +436,10 @@ ipcMain.handle('stop-bot', async (event, newConfig) => {
 
 ipcMain.handle('lure-joystick', async () => {
   try {
-    const centerX = 193;
-    const centerY = 903;
-    const radius = 60;
-    const swipeDuration = 100;
-    
+    const joystickCfg = config.joystick || { centerX: 193, centerY: 903, radius: 60 };
+    const swipeDuration = joystickCfg.duration || 100;
+    const { centerX, centerY, radius } = await resolveJoystickCoords(joystickCfg);
+
     // Sequence of movements
     const movements = [
       { x: centerX, y: centerY - radius, desc: 'cima' },
@@ -404,7 +447,7 @@ ipcMain.handle('lure-joystick', async () => {
       { x: centerX, y: centerY + radius, desc: 'baixo' },
       { x: centerX - radius, y: centerY, desc: 'esquerda' }
     ];
-    
+
     for (const move of movements) {
       await adbSwipe(centerX, centerY, move.x, move.y, swipeDuration);
       await sleep(0.2);
@@ -418,8 +461,9 @@ ipcMain.handle('lure-joystick', async () => {
 
 ipcMain.handle('execute-lure-pattern', async (event, joystickConfig) => {
   try {
-    const { centerX, centerY, radius, duration, pause, pattern, movementInterval = 0.5, repetitions = 1 } = joystickConfig;
-    
+    const { duration, pause, pattern, movementInterval = 0.5, repetitions = 1 } = joystickConfig;
+    const { centerX, centerY, radius } = await resolveJoystickCoords(joystickConfig);
+
     if (pattern === 'square') {
       // Movimento em quadrado: cima, direita, baixo, esquerda
       const movements = [
@@ -462,8 +506,9 @@ ipcMain.handle('execute-lure-pattern', async (event, joystickConfig) => {
 
 // Função auxiliar para executar padrão de lure
 async function executeLureMovement(joystickConfig) {
-  const { centerX, centerY, radius, duration, pause, pattern, movementInterval = 0.5, repetitions = 1 } = joystickConfig;
-  
+  const { duration, pause, pattern, movementInterval = 0.5, repetitions = 1 } = joystickConfig;
+  const { centerX, centerY, radius } = await resolveJoystickCoords(joystickConfig);
+
   if (pattern === 'square') {
     const movements = [
       { x: centerX, y: centerY - radius },
@@ -471,7 +516,7 @@ async function executeLureMovement(joystickConfig) {
       { x: centerX, y: centerY + radius },
       { x: centerX - radius, y: centerY }
     ];
-    
+
     // Para cada direção, repete N vezes antes de ir para a próxima
     for (const move of movements) {
       for (let rep = 0; rep < repetitions; rep++) {

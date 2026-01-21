@@ -220,6 +220,19 @@ function updateUIFromConfig() {
     updatePatternDescription();
 }
 
+// Normaliza valor de joystick: preserva porcentagem string, converte '0.18' para número, e mantém números inteiros
+function normalizeJoystickValue(raw) {
+    if (typeof raw === 'string') {
+        const s = raw.trim();
+        if (s.endsWith('%')) return s; // deixa como string percentual
+        // verifica se é número (inteiro ou float)
+        const n = Number(s);
+        if (!isNaN(n)) return n;
+        return s; // fallback
+    }
+    return raw; // já número
+}
+
 // Salva configuração
 async function saveConfig() {
     config.device = elements.deviceAddress.value;
@@ -270,9 +283,9 @@ async function saveConfig() {
     
     config.joystick = {
         pattern: elements.patternSquare.checked ? 'square' : 'straight',
-        centerX: parseInt(elements.joystickCenterX.value),
-        centerY: parseInt(elements.joystickCenterY.value),
-        radius: parseInt(elements.joystickRadius.value),
+        centerX: normalizeJoystickValue(elements.joystickCenterX.value),
+        centerY: normalizeJoystickValue(elements.joystickCenterY.value),
+        radius: normalizeJoystickValue(elements.joystickRadius.value),
         duration: parseInt(elements.joystickDuration.value),
         pause: parseFloat(elements.joystickPause.value),
         movementInterval: parseFloat(elements.joystickMovementInterval.value),
@@ -425,9 +438,9 @@ function updatePatternDescription() {
 async function executeLure() {
     const pattern = elements.patternSquare.checked ? 'square' : 'straight';
     const joystickConfig = {
-        centerX: parseInt(elements.joystickCenterX.value),
-        centerY: parseInt(elements.joystickCenterY.value),
-        radius: parseInt(elements.joystickRadius.value),
+        centerX: normalizeJoystickValue(elements.joystickCenterX.value),
+        centerY: normalizeJoystickValue(elements.joystickCenterY.value),
+        radius: normalizeJoystickValue(elements.joystickRadius.value),
         duration: parseInt(elements.joystickDuration.value),
         pause: parseFloat(elements.joystickPause.value),
         movementInterval: parseFloat(elements.joystickMovementInterval.value),
@@ -450,9 +463,9 @@ async function startLureLoop() {
     await saveConfig();
     const pattern = elements.patternSquare.checked ? 'square' : 'straight';
     const joystickConfig = {
-        centerX: parseInt(elements.joystickCenterX.value),
-        centerY: parseInt(elements.joystickCenterY.value),
-        radius: parseInt(elements.joystickRadius.value),
+        centerX: normalizeJoystickValue(elements.joystickCenterX.value),
+        centerY: normalizeJoystickValue(elements.joystickCenterY.value),
+        radius: normalizeJoystickValue(elements.joystickRadius.value),
         duration: parseInt(elements.joystickDuration.value),
         pause: parseFloat(elements.joystickPause.value),
         movementInterval: parseFloat(elements.joystickMovementInterval.value),
